@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proxi New — প্রজেক্ট ডকুমেন্টেশন</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #c9d1d9; --text-dim: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --red: #f85149; --yellow: #d29922; --purple: #bc8cff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: 2.2rem; color: #fff; margin-bottom: 8px; }
+  h1 span { color: var(--accent); }
+  .subtitle { color: var(--text-dim); font-size: 1rem; margin-bottom: 40px; }
+  h2 { font-size: 1.4rem; color: var(--accent); margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--green); margin: 24px 0 12px; }
+  p, li { color: var(--text); font-size: 0.95rem; }
+  ul, ol { padding-left: 24px; margin: 8px 0; }
+  li { margin: 6px 0; }
+  code { font-family: "SF Mono", "Fira Code", monospace; background: var(--surface); padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; color: var(--green); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 16px 0; }
+  .card h3 { margin-top: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin: 16px 0; }
+  .grid .card { margin: 0; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+  .badge-green { background: #1a3a2a; color: var(--green); }
+  .badge-blue { background: #1a2a3a; color: var(--accent); }
+  .badge-yellow { background: #3a2a1a; color: var(--yellow); }
+  .badge-red { background: #3a1a1a; color: var(--red); }
+  .badge-purple { background: #2a1a3a; color: var(--purple); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+  th { text-align: left; padding: 10px 12px; background: var(--bg); color: var(--text-dim); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 2px solid var(--border); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: rgba(88, 166, 255, 0.05); }
+  .flow-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin: 12px 0; font-family: monospace; font-size: 0.85rem; line-height: 2; }
+  .flow-arrow { color: var(--accent); font-weight: bold; }
+  .flow-label { color: var(--text-dim); }
+  .highlight { background: rgba(88, 166, 255, 0.1); border-left: 3px solid var(--accent); padding: 12px 16px; margin: 12px 0; border-radius: 0 8px 8px 0; }
+  .warn { background: rgba(210, 153, 34, 0.1); border-left: 3px solid var(--yellow); padding: 12px 16px; margin: 12px 0; border-radius: 0 8px 8px 0; }
+  .endpoint { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .method { font-weight: 700; font-size: 0.75rem; min-width: 60px; }
+  .method-get { color: var(--green); }
+  .method-post { color: var(--accent); }
+  .method-patch { color: var(--yellow); }
+  .method-delete { color: var(--red); }
+  .diagram { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 16px 0; font-family: monospace; font-size: 0.8rem; line-height: 1.8; white-space: pre; overflow-x: auto; color: var(--text-dim); }
+  .diagram .node { color: var(--accent); font-weight: bold; }
+  .diagram .edge { color: var(--text-dim); }
+  .diagram .label { color: var(--green); }
+  @media (max-width: 768px) { .container { padding: 20px 16px; } h1 { font-size: 1.6rem; } .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>⚡ <span>Proxi New</span> — ZombieCoder Bridge Server</h1>
+<p class="subtitle">সম্পূর্ণ প্রজেক্ট ডকুমেন্টেশন &bull; কোনো কোড ছাড়া কিভাবে কাজ করে &bull; নির্ভরতা ও সংযোগ</p>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>📋 সারসংক্ষেপ</h2>
+<div class="card">
+<p><strong>Proxi New</strong> হলো একটি <strong>Local-first AI execution engine</strong> — একটি সাধারण Express.js সার্ভার যেটি বিভিন্ন LLM প্রোভাইডারকে একটি <strong>OpenAI-compatible API</strong>-তে একত্রিত করে। এটি:</p>
+<ul>
+  <li>মাল্টিপল LLM প্রোভাইডার (OpenCode Zen, Groq, Ollama, OpenAI) কে <strong>একটি সিঙ্গেল API endpoint</strong>-তে জোড়া দেয়</li>
+  <li><strong>স্মার্ট রাউটিং</strong> দিয়ে সেরা মডেল অটো-সিলেক্ট করে</li>
+  <li><strong>RAG (Retrieval-Augmented Generation)</strong> সিস্টেম দিয়ে প্রজেক্ট ডকুমেন্টেশন বুঝে</li>
+  <li><strong>MCP (Model Context Protocol)</strong> দিয়ে এডিটর সংযুক্ত করে</li>
+  <li><strong>বিস্তারিত Admin Dashboard</strong> দিয়ে সব মনিটর ও ম্যানেজ করে</li>
+  <li><strong>SQLite</strong> ডেটাবেসে সব অবস্থা সংরক্ষণ করে</li>
+</ul>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>🏗️ স্থাপত্য (Architecture)</h2>
+
+<div class="diagram"><span class="node">┌─────────────────────────────────────────────────────────┐</span>
+<span class="node">│                   Client Layer                          │</span>
+<span class="node">│</span>  <span class="label">Web Browser</span>  <span class="edge">│</span>  <span class="label">VS Code / Zed</span>  <span class="edge">│</span>  <span class="label">cURL / API Client</span>  <span class="node">│</span>
+<span class="node">└───────────────────────┬─────────────────────────────────┘</span>
+                        <span class="edge">│</span>
+            <span class="edge">┌───────────┴───────────┐</span>
+            <span class="edge">│</span>   <span class="label">Express.js Server</span>    <span class="edge">│</span>
+            <span class="edge">│</span>      <span class="label">Port 9999</span>        <span class="edge">│</span>
+            <span class="edge">└───────────┬───────────┘</span>
+                        <span class="edge">│</span>
+        <span class="edge">┌───────────────┼───────────────┐</span>
+        <span class="edge">│</span>               <span class="edge">│</span>               <span class="edge">│</span>
+   <span class="node">┌────┴────┐</span>   <span class="node">┌────┴────┐</span>   <span class="node">┌────┴────┐</span>
+   <span class="node">│ OpenAI  │</span>   <span class="node">│ Agent   │</span>   <span class="node">│  Admin  │</span>
+   <span class="node">│  API    │</span>   <span class="node">│ System  │</span>   <span class="node">│Dashboard│</span>
+   <span class="node">└────┬────┘</span>   <span class="node">└────┬────┘</span>   <span class="node">└─────────┘</span>
+        <span class="edge">│</span>               <span class="edge">│</span>
+   <span class="edge">┌────┴────┐</span>   <span class="edge">┌────┴────┐</span>
+   <span class="edge">│</span> <span class="label">GroqService</span> <span class="edge">│</span>   <span class="edge">│</span> <span class="label">RAG + MCP</span>  <span class="edge">│</span>
+   <span class="edge">└────┬────┘</span>   <span class="edge">└────┬────┘</span>
+        <span class="edge">│</span>               <span class="edge">│</span>
+<span class="edge">┌───────┴───────────────┴───────┐</span>
+<span class="edge">│</span>     <span class="node">LLM Providers</span>              <span class="edge">│</span>
+<span class="edge">│</span>  <span class="label">OpenCode Zen</span> <span class="edge">│</span> <span class="label">Groq</span> <span class="edge">│</span> <span class="label">Ollama</span>  <span class="edge">│</span>
+<span class="edge">└───────────────────────────────┘</span></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>🔄 কিভাবে কাজ করে (কোনো কোড ছাড়া)</h2>
+
+<h3>১. সার্ভার চালু হওয়ার ধাপ</h3>
+<div class="flow-box">
+<span class="flow-label">ধাপ ১:</span> <code>.env</code> ফাইল থেকে সব কনফিগ পড়ে (API keys, ports, models)<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">ধাপ ২:</span> <code>state.db</code> (SQLite) তৈরি করে — সব tables create হয়<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">ধাপ ৩:</span> ৬টি LLM প্রোভাইডার থেকে মডেল লোড করে (sync)<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">ধাপ ৪:</span> Agent system চালু হয় (RAG, SSOT, Workspace Watcher)<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">ধাপ ৫:</span> Port 9999-তে লিসেন করা শুরু করে
+</div>
+
+<h3>২. একটি Chat Request কিভাবে যায়</h3>
+<div class="flow-box">
+<span class="flow-label">Client:</span> <code>POST /v1/chat/completions</code> পাঠায়<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">Auth Middleware:</span> API key যাচাই করে<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">OpenAI Controller:</span> Identity prompt যোগ করে system message-এ<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">MawlanaRouter:</span> Input analysis করে → সেরা মডেল সিলেক্ট করে<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">GroqService:</span> নির্বাচিত LLM provider-কে request পাঠায়<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">Rate Limiter:</span> মডেল-ভিত্তিক rate limit চেক করে<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">Response:</span> OpenAI format-এ client-কে ফেরত দেয়<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">DB Logger:</span> usage_stats-এ log লেখে
+</div>
+
+<h3>৩. Agent System কিভাবে কাজ করে</h3>
+<div class="flow-box">
+<span class="flow-label">Editor (VS Code):</span> MCP protocol দিয়ে connect হয়<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">MCP Controller:</span> JSON-RPC request handle করে<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">Agent Controller:</span> directory auto-trust করে<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">DiskRAGService:</span> প্রজেক্ট scan করে → SSOT.md তৈরি/আপডেট করে<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">Workspace Watcher:</span> ফাইল পরিবর্তন হলে SSOT auto-refresh<br>
+<span class="flow-arrow">→</span><br>
+<span class="flow-label">VectorIndexService:</span> embedding তৈরি করে → search-এ ব্যবহার হয়
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>📦 নির্ভরতা (Dependencies) ও তাদের ভূমিকা</h2>
+
+<div class="grid">
+<div class="card">
+<h3>🌐 HTTP Server</h3>
+<table>
+<tr><td><code>express</code></td><td>সার্ভার ফ্রেমওয়ার্ক — routes, middleware, request handling</td></tr>
+<tr><td><code>cors</code></td><td>Cross-origin requests allow করে</td></tr>
+<tr><td><code>multer</code></td><td>File upload handle করে (audio transcription-এ)</td></tr>
+<tr><td><code>dotenv</code></td><td><code>.env</code> ফাইল থেকে environment variables পড়ে</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>🤖 LLM Integration</h3>
+<table>
+<tr><td><code>groq-sdk</code></td><td>Groq API-র সাথে সংযোগ — primary chat engine</td></tr>
+<tr><td><code>@ai-sdk/openai-compatible</code></td><td>যেকোনো OpenAI-compatible API ব্যবহার</td></tr>
+<tr><td><code>langchain</code></td><td>Chain-of-thought, tool calling, structured output</td></tr>
+<tr><td><code>mcp-use</code></td><td>MCP (Model Context Protocol) client integration</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>💾 Data Storage</h3>
+<table>
+<tr><td><code>better-sqlite3</code></td><td>SQLite database — sessions, usage, models, notes</td></tr>
+<tr><td><code>fastembed</code></td><td>Local embeddings — RAG search-এ ব্যবহার</td></tr>
+<tr><td><code>chokidar</code></td><td>File system watcher — SSOT auto-refresh</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>🛡️ Validation & Types</h3>
+<table>
+<tr><td><code>zod</code></td><td>Input validation schema</td></tr>
+<tr><td><code>uuid</code></td><td>Unique ID generation (sessions, conversations)</td></tr>
+<tr><td><code>express-rate-limit</code></td><td>Rate limiting protection</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>🔌 API Endpoints — সম্পূর্ণ তালিকা</h2>
+
+<h3>Health & System</h3>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/health</code> — সার্ভার স্বাস্থ্য পরীক্ষা</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/api/status</code> — সিস্টেম স্ট্যাটাস</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/api/logs</code> — রানটাইম লগ</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/api/events</code> — রানটাইম ইভেন্ট</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/api/rate-limits</code> — rate limit অবস্থা</div>
+
+<h3>OpenAI-Compatible</h3>
+<div class="endpoint"><span class="method method-post">POST</span> <code>/v1/chat/completions</code> — Chat (সবচেয়ে গুরুত্বপূর্ণ)</div>
+<div class="endpoint"><span class="method method-post">POST</span> <code>/v1/completions</code> — Text completion</div>
+<div class="endpoint"><span class="method method-post">POST</span> <code>/v1/embeddings</code> — Text embeddings</div>
+<div class="endpoint"><span class="method method-post">POST</span> <code>/v1/audio/transcriptions</code> — Speech-to-text</div>
+<div class="endpoint"><span class="method method-post">POST</span> <code>/v1/audio/translations</code> — Audio translation</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/v1/models</code> — সব available model</div>
+
+<h3>Agent & RAG</h3>
+<div class="endpoint"><span class="method method-post">POST</span> <code>/v1/agent/chat</code> — Agent chat (RAG + tools)</div>
+<div class="endpoint"><span class="method method-post">POST</span> <code>/v1/agent/directory</code> — কাজের ফোল্ডার সেট (auto-trust)</div>
+<div class="endpoint"><span class="method method-post">POST</span> <code>/v1/agent/rescan</code> — প্রজেক্ট পুনরায় scan</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/v1/agent/ssot</code> — SSOT.md পড়ুন</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/v1/agent/status</code> — Agent স্ট্যাটাস</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/v1/agent/routes</code> — Available model routes</div>
+
+<h3>Admin Dashboard</h3>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/admin/dashboard</code> — Admin UI (10 pages)</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/api/admin/stats</code> — Dashboard statistics</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/api/admin/models</code> — সব model + priority</div>
+<div class="endpoint"><span class="method method-patch">PATCH</span> <code>/api/admin/models/:id/priority</code> — Priority সেট (0-10)</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/api/admin/models/:id/usage</code> — Per-model usage</div>
+<div class="endpoint"><span class="method method-post">POST</span> <code>/api/admin/models/sync</code> — Model sync</div>
+<div class="endpoint"><span class="method method-delete">DELETE</span> <code>/api/admin/sessions/:id</code> — Session মুছুন</div>
+<div class="endpoint"><span class="method method-delete">DELETE</span> <code>/api/admin/conversations/:id</code> — Conversation মুছুন</div>
+<div class="endpoint"><span class="method method-delete">DELETE</span> <code>/api/admin/usage</code> — Usage data মুছুন</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/api/admin/monitor</code> — Real-time SSE stream</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/api/admin/agent-health</code> — Agent health check</div>
+
+<h3>MCP (Editor Integration)</h3>
+<div class="endpoint"><span class="method method-post">POST</span> <code>/mcp</code> — JSON-RPC (MCP protocol)</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/mcp</code> — SSE stream for server events</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/mcp/info</code> — MCP server info</div>
+
+<h3>Database REST API</h3>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/db/stats</code> — Table row counts</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/db/identity</code> — System identity</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/db/notes</code> — Agent notes</div>
+<div class="endpoint"><span class="method method-get">GET</span> <code>/db/write-log</code> — Write verification log</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>📐 মডেল রাউটিং — কিভাবে সিদ্ধান্ত হয়</h2>
+
+<div class="card">
+<h3>MawlanaRouter — স্মার্ট মডেল সিলেক্টর</h3>
+<p>প্রতিটি request-এর জন্য <strong>MawlanaRouter</strong> নিম্নলিখিতভাবে সেরা মডেল বাছাই করে:</p>
+<ol>
+  <li><strong>Input analysis:</strong> message content পড়ে — কোডিং? চ্যাট? RAG?</li>
+  <li><strong>Category detection:</strong> <code>chat</code>, <code>code</code>, <code>rag</code>, <code>guard</code> — একটি নির্বাচন</li>
+  <li><strong>Preference list:</strong> প্রতিটি category-র জন্য একটি ordered model list আছে</li>
+  <li><strong>Rate limit check:</strong> মডেলটি কি available? Rate limit পার হয়নি?</li>
+  <li><strong>Fallback:</strong> প্রথম choice কাজ না করলে পরবর্তী model try করে</li>
+</ol>
+
+<div class="highlight">
+<strong>Default Model:</strong> <code>mimo-v2.5-free</code> (OpenCode Zen — ফ্রি, কোনো API key লাগে না)<br>
+<strong>Fallback:</strong> <code>llama-3.3-70b-versatile</code> (Groq — ফ্রি tier)
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>🗄️ ডেটাবেস — SQLite Tables</h2>
+
+<div class="card">
+<table>
+<thead>
+<tr><th>Table</th><th>কাজ</th><th>গুরুত্ব</th></tr>
+</thead>
+<tbody>
+<tr><td><code>models</code></td><td>সব LLM model-এর তথ্য</td><td>98+ models, 6 sources</td></tr>
+<tr><td><code>model_rate_limits</code></td><td>মডেল priority ও rate limit</td><td>Priority 0-10</td></tr>
+<tr><td><code>llm_sources</code></td><td>LLM provider তালিকা</td><td>OpenCode, Groq, Ollama ইত্যাদি</td></tr>
+<tr><td><code>usage_stats</code></td><td>প্রতিটি request-এর log</td><td>Per-model usage tracking</td></tr>
+<tr><td><code>admin_sessions</code></td><td>Chat session history</td><td>Session management</td></tr>
+<tr><td><code>conversations</code></td><td>Conversation metadata</td><td>Chat history</td></tr>
+<tr><td><code>conversation_messages</code></td><td>প্রতিটি message</td><td>Full chat log</td></tr>
+<tr><td><code>provider_mapping</code></td><td>Model → Provider routing rules</td><td>Custom routing</td></tr>
+<tr><td><code>identity</code></td><td>System identity (name, version)</td><td>ZombieCoder persona</td></tr>
+<tr><td><code>agent_personas</code></td><td>Agent persona prompts</td><td>System prompt</td></tr>
+<tr><td><code>workspaces</code></td><td>Trusted directories</td><td>Auto-trust system</td></tr>
+<tr><td><code>rag_documents</code></td><td>RAG indexed documents</td><td>SSOT tracking</td></tr>
+<tr><td><code>rag_chunks</code></td><td>Text chunks + embeddings</td><td>Search indexing</td></tr>
+<tr><td><code>agent_notes</code></td><td>Agent-এর নোট</td><td>Memory system</td></tr>
+<tr><td><code>write_log</code></td><td>ডেটা পরিবর্তন লগ</td><td>Verification</td></tr>
+<tr><td><code>editor_connections</code></td><td>Editor connection history</td><td>MCP tracking</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>🛡️ নিরাপত্তা ও নিয়মাবলী</h2>
+
+<div class="grid">
+<div class="card">
+<h3>🔑 Authentication</h3>
+<ul>
+  <li><code>GROQ_API_KEY</code> → Groq API-তে যাওয়ার জন্য</li>
+  <li><code>OPENCODE_API_KEY</code> → OpenCode Zen-এর জন্য</li>
+  <li><code>ADMIN_SECRET</code> → Admin dashboard protection (ঐচ্ছিক)</li>
+  <li>API key না থাকলে: <strong>500 error</strong> দেয়</li>
+  <li>ফাঁকা Bearer token: <strong>401 error</strong> দেয়</li>
+  <li>Admin secret না থাকলে: dev mode (open access)</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>🛡️ SQL Injection Protection</h3>
+<ul>
+  <li>সব table name <strong>whitelist</strong>-এর মধ্যে সীমাবদ্ধ</li>
+  <li>12টি whitelisted table: identity, models, sessions ইত্যাদি</li>
+  <li>অন্য কোনো table name দিলে: <strong>error</strong></li>
+  <li>ব্যক্তিগত তথ্য (identity.json) <strong>.env</strong>-তে সরানো হয়েছে</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>🔒 XSS Protection</h3>
+<ul>
+  <li>সব user input <code>escapeHtml()</code> দিয়ে sanitize</li>
+  <li>Dashboard HTML-তে model names, identity values</li>
+  <li>API responses: Content-Type headers</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>📋 Rate Limiting</h3>
+<ul>
+  <li>প্রতিটি model-এর জন্য আলাদা RPM/TPM limit</li>
+  <li>Default: 30 RPM, 60000 TPM</li>
+  <li>Rate limit পার হলে: auto-switch fallback model</li>
+  <li>5-minute window tracking</li>
+</ul>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>📁 ফাইল গঠন</h2>
+
+<div class="card">
+<div class="flow-box">
+<span class="node">proxi_new/</span><br>
+├── <span class="label">.env</span>                    <span class="flow-label">← সব API key ও config</span><br>
+├── <span class="label">package.json</span>            <span class="flow-label">← npm dependencies</span><br>
+├── <span class="label">tsconfig.json</span>           <span class="flow-label">← TypeScript config</span><br>
+├── <span class="node">src/</span><br>
+│   ├── <span class="label">index.ts</span>              <span class="flow-label">← Server entry point</span><br>
+│   ├── <span class="node">controllers/</span><br>
+│   │   ├── <span class="label">openaiController.ts</span>  <span class="flow-label">← Chat API handler</span><br>
+│   │   ├── <span class="label">agentController.ts</span>   <span class="flow-label">← Agent + RAG system</span><br>
+│   │   ├── <span class="label">mcpController.ts</span>     <span class="flow-label">← MCP (editor) handler</span><br>
+│   │   └── <span class="label">dbController.ts</span>      <span class="flow-label">← Database REST API</span><br>
+│   ├── <span class="node">services/</span><br>
+│   │   ├── <span class="label">groqService.ts</span>       <span class="flow-label">← LLM communication</span><br>
+│   │   ├── <span class="label">mawlanaRouter.ts</span>     <span class="flow-label">← Smart model routing</span><br>
+│   │   ├── <span class="label">ragService.ts</span>        <span class="flow-label">← SSOT + project scan</span><br>
+│   │   ├── <span class="label">vectorIndexService.ts</span> <span class="flow-label">← Embedding search</span><br>
+│   │   ├── <span class="label">workspaceWatcher.ts</span>  <span class="flow-label">← File change watcher</span><br>
+│   │   ├── <span class="label">identityService.ts</span>   <span class="flow-label">← System identity</span><br>
+│   │   ├── <span class="label">stateDb.ts</span>           <span class="flow-label">← SQLite schema + queries</span><br>
+│   │   ├── <span class="label">providerCatalog.ts</span>   <span class="flow-label">← Model catalog sync</span><br>
+│   │   ├── <span class="label">fileLogger.ts</span>        <span class="flow-label">← Async file logging</span><br>
+│   │   └── <span class="label">runtimeEventLog.ts</span>   <span class="flow-label">← Event logging</span><br>
+│   ├── <span class="node">middleware/</span><br>
+│   │   ├── <span class="label">authMiddleware.ts</span>    <span class="flow-label">← API key + admin auth</span><br>
+│   │   ├── <span class="label">loggingMiddleware.ts</span> <span class="flow-label">← Request logging</span><br>
+│   │   └── <span class="label">identityMiddleware.ts</span> <span class="flow-label">← Identity headers</span><br>
+│   ├── <span class="node">admin/</span><br>
+│   │   ├── <span class="label">controller.ts</span>        <span class="flow-label">← Dashboard HTML + APIs</span><br>
+│   │   └── <span class="label">db.ts</span>                <span class="flow-label">← Admin DB functions</span><br>
+│   ├── <span class="label">routes/index.ts</span>        <span class="flow-label">← All route definitions</span><br>
+│   └── <span class="label">types/index.ts</span>         <span class="flow-label">← TypeScript interfaces</span><br>
+├── <span class="node">dist/</span>                    <span class="flow-label">← Compiled JS output</span><br>
+├── <span class="node">logs/</span>                    <span class="flow-label">← Runtime logs</span><br>
+├── <span class="node">documentation/</span>            <span class="flow-label">← এই ফাইল</span><br>
+└── <span class="node">.zombiecoder/</span>            <span class="flow-label">← SQLite DB + SSOT</span>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>⚙️ কনফিগারেশন (.env)</h2>
+
+<div class="card">
+<table>
+<thead><tr><th>Variable</th><th>ব্যবহার</th><th>ডিফল্ট</th></tr></thead>
+<tbody>
+<tr><td><code>PORT</code></td><td>সার্ভার port</td><td><code>9999</code></td></tr>
+<tr><td><code>GROQ_API_KEY</code></td><td>Groq API key</td><td>—</td></tr>
+<tr><td><code>OPENCODE_API_KEY</code></td><td>OpenCode Zen key</td><td>—</td></tr>
+<tr><td><code>OPENCODE_DEFAULT_MODEL</code></td><td>ডিফল্ট chat model</td><td><code>mimo-v2.5-free</code></td></tr>
+<tr><td><code>GROQ_FALLBACK_MODEL</code></td><td>Fallback model</td><td><code>llama-3.3-70b-versatile</code></td></tr>
+<tr><td><code>CORS_ORIGINS</code></td><td>Allowed origins</td><td><code>*</code></td></tr>
+<tr><td><code>ADMIN_SECRET</code></td><td>Admin dashboard password</td><td>— (dev mode)</td></tr>
+<tr><td><code>WORKSPACE_ROOT</code></td><td>Project root directory</td><td><code>cwd</code></td></tr>
+<tr><td><code>EMBEDDING_BACKEND</code></td><td>Embedding provider</td><td><code>fastembed</code></td></tr>
+<tr><td><code>AGENT_MODEL</code></td><td>Agent model override</td><td>auto</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>🆕 সাম্প্রতিক পরিবর্তন (এই সেশনে)</h2>
+
+<div class="card">
+<h3>তৈরি করা হয়েছে</h3>
+<table>
+<thead><tr><th>বৈশিষ্ট্য</th><th>বিবরণ</th><th>স্ট্যাটাস</th></tr></thead>
+<tbody>
+<tr><td>Admin Dashboard</td><td>10 pages: Overview, Providers, Models, Chat, Routing, Sessions, Conversations, Usage, Monitor, Agent</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Model Priority</td><td>প্রতিটি model-ে priority 0-10 সেট করা যায়</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Per-Model Usage</td><td>প্রতিটি model-এর requests, tokens, last used</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Streaming Chat</td><td>Admin chat-এ real-time SSE streaming</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Real-Time Monitor</td><td>SSE দিয়ে live server metrics</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Global Agent</td><td>যেকোনো ফোল্ডারে auto-trust + auto SSOT</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Delete APIs</td><td>সব sessions, conversations, usage data মুছা যায়</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Agent Health</td><td>Agent status, endpoints, diagnostics</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<h3>সমস্যা সমাধান</h3>
+<table>
+<thead><tr><th>সমস্যা</th><th>সমাধান</th><th>স্ট্যাটাস</th></tr></thead>
+<tbody>
+<tr><td>StateDb = any</td><td>সঠিক TypeScript interface</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Sync file I/O</td><td>async/await-এ রূপান্তর</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Timer leak</td><td>close() এ clearTimeout</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Admin auth bypass</td><td>ADMIN_SECRET middleware</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>Info leak</td><td>Production-ে identity headers লুকানো</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+<tr><td>XSS vulnerability</td><td>escapeHtml() সব জায়গায়</td><td><span class="badge badge-green">সম্পন্ন</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>🚀 চালু করার নির্দেশনা</h2>
+
+<div class="card">
+<div class="flow-box">
+<span class="flow-label">১.</span> Install: <code>npm install</code><br>
+<span class="flow-label">২.</span> Build: <code>npm run build</code> (বা <code>tsc</code>)<br>
+<span class="flow-label">৩.</span> Configure: <code>.env</code> ফাইলে API keys সেট করুন<br>
+<span class="flow-label">৪.</span> Start: <code>node dist/index.js</code> (বা <code>npm start</code>)<br>
+<span class="flow-label">৫.</span> Dashboard: <code>http://localhost:9999/admin/dashboard</code><br>
+<span class="flow-label">৬.</span> API Test: <code>curl http://localhost:9999/health</code>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<h2>📌 গুরুত্বপূর্ণ নোট</h2>
+
+<div class="warn">
+<strong>⚠️ সাবধান:</strong>
+<ul>
+  <li><code>.env</code> ফাইলে API keys আছে — এটি version control-এ commit করবেন না!</li>
+  <li><code>identity.json</code> এ ব্যক্তিগত তথ্য আছে — এটিও সুরক্ষিত রাখুন</li>
+  <li>Server চালু থাকলে <code>dist/</code> ফোল্ডার change করবেন না</li>
+  <li>TypeScript change করলে <code>npm run build</code> চালাতে হবে</li>
+  <li>Server restart করতে হলে process kill করে পুনরায় start করুন</li>
+</ul>
+</div>
+
+<div class="highlight">
+<strong>💡 টিপস:</strong>
+<ul>
+  <li>Admin dashboard browser-এ খুলে সব monitoring করা যায়</li>
+  <li>Chat page-তে streaming mode চালু করলে real-time response দেখা যায়</li>
+  <li>Monitor page SSE দিয়ে live data দেখায়</li>
+  <li>Agent page-তে সব endpoints ও status দেখা যায়</li>
+  <li>Model priority dropdown দিয়ে routing কন্ট্রোল করা যায়</li>
+</ul>
+</div>
+
+<p style="text-align:center;color:var(--text-dim);margin-top:60px;padding-top:20px;border-top:1px solid var(--border)">
+  ⚡ Proxi New — ZombieCoder Bridge Server &bull; v2.0.0<br>
+  তৈরি: ১৩ জুন ২০২৬ &bull; Developer Zone, Dhaka, Bangladesh
+</p>
+
+</div>
+</body>
+</html>

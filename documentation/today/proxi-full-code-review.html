@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proxi Bridge - সম্পূর্ণ কোড রিভিউ (লাইন বাই লাইন)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.7;padding:20px}
+.container{max-width:1200px;margin:0 auto}
+h1{font-size:1.8rem;color:#58a6ff;margin-bottom:8px;border-bottom:2px solid #30363d;padding-bottom:12px}
+h2{font-size:1.4rem;color:#f0883e;margin:24px 0 12px;padding:8px 12px;background:#161b22;border-left:4px solid #f0883e;border-radius:0 6px 6px 0}
+h3{font-size:1.1rem;color:#3fb950;margin:16px 0 8px}
+h4{font-size:.95rem;color:#8b949e;margin:12px 0 6px}
+.subtitle{color:#8b949e;font-size:.9rem;margin-bottom:20px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin:12px 0}
+.file-header{background:#1c2128;border:1px solid #30363d;border-radius:8px;padding:12px 16px;margin:16px 0 8px;display:flex;justify-content:space-between;align-items:center}
+.file-name{color:#58a6ff;font-family:"SF Mono","Fira Code",monospace;font-size:.9rem}
+.file-meta{color:#8b949e;font-size:.8rem}
+pre{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:12px;overflow-x:auto;font-size:.82rem;line-height:1.5;color:#e6edf3;font-family:"SF Mono","Fira Code",monospace}
+code{font-family:"SF Mono","Fira Code",monospace;font-size:.82rem;background:#1c2128;padding:2px 6px;border-radius:4px;color:#7ee787}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}
+th{text-align:left;padding:8px 12px;border-bottom:2px solid #30363d;color:#8b949e;font-weight:600;font-size:.75rem;text-transform:uppercase}
+td{padding:8px 12px;border-bottom:1px solid #21262d}
+tr:hover td{background:#1c2128}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:600;text-transform:uppercase}
+.badge-ok{background:#1a7f37;color:#fff}
+.badge-warn{background:#d29922;color:#fff}
+.badge-error{background:#f85149;color:#fff}
+.badge-info{background:#1f6feb;color:#fff}
+.badge-match{background:#1a7f37;color:#fff}
+.badge-mismatch{background:#f85149;color:#fff}
+.badge-partial{background:#d29922;color:#fff}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.online{background:#3fb950}
+.offline{background:#f85149}
+.warning{background:#d29922}
+.section-divider{border:0;border-top:1px solid #30363d;margin:32px 0}
+.toc{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin:16px 0}
+.toc a{color:#58a6ff;text-decoration:none;display:block;padding:4px 0;font-size:.85rem}
+.toc a:hover{color:#79c0ff;text-decoration:underline}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0}
+.summary-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;text-align:center}
+.summary-value{font-size:1.8rem;font-weight:700;color:#58a6ff}
+.summary-label{font-size:.75rem;color:#8b949e;text-transform:uppercase;margin-top:4px}
+.review-item{border-left:3px solid #30363d;padding:8px 12px;margin:8px 0;background:#0d1117;border-radius:0 6px 6px 0}
+.review-item.match{border-left-color:#3fb950}
+.review-item.mismatch{border-left-color:#f85149}
+.review-item.warning{border-left-color:#d29922}
+.review-label{font-weight:600;font-size:.85rem}
+.review-detail{font-size:.82rem;color:#8b949e;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🔍 Proxi Bridge — সম্পূর্ণ কোড রিভিউ</h1>
+<p class="subtitle">লাইন বাই লাইন বিশ্লেষণ | কোড vs ডকুমেন্টেশন তুলনা | অসংগতি চিহ্নিতকরণ<br>
+তৈরি: ২০২৬-০৬-১০ | ZombieCoder Agent</p>
+
+<!-- SUMMARY -->
+<div class="summary-grid">
+  <div class="summary-card"><div class="summary-value">31</div><div class="summary-label">TypeScript সোর্স ফাইল</div></div>
+  <div class="summary-card"><div class="summary-value">140</div><div class="summary-label">মোট প্রজেক্ট ফাইল</div></div>
+  <div class="summary-card"><div class="summary-value">~8000+</div><div class="summary-label">মোট কোড লাইন</div></div>
+  <div class="summary-card"><div class="summary-value">12</div><div class="summary-label">সার্ভিস ফাইল</div></div>
+  <div class="summary-card"><div class="summary-value">4</div><div class="summary-label">কন্ট্রোলার</div></div>
+  <div class="summary-card"><div class="summary-value">3</div><div class="summary-label">মিডলওয়্যার</div></div>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+<h3>📑 সূচিপত্র</h3>
+<a href="#arch">১. সামগ্রিক আর্কিটেকচার রিভিউ</a>
+<a href="#entry">২. src/index.ts — এন্ট্রি পয়েন্ট</a>
+<a href="#routes">৩. src/routes/index.ts — রুটিং</a>
+<a href="#groq">৪. src/services/groqService.ts — Groq সার্ভিস</a>
+<a href="#agent">৫. src/services/agentService.ts — এজেন্ট সার্ভিস</a>
+<a href="#rag">৬. src/services/ragService.ts — RAG সার্ভিস</a>
+<a href="#mawlana">৭. src/services/mawlanaRouter.ts — মডেল রাউটিং</a>
+<a href="#identity">৮. src/services/identityService.ts — পরিচয় সার্ভিস</a>
+<a href="#stateDb">৯. src/services/stateDb.ts — SQLite স্টেট</a>
+<a href="#provider">১০. src/services/providerCatalog.ts — প্রোভাইডার ক্যাটালগ</a>
+<a href="#vector">১১. src/services/vectorIndexService.ts — ভেক্টর ইনডেক্স</a>
+<a href="#watcher">১২. src/services/workspaceWatcher.ts — ওয়ার্কস্পেস ওয়াচার</a>
+<a href="#upstream">১৩. src/services/upstreamManager.ts — আপস্ট্রিম ম্যানেজার</a>
+<a href="#filelog">১৪. src/services/fileLogger.ts — ফাইল লগিং</a>
+<a href="#hash">১৫. src/services/hashUtils.ts — হ্যাশ ইউটিলিটি</a>
+<a href="#eventlog">১৬. src/services/runtimeEventLog.ts — রানটাইম ইভেন্ট</a>
+<a href="#openaiCtrl">১৭. src/controllers/openaiController.ts — OpenAI কন্ট্রোলার</a>
+<a href="#agentCtrl">১৮. src/controllers/agentController.ts — এজেন্ট কন্ট্রোলার</a>
+<a href="#mcpCtrl">১৯. src/controllers/mcpController.ts — MCP কন্ট্রোলার</a>
+<a href="#dbCtrl">২০. src/controllers/dbController.ts — DB কন্ট্রোলার</a>
+<a href="#auth">২১. src/middleware/authMiddleware.ts — অথ মিডলওয়্যার</a>
+<a href="#idMiddleware">২২. src/middleware/identityMiddleware.ts — পরিচয় মিডলওয়্যার</a>
+<a href="#logMiddleware">২৩. src/middleware/loggingMiddleware.ts — লগিং মিডলওয়্যার</a>
+<a href="#types">২৪. src/types/index.ts — টাইপ ডেফিনিশন</a>
+<a href="#wrapper">২৫. src/wrapper/ — র‍্যাপার লেয়ার</a>
+<a href="#admin">২৬. src/admin/ — অ্যাডমিন ড্যাশবোর্ড</a>
+<a href="#discrepancies">২৭. ডকুমেন্টেশন বনাম কোড অসংগতি</a>
+<a href="#verdict">২৮. চূড়ান্ত রিভিউ সারসংক্ষেপ</a>
+</div>
+
+<hr class="section-divider">
+
+<!-- 1. ARCHITECTURE OVERVIEW -->
+<h2 id="arch">১. সামগ্রিক আর্কিটেকচার রিভিউ</h2>
+
+<div class="card">
+<h3>আর্কিটেকচার সারচিত্র</h3>
+<pre>
+src/
+├── index.ts                    ← Express সার্ভার এন্ট্রি পয়েন্ট (200 লাইন)
+├── routes/index.ts             ← সকল রুট সংজ্ঞা (194 লাইন)
+├── types/index.ts              ← TypeScript টাইপ (92 লাইন)
+├── services/
+│   ├── groqService.ts          ← Groq SDK ইন্টিগ্রেশন (919 লাইন) ← সবচেয়ে বড়
+│   ├── agentService.ts         ← এজেন্ট পার্সোনা + টুল (208 লাইন)
+│   ├── ragService.ts           ← ডিস্ক-বেসড RAG (278 লাইন)
+│   ├── mawlanaRouter.ts        ← স্মার্ট মডেল রাউটিং (191 লাইন)
+│   ├── identityService.ts      ← ZombieCoder পরিচয় (48 লাইন)
+│   ├── stateDb.ts              ← SQLite DB স্কিমা (809 লাইন)
+│   ├── providerCatalog.ts      ← মাল্টি-প্রোভাইডার ক্যাটালগ (378 লাইন)
+│   ├── vectorIndexService.ts   ← ভেক্টর সার্চ (367 লাইন)
+│   ├── workspaceWatcher.ts     ← ফাইল সিস্টেম ওয়াচার (108 লাইন)
+│   ├── upstreamManager.ts      ← আপস্ট্রিম ফলব্যাক (201 লাইন)
+│   ├── fileLogger.ts           ← ফাইল লগিং (87 লাইন)
+│   ├── hashUtils.ts            ← SHA-256 হ্যাশিং (18 লাইন)
+│   └── runtimeEventLog.ts      ← ইভেন্ট লগিং (64 লাইন)
+├── controllers/
+│   ├── openaiController.ts     ← OpenAI API হ্যান্ডলার (672 লাইন)
+│   ├── agentController.ts      ← এজেন্ট এন্ডপয়েন্ট (722 লাইন)
+│   ├── mcpController.ts        ← MCP JSON-RPC (802 লাইন)
+│   └── dbController.ts         ← DB REST API (257 লাইন)
+├── middleware/
+│   ├── authMiddleware.ts       ← Bearer টোকেন অথ (15 লাইন)
+│   ├── identityMiddleware.ts   ← হেডার ইনজেকশন (30 লাইন)
+│   └── loggingMiddleware.ts    ← রিকোয়েস্ট লগিং (27 লাইন)
+├── wrapper/
+│   ├── index.ts                ← এক্সপোর্ট (4 লাইন)
+│   ├── config.ts               ← ব্যাকএন্ড কনফিগ (103 লাইন)
+│   ├── provider.ts             ← OpenAI-compatible ক্লায়েন্ট (116 লাইন)
+│   └── deepagents.ts           ← LangChain ইন্টিগ্রেশন (24 লাইন)
+└── admin/
+    ├── controller.ts           ← অ্যাডমিন UI + API (1012 লাইন)
+    └── db.ts                   ← অ্যাডমিন DB অপারেশন
+</pre>
+</div>
+
+<div class="card">
+<h3>ডেটা ফ্লো</h3>
+<pre>
+[ক্লায়েন্ট] → [Express Router] → [Auth Middleware] → [Identity Middleware]
+    ↓
+[OpenAI Controller] → [GroqService] → [ProviderCatalog] → [আপস্ট্রিম API]
+    ↓
+[Agent Controller] → [MawlanaRouter] → [Model Selection]
+                   → [RAG Service] → [SSOT.md Search]
+                   → [VectorIndexService] → [Embedding + Cosine Similarity]
+                   → [StateDb] → [SQLite WAL]
+    ↓
+[MCP Controller] → [JSON-RPC 2.0] → [Tools/Resources/SSE]
+    ↓
+[Admin Controller] → [Dashboard UI] → [HTML Response]
+</pre>
+</div>
+
+<hr class="section-divider">
+
+<!-- 2. ENTRY POINT -->
+<h2 id="entry">২. src/index.ts — সার্ভার এন্ট্রি পয়েন্ট (200 লাইন)</h2>
+
+<div class="card">
+<h3>কোড বিশ্লেষণ</h3>
+<table>
+<tr><th>লাইন</th><th>বিষয়</th><th>বাস্তব কাজ</th><th>ডকুমেন্টেশন</th><th>মিল</th></tr>
+<tr><td>1-16</td><td>ইমপোর্ট</td><td>Express, dotenv, cors, routes, middleware, services সব ইমপোর্ট</td><td>README: "Lightweight, OpenAI-compatible API proxy"</td><td><span class="badge badge-match">✓ মিল</span></td></tr>
+<tr><td>19-45</td><td>writeRuntimeManifest()</td><td>mcp/.zombiecoder/runtime.json লেখে — এডিটর ক্লায়েন্টদের জন্য workspace আবিষ্কার</td><td>README: "Editor bootstrap: runtime manifest is written to mcp/.zombiecoder/runtime.json"</td><td><span class="badge badge-match">✓ মিল</span></td></tr>
+<tr><td>47-58</td><td>Express সেটআপ</td><td>CORS, JSON body parser (10mb limit), URL encoded</td><td>API Ref: কোনো সীমাবদ্ধতা উল্লেখ নেই</td><td><span class="badge badge-info">ℹ️ বিবরণ নেই</span></td></tr>
+<tr><td>59-62</td><td>মিডলওয়্যার</td><td>loggingMiddleware → loadIdentity() → identityMiddleware</td><td>README: "OpenAI-style authentication"</td><td><span class="badge badge-match">✓ মিল</span></td></tr>
+<tr><td>68</td><td>অথ প্রয়োগ</td><td>/v1, /api, /dashboard, /admin পাথে authenticate মিডলওয়্যার</td><td>API Ref: "Authorization: Bearer &lt;GROQ_API_KEY&gt;"</td><td><span class="badge badge-match">✓ মিল</span></td></tr>
+<tr><td>72-195</td><td>start() ফাংশন</td><td>GroqService init → Agent System init → DB init → Workspace Watcher → Server listen</td><td>README: "npm run dev / npm start"</td><td><span class="badge badge-match">✓ মিল</span></td></tr>
+<tr><td>76-140</td><td>MCP Config Discovery</td><td>মাতৃ ডিরেক্টরিতে mcp/mcp.json খুঁজে workspace dir নির্ধারণ</td><td>ডকুমেন্টেশনে এই লজিক বর্ণিত নেই</td><td><span class="badge badge-partial">⚠️ অনুলিখিত</span></td></tr>
+<tr><td>112-139</td><td>mcp.json ওয়াচ</td><td>fs.watch দিয়ে mcp.json পরিবর্তন মনিটর, নতুন workspaceDir অটো-অ্যাপ্লাই</td><td>ডকুমেন্টেশনে বর্ণিত নেই</td><td><span class="badge badge-partial">⚠️ অনুলিখিত</span></td></tr>
+<tr><td>150-194</td><td>সার্ভার স্টার্ট</td><td>সকল এন্ডপয়েন্ট console.log করে — পোর্ট, মডেল সংখ্যা, ফিচার</td><td>সার্ভার স্টার্ট লগ — ডকুমেন্টেশনে নেই</td><td><span class="badge badge-info">ℹ️ অতিরিক্ত</span></td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>অসংগতি শনাক্তকরণ</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Express সেটআপ, CORS, middleware chain — সব কোডে সঠিকভাবে কাজ করছে।</div>
+</div>
+<div class="review-item warning">
+<div class="review-label">⚠️ ডকুমেন্টেশন অনুপস্থিত</div>
+<div class="review-detail">MCP Config Discovery (lines 76-140) এবং mcp.json ওয়াচ ফিচারটি কোথাও ডকুমেন্টেড নেই। এটি একটি গুরুত্বপূর্ণ ফিচার যা এডিটর ইন্টিগ্রেশনের জন্য কাজ করে।</div>
+</div>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">line 14: DiskRAGService নতুন instance তৈরি করে workspace watcher এর জন্য — এটি সঠিক (shared instance এর পরিবর্তে isolated instance)।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 3. ROUTES -->
+<h2 id="routes">৩. src/routes/index.ts — রুটিং (194 লাইন)</h2>
+
+<div class="card">
+<h3>সকল এন্ডপয়েন্ট তালিকা</h3>
+<table>
+<tr><th>মেথড</th><th>পাথ</th><th>হ্যান্ডলার</th><th>ডকুমেন্টেশন</th><th>মিল</th></tr>
+<tr><td>GET</td><td>/health</td><td>ইনলাইন — status, version, uptime, models</td><td>API Ref: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>POST</td><td>/v1/chat/completions</td><td>handleChatCompletion</td><td>API Ref: ✓ বিস্তারিত</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>POST</td><td>/v1/completions</td><td>handleTextCompletion</td><td>API Ref: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>POST</td><td>/v1/audio/transcriptions</td><td>handleTranscription (multer)</td><td>API Ref: ✓ বিস্তারিত</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>POST</td><td>/v1/audio/translations</td><td>handleTranslation (multer)</td><td>API Ref: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>POST</td><td>/v1/embeddings</td><td>handleEmbeddings</td><td>API Ref: ✓ বিস্তারিত</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>GET</td><td>/v1/models</td><td>handleListModels</td><td>API Ref: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>GET</td><td>/v1/models/:model</td><td>handleGetModel</td><td>API Ref: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>GET</td><td>/dashboard</td><td>handleDashboard (HTML)</td><td>README: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>GET</td><td>/admin/dashboard</td><td>handleAdminDashboard</td><td>README: ✓ সংক্ষিপ্ত</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>GET/POST</td><td>/admin/dashboard/:page</td><td>SPA-style admin</td><td>ডকুমেন্টেশনে বিস্তারিত নেই</td><td><span class="badge badge-partial">⚠️</span></td></tr>
+<tr><td>POST</td><td>/v1/agent/chat</td><td>handleAgentChat</td><td>সিস্টেম প্রম্পট: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>POST</td><td>/v1/agent/directory</td><td>handleSetDirectory</td><td>সিস্টেম প্রম্পট: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>POST</td><td>/v1/agent/permission</td><td>handleGrantPermission</td><td>সিস্টেম প্রম্পট: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>GET</td><td>/v1/agent/status</td><td>handleProjectStatus</td><td>সিস্টেম প্রম্পট: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>POST</td><td>/v1/agent/rescan</td><td>handleRescan</td><td>সিস্টেম প্রম্পট: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>GET</td><td>/v1/agent/ssot</td><td>handleReadSSOT</td><td>সিস্টেম প্রম্পট: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>GET</td><td>/v1/agent/routes</td><td>handleAgentRoutes</td><td>সিস্টেম প্রম্পট: ✓ উল্লেখ আছে</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>POST</td><td>/mcp</td><td>handleMcpJsonRpc</td><td>MCP spec 2025-03-26</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>GET</td><td>/mcp</td><td>handleMcpSseStream</td><td>MCP spec SSE transport</td><td><span class="badge badge-match">✓</span></td></tr>
+<tr><td>DELETE</td><td>/mcp/:sessionId</td><td>handleMcpDeleteSession</td><td>MCP spec session termination</td><td><span class="badge badge-match">✓</span></td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>অসংগতি</h3>
+<div class="review-item mismatch">
+<div class="review-label">❌ অসংগতি: README Architecture Diagram</div>
+<div class="review-detail">README.md এর আর্কিটেকচার ডায়াগ্রামে শুধু 6টি ফাইল দেখানো হয়েছে (index, types, groqService, openaiController, routes, authMiddleware, loggingMiddleware)। কিন্তু আসল প্রজেক্টে 31টি সোর্স ফাইল আছে। Agent, RAG, MCP, VectorIndex, Admin — এসব অনুপস্থিত।</div>
+</div>
+<div class="review-item mismatch">
+<div class="review-label">❌ অসংগতি: API Reference</div>
+<div class="review-detail">api-reference.md এ শুধু OpenAI-compatible endpoints আছে (chat, completions, audio, embeddings, models, dashboard, health)। Agent endpoints, MCP endpoints, DB REST API, Admin API — এসব ডকুমেন্টেড নেই।</div>
+</div>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">multer দিয়ে audio upload হ্যান্ডলিং সঠিক — 25MB limit সেট করা আছে।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 4. GROQ SERVICE -->
+<h2 id="groq">৪. src/services/groqService.ts — Groq সার্ভিস (919 লাইন)</h2>
+
+<div class="card">
+<h3>মূল কাঠামো</h3>
+<p>এটি পুরো প্রজেক্টের সবচেয়ে বড় ফাইল। Groq SDK ব্যবহার করে OpenAI-compatible requests পাঠায়।</p>
+
+<h4>MODEL_META (লাইন 15-70)</h4>
+<p>70+ মডেলের metadata — context_window, max_tokens, category। Groq official docs অনুযায়ী context window values।</p>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Production models (groq/compound, qwen3-32b, llama-3.3-70b, etc.) এর context_window = 131,072 — Groq official docs অনুযায়ী সঠিক।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">OpenCode Zen models (big-pickle, deepseek-v4-flash-free, mimo-v2.5-free, etc.) যোগ করা হয়েছে — এগুলো opencode.ai/zen/v1 এর মাধ্যমে proxy হয়।</div>
+</div>
+
+<h4>ACCOUNT_RATE_LIMITS (লাইন 72-103)</h4>
+<p>প্রতিটি মডেলের RPM এবং TPM limit। Groq developer plan rates অনুযায়ী।</p>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Rate limits Groq official docs অনুযায়ী: llama-3.3-70b = 30 RPM/6000 TPM, whisper-large-v3 = 300 RPM।</div>
+</div>
+
+<h4>createChatCompletion() (লাইন 441-700)</h4>
+<p>সবচেয়ে জটিল মেথড — মডেল রাউটিং, TPM checks, context window overflow handling, fallback, retry logic।</p>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 449: max_tokens default = 512 (DEFAULT_CHAT_MAX_TOKENS) — এটি conservatively set করা হয়েছে।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 453-461: model === 'auto' হলে selectBestModel() কল করে input size ভিত্তিতে।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 466-470: Terms-locked এবং non-chat models (guard, audio, embedding) থেকে fallback।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 509-589: Context window overflow handling — বড় context modelে স্বিচার, max_tokens reduce, অথবা safe cap।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ জটিলতা</div>
+<div class="review-detail">createChatCompletion() মেথডটি ~260 লাইন দীর্ঘ। এতে model routing, TPM check, context overflow, retry, fallback — সব একসাথে। ভবিষ্যতে refactor করা উচিত।</div>
+</div>
+
+<h4>sendToZen() (লাইন 304-359)</h4>
+<p>OpenCode Zen models এর জন্য আলাদা fetch logic — streaming support সহ।</p>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Streaming SSE parsing সঠিকভাবে কাজ করে — buffer handling, [DONE] detection, JSON.parse।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ দোভাব</div>
+<div class="review-detail">sendToZen() এবং providerCatalog.ts এর requestOpenAiCompatible() — দুটি আলাদা fetch path আছে। একটি unified path থাকলে ভালো হতো।</div>
+</div>
+
+<h4>estimateTokens() (লাইন 877-879)</h4>
+<pre>private estimateTokens(text: string): number {
+  return Math.ceil(text.length / 4);
+}</pre>
+<div class="review-item warning">
+<div class="review-label">⚠️ সীমাবদ্ধতা</div>
+<div class="review-detail">টোকেন গণনা heuristic (text.length / 4) — বাস্তব tokenizer এর চেয়ে ভিন্ন। এটি rate limit check এ ব্যবহৃত হয়, তাই inaccurate হলে TPM limit ভুলভাবে trigger হতে পারে।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">isRetryableError() (লাইন 213-221) — UND_ERR, body timeout, terminated errors retryযোগ্য।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">pickChatFallback() (লাইন 370-381) — balanced > fast > other priority অনুযায়ী fallback model বাছাই।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 5. AGENT SERVICE -->
+<h2 id="agent">৫. src/services/agentService.ts — এজেন্ট সার্ভিস (208 লাইন)</h2>
+
+<div class="card">
+<h3>কোড বিশ্লেষণ</h3>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 12-16: DEFAULT_CONFIG — autoRag: true, maxRagChunks: 5, defaultModel: 'deepseek-v4-flash-free'।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 35-47: loadIdentity() — identity.json থেকে system_identity.name এবং system_prompt লোড করে।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 84-94: detectRagIntent() — keyword-based RAG trigger। 'documentation', 'how to', 'api', 'function' ইত্যাদি keyword খুঁজে।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ সীমাবদ্ধতা</div>
+<div class="review-detail">লাইন 84-94: RAG intent detection শুধু last message এর keyword দেখে। Contextual conversation history বিবেচনা করে না।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 96-177: processMessage() — Legacy AgentResponse JSON format। RAG context inject, GroqService call, response parse।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 179-206: parseResponse() — JSON response থেকে {content, flags} extract। fallback হলে raw text return।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ ডকুমেন্টেশন অনুপস্থিত</div>
+<div class="review-detail">Legacy AgentResponse format (content + flags) কোথাও ডকুমেন্টেড নেই। শুধু সিস্টেম প্রম্পটে উল্লেখ আছে।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 6. RAG SERVICE -->
+<h2 id="rag">৬. src/services/ragService.ts — RAG সার্ভিস (278 লাইন)</h2>
+
+<div class="card">
+<h3>কোড বিশ্লেষণ</h3>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 6-8: ZOMBIE_DIR = '.zombiecoder', SSOT_FILE = 'SSOT.md', PERM_FILE = 'permissions.json'।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 19-42: setWorkingDirectory() — autoInit: true হলে .zombiecoder/SSOT.md অটো-তৈরি। নাহলে permission প্রয়োজন।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 81-86: scanProject() — ডিরেক্টরি ট্রি, ফাইল লিস্ট, package.json dependencies পড়ে।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 138-182: generateSSOTTemplate() — Project Structure, Dependencies, Source/Config/Doc files, Agent Notes section তৈরি করে।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 244-262: searchSSOT() — keyword-based search, matched sections extract, max 5 results।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ সীমাবদ্ধতা</div>
+<div class="review-detail">লাইন 244-262: searchSSOT() শুধু keyword match করে, semantic search নয়। VectorIndexService আলাদাভাবে semantic search প্রদান করে।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 184-198: extractDocPreview() — HTML ফাইল থেকে script/style/body strip করে text preview বের করে (400 char limit)।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 229-243: addToSession() — session buffer (max 20 messages) — conversation context রাখে।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 7. MAWLANA ROUTER -->
+<h2 id="mawlana">৭. src/services/mawlanaRouter.ts — মডেল রাউটিং (191 লাইন)</h2>
+
+<div class="card">
+<h3>কোড বিশ্লেষণ</h3>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 6-95: ROUTE_PREFERENCES — ৪টি category: chat, code, rag, guard। প্রতিটিতে model priority list, needsRag flag, confidence score।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 9-32: chat models — OpenCode free models (big-pickle, deepseek-v4-flash-free, etc.) highest priority, Groq/ community fallback।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 37-61: code models — coding-focused ordering, gpt-5.x-codex, qwen3.7-plus, etc. high priority।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 114-140: route() — preferredCategory থাকলে সরাসরি সেটা ব্যবহার করে, নাহলে classifyWithSmallModel() দিয়ে detect করে।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ খরচ</div>
+<div class="review-detail">লাইন 142-176: classifyWithSmallModel() — প্রতিবার classification এর জন্য একটি LLM call করে। এটি latency এবং token cost বাড়ায়।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 178-190: getAllRoutes() — সকল route decisions return করে, /v1/agent/routes endpoint এ ব্যবহৃত।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 8. IDENTITY SERVICE -->
+<h2 id="identity">৮. src/services/identityService.ts — পরিচয় সার্ভিস (48 লাইন)</h2>
+
+<div class="card">
+<h3>কোড বিশ্লেষণ</h3>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 5: ID_PATH = path.resolve(__dirname, '../../identity.json') — root-এর identity.json reference।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 10-32: loadIdentity() — JSON parse, SHA-256 hash, chmod 0o444 (read-only)।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ প্ল্যাটফর্ম নির্ভর</div>
+<div class="review-detail">লাইন 18-23: fs.chmodSync(ID_PATH, 0o444) — Windows-এ এটি সীমিতভাবে কাজ করে। তবে error handle করা আছে (non-fatal)।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 39-42: getIdentityHash() — identity.json এর SHA-256 hash return করে। response header X-Identity-Hash এ ব্যবহৃত হয়।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 9. STATE DB -->
+<h2 id="stateDb">৯. src/services/stateDb.ts — SQLite স্টেট (809 লাইন)</h2>
+
+<div class="card">
+<h3>ডেটাবেস স্কিমা (সকল টেবিল)</h3>
+<table>
+<tr><th>টেবিল</th><th>প্রাইমারি কী</th><th>উদ্দেশ্য</th><th>কোড লাইন</th></tr>
+<tr><td>agent_personas</td><td>persona_id</td><td>এজেন্ট পার্সোনা (name, system_prompt)</td><td>17-24</td></tr>
+<tr><td>models</td><td>model_id</td><td>মডেল ক্যাটালগ (category, context_window, provider, source)</td><td>26-47</td></tr>
+<tr><td>model_rate_limits</td><td>model_id</td><td>প্রতি-মডেল RPM/TPM</td><td>49-56</td></tr>
+<tr><td>workspaces</td><td>workspace_id</td><td>ওয়ার্কস্পেস ট্রাস্ট</td><td>58-67</td></tr>
+<tr><td>conversations</td><td>conversation_id</td><td>কথোপকথন মেটাডেটা</td><td>69-78</td></tr>
+<tr><td>conversation_messages</td><td>id (AUTO)</td><td>কথোপকথন বার্তা</td><td>80-88</td></tr>
+<tr><td>rag_documents</td><td>document_id</td><td>ইনডেক্সড ডকুমেন্ট</td><td>90-100</td></tr>
+<tr><td>rag_chunks</td><td>chunk_id</td><td>ভেক্টর চাঙ্ক + embedding</td><td>102-118</td></tr>
+<tr><td>identity</td><td>id (=1)</td><td>সিস্টেম পরিচয় (singleton)</td><td>131-148</td></tr>
+<tr><td>llm_sources</td><td>id (AUTO)</td><td>LLM প্রোভাইডার সোর্স</td><td>150-165</td></tr>
+<tr><td>agent_notes</td><td>id (AUTO)</td><td>এজেন্ট নোট (versioned)</td><td>167-178</td></tr>
+<tr><td>write_log</td><td>id (AUTO)</td><td>লেখার অডিট লগ (hash verification)</td><td>180-192</td></tr>
+</table>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">WAL mode enabled (লাইন 15) — concurrent reads সম্ভব।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Schema migration (লাইন 200-231) — ALTER TABLE ADD COLUMN try/catch দিয়ে existing DB upgrade।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Phase 3 write verification (লাইন 717-773) — hash-based audit trail, verifyWriteLogEntry()।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ অসম্পূর্ণ</div>
+<div class="review-detail">লাইন 580: upsertLlmSource() — ON CONFLICT(id) ব্যবহার করে কিন্তু id AUTOINCREMENT। নতুন সোর্স যোগের সময় ON CONFLICT কখনো trigger হবে না (নতুন row insert)।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 10. PROVIDER CATALOG -->
+<h2 id="provider">১০. src/services/providerCatalog.ts — প্রোভাইডার ক্যাটালগ (378 লাইন)</h2>
+
+<div class="card">
+<h3>কোড বিশ্লেষণ</h3>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 57-126: getDefaultSources() — Groq, OpenCode, OpenAI, Gemini, Ollama, (Anthropic optional)।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 194-246: fetchModelsForSource() — /models endpoint থেকে মডেল ফেচ, category/context/maxTokens infer।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 248-290: syncModelCatalog() — DB sync with purge, active state preservation।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 343-378: getSourceForModel() — 3-tier resolution: DB catalog → prefix patterns → substring match।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ ডকুমেন্টেশন অনুপস্থিত</div>
+<div class="review-detail">Multi-provider catalog system (Groq + OpenCode + OpenAI + Gemini + Ollama) — README-তে শুধু Groq উল্লেখ, বাকি providers ডকুমেন্টেড নেই।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 11. VECTOR INDEX -->
+<h2 id="vector">১১. src/services/vectorIndexService.ts — ভেক্টর ইনডেক্স (367 লাইন)</h2>
+
+<div class="card">
+<h3>কোড বিশ্লেষণ</h3>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 42-46: DEFAULT_ALLOWED_EXTENSIONS — .ts, .js, .json, .md, .py, .go, .java, .rs ইত্যাদি।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 75-118: chunkText() — paragraph-aware chunking, maxChars=1400, overlapChars=180।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 61-73: cosineSimilarity() — standard dot product / (normA * normB)।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 267-312: initEmbedder() — fastembed package dynamic load, BGESmallENV15 model, custom model support।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 355-367: fallbackEmbedding() — SHA-256 based fallback when fastembed unavailable।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ সীমাবদ্ধতা</div>
+<div class="review-detail">লাইন 231: search() — সকল chunks DB থেকে load করে (max 1000), তারপর in-memory cosine similarity। বড় workspace-তে slow হতে পারে।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ ডকুমেন্টেশন অনুপস্থিত</div>
+<div class="review-detail">Vector indexing + embedding system সম্পূর্ণ ডকুমেন্টেড নেই। শুধু EMBEDDING_BACKEND env var উল্লেখ আছে।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 12-16. OTHER SERVICES -->
+<h2 id="watcher">১২-১৬. অন্যান্য সার্ভিস</h2>
+
+<div class="card">
+<h3>workspaceWatcher.ts (108 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">chokidar watch, debounce 1500ms, ignoreInitial, ignored: node_modules/.git/.zombiecoder/dist/logs। SSOT auto-rebuild + vector re-index।</div>
+</div>
+</div>
+
+<div class="card">
+<h3>upstreamManager.ts (201 লাইন)</h3>
+<div class="review-item warning">
+<div class="review-label">⚠️ অদ্বিতীয়</div>
+<div class="review-detail">এই ফাইলটি GroqService + ProviderCatalog এর সাথে অদ্বিতীয় কাজ করে। UpstreamManager এবং GroqService দুটি আলাদা upstream management system — এটি code duplication।</div>
+</div>
+</div>
+
+<div class="card">
+<h3>fileLogger.ts (87 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">logs/runtime-YYYY-MM-DD.log ফাইলে JSON lines append। MAX_LOG_AGE_MS = 7 days, cleanup অটো।</div>
+</div>
+</div>
+
+<div class="card">
+<h3>hashUtils.ts (18 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">sha256(), hashRow() — sorted key JSON stringify → SHA-256। write verification এ ব্যবহৃত।</div>
+</div>
+</div>
+
+<div class="card">
+<h3>runtimeEventLog.ts (64 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">logs/runtime-events.jsonl — MCP, workspace events append। MAX_EVENTS = 200।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 17. OPENAI CONTROLLER -->
+<h2 id="openaiCtrl">১৭. src/controllers/openaiController.ts — OpenAI কন্ট্রোলার (672 লাইন)</h2>
+
+<div class="card">
+<h3>কোড বিশ্লেষণ</h3>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 26-41: Identity anchoring — system_identity.system_prompt প্রথম system message হিসেবে inject করে যদি না আগেই থাকে।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 9-12: stripThinkBlocks() — <think>...</think> blocks remove করে OpenAI-compatible clients এর জন্য।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 92-96: reasoning_content → content fallback — MiMo models যারা reasoning_content এ response দেয়।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 116-152: Error handling — Groq 413 → 429 mapping, OpenAI-compatible error format।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 419-671: Dashboard HTML — inline CSS/JS, dark theme, tabs (Models/Logs/Rate Limits), quick test।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ ডকুমেন্টেশন অনুপস্থিত</div>
+<div class="review-detail">Dashboard-এর inline HTML/JS (~250 লাইন) কোথাও ডকুমেন্টেড নেই। এটি একটি full-featured SPA।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 18. AGENT CONTROLLER -->
+<h2 id="agentCtrl">১৮. src/controllers/agentController.ts — এজেন্ট কন্ট্রোলার (722 লাইন)</h2>
+
+<div class="card">
+<h3>কোড বিশ্লেষণ</h3>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 29-134: initializeAgentSystem() — DiskRAGService, MawlanaRouter, AgentService, StateDb, VectorIndexService init। auto_trust.json load।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 256-447: handleAgentChat() — Legacy mode (JSON wrapper) + OpenAI-compatible mode। RAG injection, identity anchoring, conversation persistence, streaming support।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 329-361: RAG injection — VectorIndexService search → SSOT keyword search fallback।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 384-396: Conversation persistence — ensureConversation + addConversationMessage (best-effort)।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ জটিলতা</div>
+<div class="review-detail">handleAgentChat() ~190 লাইন — legacy mode, OpenAI mode, routing, RAG, identity, persistence, streaming — সব এক মেথডে।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ ডকুমেন্টেশন অনুপস্থিত</div>
+<div class="review-detail">auto_trust.json system, workspace trust, vector indexing — এসব ফিচার ডকুমেন্টেড নেই।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 19. MCP CONTROLLER -->
+<h2 id="mcpCtrl">১৯. src/controllers/mcpController.ts — MCP কন্ট্রোলার (802 লাইন)</h2>
+
+<div class="card">
+<h3>MCP Protocol Implementation</h3>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 35: MCP_PROTOCOL_VERSION = '2025-03-26' — MCP spec version।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 112-198: buildTools() — 8 tools: workspace_index, workspace_search, conversation_create/history/list, ssot_read, project_status, agent_routes।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 200-207: buildResources() — 4 resources: status, ssot, index, conversations।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 244-287: initialize handler — session create, capabilities negotiate, SSE support।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইน 429-644: tools/call — 8 tools implement করা হয়েছে।</div>
+</div>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">লাইন 728-771: SSE stream — heartbeat (30s), session resume, Last-Event-ID support।</div>
+</div>
+
+<div class="review-item warning">
+<div class="review-label">⚠️ ডকুমেন্টেশন অনুপস্থিত</div>
+<div class="review-detail">MCP implementation সম্পূর্ণ ডকুমেন্টেড নেই। কেবল সিস্টেম প্রম্পটে MCP URL উল্লেখ আছে।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 20-23. DB CONTROLLER + MIDDLEWARE -->
+<h2 id="dbCtrl">২০-২৩. DB কন্ট্রোলার এবং মিডলওয়্যার</h2>
+
+<div class="card">
+<h3>dbController.ts (257 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Generic CRUD: handleDbList, handleDbGet — whitelist-based table access। Identity, LLM Sources, Agent Notes, Write Log — সব CRUD।</div>
+</div>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Phase 3: Write verification — handleWriteLogWithHash, handleVerifyEntry, handleVerifyReport, handleVerifyWriteRead।</div>
+</div>
+<div class="review-item warning">
+<div class="review-label">⚠️ ডকুমেন্টেশন অনুপস্থিত</div>
+<div class="review-detail">DB REST API (12+ endpoints) কোথাও ডকুমেন্টেড নেই।</div>
+</div>
+</div>
+
+<div class="card">
+<h3>authMiddleware.ts (15 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Bearer token extract → req.apiKey assign। Default: GROQ_API_KEY from env। No auth header → still passes (degraded mode)।</div>
+</div>
+<div class="review-item warning">
+<div class="review-label">⚠️ নিরাপত্তা</div>
+<div class="review-detail">Authorization header না থাকলেও request pass করে। এটি "optional auth" — ডকুমেন্টেশনে "Optional (auto-uses env GROQ_API_KEY)" বলা আছে, কিন্তু প্রকৃতপক্ষে কোনো endpoint protected নয়।</div>
+</div>
+</div>
+
+<div class="card">
+<h3>identityMiddleware.ts (30 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Headers: X-Powered-By: ZombieCoder-by-SahonSrabon, X-Identity-Version, X-Identity-Name, X-Identity-Hash।</div>
+</div>
+</div>
+
+<div class="card">
+<h3>loggingMiddleware.ts (27 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">res.json & res.send monkey-patch → duration calculation → color-coded console output।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 24. TYPES -->
+<h2 id="types">২৪. src/types/index.ts — টাইপ ডেফিনিশন (92 লাইন)</h2>
+
+<div class="card">
+<table>
+<tr><th>টাইপ</th><th>ফিল্ড</th><th>ব্যবহার</th></tr>
+<tr><td>LogEntry</td><td>timestamp, method, path, model, status, duration_ms, tokens, success</td><td>Request logging</td></tr>
+<tr><td>ModelMeta</td><td>id, context_window, max_tokens, category, provider, source_name, status, is_free</td><td>Model catalog</td></tr>
+<tr><td>RateLimitState</td><td>model, rpm, tpm, current_rpm, current_tpm, resets_in_seconds</td><td>Rate limit tracking</td></tr>
+<tr><td>ServerStatus</td><td>status, uptime, models_count, total_requests, auto_select, memory_mb</td><td>Health check</td></tr>
+<tr><td>AgentFlags</td><td>type, execute, language, safety</td><td>Legacy agent response</td></tr>
+<tr><td>AgentResponse</td><td>content, model, flags, ragUsed, toolResults, durationMs</td><td>Legacy agent response</td></tr>
+<tr><td>RouteDecision</td><td>model, category, needsRag, confidence</td><td>MawlanaRouter output</td></tr>
+<tr><td>ProjectScanResult</td><td>tree, files[], dependencies</td><td>RAG scan output</td></tr>
+<tr><td>Permission</td><td>directory, grantedAt, scope, signature</td><td>Permission system</td></tr>
+</table>
+
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">সকল types consistently ব্যবহৃত হয়েছে — codebase-এ type mismatch নেই।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 25. WRAPPER -->
+<h2 id="wrapper">২৫. src/wrapper/ — র‍্যাপার লেয়ার</h2>
+
+<div class="card">
+<h3>config.ts (103 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Dual backend: local-bridge (Groq) + opencode-zen (OpenCode)। resolveModel() — Zen priority, bridge fallback।</div>
+</div>
+<div class="review-item warning">
+<div class="review-label">⚠️ ডেড কোড</div>
+<div class="review-detail">লাইন 87-94: দ্বিতীয়বার zen models check করা হয়েছে — এটি unreachable code (লাইন 79-85 এই check আগেই হয়ে গেছে)।</div>
+</div>
+</div>
+
+<div class="card">
+<h3>provider.ts (116 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">chat() + chatStream() — simple OpenAI-compatible fetch wrapper। SSE parsing।</div>
+</div>
+</div>
+
+<div class="card">
+<h3>deepagents.ts (24 লাইন)</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">LangChain ChatOpenAI instance — bridge backend-এর সাথে connect। AGENT_MODEL env var support।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 26. ADMIN -->
+<h2 id="admin">২৬. src/admin/ — অ্যাডমিন ড্যাশবোর্ড (1012+ লাইন)</h2>
+
+<div class="card">
+<h3>controller.ts</h3>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Full SPA admin dashboard: Overview, Model Explorer, Model Routing, Sessions, Conversations, Usage Stats।</div>
+</div>
+<div class="review-item match">
+<div class="review-label">✓ সঠিক</div>
+<div class="review-detail">Model management: Sync, Enable/Disable, Edit, Delete — real-time routing update।</div>
+</div>
+<div class="review-item warning">
+<div class="review-label">⚠️ ডকুমেন্টেশন অনুপস্থিত</div>
+<div class="review-detail">Admin dashboard এর API endpoints (15+ routes) কোথাও ডকুমেন্টেড নেই।</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- 27. DISCREPANCIES -->
+<h2 id="discrepancies">২৭. ডকুমেন্টেশন বনাম কোড অসংগতি — বিস্তারিত</h2>
+
+<div class="card">
+<h3>🔴 গুরুতর অসংগতি</h3>
+
+<table>
+<tr><th>#</th><th>বিষয়</th><th>ডকুমেন্টেশনে যা আছে</th><th>কোডে যা আছে</th><th>তাৎপর্য</th></tr>
+
+<tr>
+<td>1</td>
+<td><strong>Architecture Diagram</strong></td>
+<td>README-তে শুধু 6টি ফাইল দেখানো হয়েছে</td>
+<td>আসলে 31টি TypeScript সোর্স ফাইল আছে</td>
+<td>আর্কিটেকচার ডায়াগ্রাম অদ্যাবধি (outdated)</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td><strong>Agent Endpoints</strong></td>
+<td>api-reference.md এ Agent endpoints নেই</td>
+<td>7টি Agent endpoint আছে (/v1/agent/*)</td>
+<td>এজেন্ট সিস্টেম অডকুমেন্টেড নেই</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td><strong>MCP Endpoints</strong></td>
+<td>ডকুমেন্টেশনে MCP নেই</td>
+<td>3টি MCP endpoint + 8 tools + 4 resources</td>
+<td>MCP implementation অডকুমেন্টেড নেই</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td><strong>DB REST API</strong></td>
+<td>ডকুমেন্টেশনে DB API নেই</td>
+<td>12+ DB endpoints (/db/*)</td>
+<td>সকল DB operations অডকুমেন্টেড নেই</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td><strong>Admin Dashboard</strong></td>
+<td>README-তে 1 লাইন উল্লেখ</td>
+<td>15+ admin API routes + full SPA UI</td>
+<td>Admin system অডকুমেন্টেড নেই</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td><strong>Multi-Provider</strong></td>
+<td>README: "Multi-provider catalog" (1 লাইন)</td>
+<td>Groq + OpenCode + OpenAI + Gemini + Ollama + Anthropic</td>
+<td>6টি provider বিস্তারিত অডকুমেন্টেড নেই</td>
+</tr>
+
+<tr>
+<td>7</td>
+<td><strong>Vector Indexing</strong></td>
+<td>ডকুমেন্টেশনে নেই</td>
+<td>fastembed + cosine similarity + workspace indexing</td>
+<td>ভেক্টর সার্চ system অডকুমেন্টেড নেই</td>
+</tr>
+
+<tr>
+<td>8</td>
+<td><strong>Write Verification</strong></td>
+<td>ডকুমেন্টেশনে নেই</td>
+<td>SHA-256 hash audit trail + verification endpoints</td>
+<td>নিরাপত্তা ফিচার অডকুমেন্টেড নেই</td>
+</tr>
+
+<tr>
+<td>9</td>
+<td><strong>OpenCode Zen Models</strong></td>
+<td>ডকুমেন্টেশনে নেই</td>
+<td>16টি OpenCode model (big-pickle, deepseek, mimo, claude, gpt-5, etc.)</td>
+<td>অতিরিক্ত model sources অডকুমেন্টেড নেই</td>
+</tr>
+
+<tr>
+<td>10</td>
+<td><strong>Conversation Persistence</strong></td>
+<td>ডকুমেন্টেশনে নেই</td>
+<td>SQLite conversations + messages tables</td>
+<td>Conversation memory system অডকুমেন্টেড নেই</td>
+</tr>
+</table>
+</div>
+
+<div class="card">
+<h3>🟡 মাঝারি অসংগতি</h3>
+
+<table>
+<tr><th>#</th><th>বিষয়</th><th>বিবরণ</th></tr>
+
+<tr>
+<td>11</td>
+<td><strong>Rate Limit Values</strong></td>
+<td>groqService.ts এ Groq developer plan rates আছে, কিন্তু OpenCode/Zen models এর rate limits নেই।</td>
+</tr>
+
+<tr>
+<td>12</td>
+<td><strong>Token Estimation</strong></td>
+<td>estimateTokens() (text.length/4) — ডকুমেন্টেশনে এই heuristic উল্লেখ নেই।</td>
+</tr>
+
+<tr>
+<td>13</td>
+<td><strong>auto_trust.json</strong></td>
+<td>.zombiecoder/auto_trust.json — অটো-ওয়ার্কস্পেস trust system, ডকুমেন্টেশনে নেই।</td>
+</tr>
+
+<tr>
+<td>14</td>
+<td><strong>Runtime Manifest</strong></td>
+<td>mcp/.zombiecoder/runtime.json auto-generation — ডকুমেন্টেশনে নেই।</td>
+</tr>
+
+<tr>
+<td>15</td>
+<td><strong>stripThinkBlocks</strong></td>
+<td><think> blocks auto-remove — ডকুমেন্টেশনে নেই।</td>
+</tr>
+</table>
+</div>
+
+<div class="card">
+<h3>🟢 সামান্য অসংগতি</h3>
+
+<table>
+<tr><th>#</th><th>বিষয়</th><th>বিবরণ</th></tr>
+
+<tr>
+<td>16</td>
+<td><strong>README Duplicate Content</strong></td>
+<td>README.md এ দুইবার একই বিষয় (Key Features + Architecture) আছে — duplicate block (line 1-226 এবং 227-431)।</td>
+</tr>
+
+<tr>
+<td>17</td>
+<td><strong>health endpoint version</strong></td>
+<td>/health response: version "2.0.0" — কিন্তু package.json এ version "1.0.0"।</td>
+</tr>
+
+<tr>
+<td>18</td>
+<td><strong>Code duplication</strong></td>
+<td>upstreamManager.ts এবং groqService.ts দুটিতেই upstream management logic আছে।</td>
+</tr>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- 28. VERDICT -->
+<h2 id="verdict">২৮. চূড়ান্ত রিভিউ সারসংক্ষেপ</h2>
+
+<div class="card">
+<h3>✅ যা সঠিকভাবে কাজ করছে</h3>
+<ul style="padding-left:20px">
+<li>OpenAI-compatible API endpoints (chat, completions, audio, embeddings, models) — সঠিকভাবে proxy করে</li>
+<li>Smart model routing (MawlanaRouter) — intent-based + size-based routing</li>
+<li>Rate limit management (RPM/TPM per model) — Groq official rates অনুযায়ী</li>
+<li>Context window overflow handling — automatic model switching</li>
+<li>RAG system (SSOT.md) — keyword-based search + vector embedding search</li>
+<li>Identity anchoring — ZombieCoder identity consistently injected</li>
+<li>MCP implementation — JSON-RPC 2.0, SSE, tools, resources, sessions</li>
+<li>SQLite state persistence — WAL mode, schema migrations</li>
+<li>Write verification — SHA-256 hash audit trail</li>
+<li>Admin dashboard — full SPA with model management</li>
+<li>Streaming support — SSE with proper [DONE] handling</li>
+<li>Multi-provider support — Groq, OpenCode, OpenAI, Gemini, Ollama</li>
+<li>Workspace watching — chokidar-based auto-reindex</li>
+<li>Logging — file-based + in-memory + runtime events</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>❌ যা ডকুমেন্টেশনে অনুপস্থিত</h3>
+<ul style="padding-left:20px">
+<li><strong>Agent system</strong> (7 endpoints) — সম্পূর্ণ অডকুমেন্টেড নেই</li>
+<li><strong>MCP system</strong> (3 endpoints + 8 tools + 4 resources) — সম্পূর্ণ অডকুমেন্টেড নেই</li>
+<li><strong>DB REST API</strong> (12+ endpoints) — সম্পূর্ণ অডকুমেন্টেড নেই</li>
+<li><strong>Admin dashboard API</strong> (15+ routes) — সম্পূর্ণ অডকুমেন্টেড নেই</li>
+<li><strong>Vector indexing system</strong> — সম্পূর্ণ অডকুমেন্টেড নেই</li>
+<li><strong>Multi-provider catalog</strong> (6 providers) — সংক্ষিপ্ত উল্লেখ মাত্র</li>
+<li><strong>Write verification system</strong> — সম্পূর্ণ অডকুমেন্টেড নেই</li>
+<li><strong>Conversation persistence</strong> — সম্পূর্ণ অডকুমেন্টেড নেই</li>
+<li><strong>Workspace trust system</strong> (auto_trust.json) — সম্পূর্ণ অডকুমেন্টেড নেই</li>
+<li><strong>OpenCode Zen models</strong> (16 models) — সম্পূর্ণ অডকুমেন্টেড নেই</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>⚠️ কোডের মান পর্যবেক্ষণ</h3>
+<table>
+<tr><th>বিষয়</th><th>মূল্যায়ন</th><th>বিবরণ</th></tr>
+<tr><td>Error Handling</td><td><span class="badge badge-ok">ভালো</span></td><td>প্রায় সব জায়গায় try/catch, graceful degradation</td></tr>
+<tr><td>Type Safety</td><td><span class="badge badge-ok">ভালো</span></td><td>সকল interfaces consistently ব্যবহৃত</td></tr>
+<tr><td>Code Organization</td><td><span class="badge badge-ok">ভালো</span></td><td>Services/Controllers/Middleware/Layers স্পষ্টভাবে আলাদা</td></tr>
+<tr><td>Security</td><td><span class="badge badge-warn">গড়</span></td><td>Optional auth (no endpoint protected), hash verification available but optional</td></tr>
+<tr><td>Performance</td><td><span class="badge badge-warn">গড়</span></td><td>In-memory vector search (1000 chunks max), token estimation heuristic</td></tr>
+<tr><td>Maintainability</td><td><span class="badge badge-warn">গড়</span></td><td>কিছু মেথড অতিরিক্ত দীর্ঘ (groqService: 919, agentController: 722)</td></tr>
+<tr><td>Code Duplication</td><td><span class="badge badge-warn">গড়</span></td><td>upstreamManager এবং groqService-এ দ্বৈত upstream logic</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>📊 পরিসংখ্যান</h3>
+<div class="summary-grid">
+<div class="summary-card"><div class="summary-value" style="color:#3fb950">14</div><div class="summary-label">সঠিক ডকুমেন্টেশন</div></div>
+<div class="summary-card"><div class="summary-value" style="color:#f85149">10</div><div class="summary-label">অনুপস্থিত ডকুমেন্টেশন</div></div>
+<div class="summary-card"><div class="summary-value" style="color:#d29922">5</div><div class="summary-label">মাঝারি অসংগতি</div></div>
+<div class="summary-card"><div class="summary-value" style="color:#8b949e">3</div><div class="summary-label">সামান্য অসংগতি</div></div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<div class="card">
+<h3>📝 রিভিউ করেছেন</h3>
+<p>ZombieCoder Agent — Proxi Bridge Code Review System</p>
+<p>তারিখ: ২০২৬-০৬-১০ | মডেল: opencode/mimo-v2.5-free</p>
+<p style="color:#8b949e;font-size:.82rem;margin-top:8px">এই রিভিউ প্রতিটি সোর্স ফাইল লাইন-বাই-লাইন পড়ে, Groq official docs, MCP spec, এবং README/API reference এর সাথে তুলনা করে তৈরি করা হয়েছে।</p>
+</div>
+
+</div>
+</body>
+</html>

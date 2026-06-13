@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "proxi-mcp": {
+      "command": "node",
+      "args": ["${workspaceFolder}/dist/index.js"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "WORKSPACE_DIR": "${workspaceFolder}",
+        "MCP_SERVER_PORT": "${env:MCP_SERVER_PORT}",
+        "MCP_SERVER_HOST": "${env:MCP_SERVER_HOST}",
+        "GROQ_API_KEY": "${env:GROQ_API_KEY}",
+        "OPENCODE_API_KEY": "${env:OPENCODE_API_KEY}",
+        "OPENAI_API_KEY": "${env:OPENAI_API_KEY}",
+        "GEMINI_API_KEY": "${env:GEMINI_API_KEY}",
+        "ANTHROPIC_API_KEY": "${env:ANTHROPIC_API_KEY}",
+        "OLLAMA_OPENAI_BASE_URL": "${env:OLLAMA_OPENAI_BASE_URL}",
+        "ANTHROPIC_OPENAI_BASE_URL": "${env:ANTHROPIC_OPENAI_BASE_URL}",
+        "GROQ_OPENAI_BASE_URL": "${env:GROQ_OPENAI_BASE_URL}",
+        "OPENCODE_OPENAI_BASE_URL": "${env:OPENCODE_OPENAI_BASE_URL}",
+        "GEMINI_OPENAI_BASE_URL": "${env:GEMINI_OPENAI_BASE_URL}",
+        "OPENAI_OPENAI_BASE_URL": "${env:OPENAI_OPENAI_BASE_URL}"
+      }
+    }
+  }
+}

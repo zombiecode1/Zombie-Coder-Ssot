@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>প্রোভাইডার অরকেস্ট্রেশন — ZombieCoder</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--dim:#8b949e;--accent:#58a6ff;--green:#3fb950;--yellow:#d29922;--red:#f85149;--purple:#bc8cff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;padding:20px}
+.c{max-width:1100px;margin:0 auto}
+h1{font-size:2rem;color:var(--accent);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:12px}
+h2{font-size:1.4rem;color:var(--green);margin-top:32px;margin-bottom:12px;padding-left:12px;border-left:3px solid var(--green)}
+h3{font-size:1.1rem;color:var(--yellow);margin-top:20px;margin-bottom:8px}
+p{margin-bottom:12px}
+.sub{color:var(--dim);font-size:.95rem;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:16px}
+.hl{border-color:var(--accent);background:linear-gradient(135deg,#161b22,#1a2332)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9rem}
+th,td{padding:10px 12px;border:1px solid var(--border);text-align:left}
+th{background:#1c2128;color:var(--accent);font-weight:600;font-size:.8rem;text-transform:uppercase}
+.fs{display:flex;gap:16px;margin-bottom:16px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:8px}
+.fn{background:var(--accent);color:#000;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.9rem}
+.fc{flex:1}
+.fc strong{color:var(--accent)}
+.dia{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;font-family:'Courier New',monospace;font-size:.85rem;line-height:1.6;overflow-x:auto;white-space:pre;color:var(--dim)}
+.dia .hl{color:var(--accent);font-weight:600}
+.dia .g{color:var(--green)}
+.dia .y{color:var(--yellow)}
+.dia .r{color:var(--red)}
+.dia .p{color:var(--purple)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0}
+@media(max-width:768px){.g2{grid-template-columns:1fr}}
+.ex{background:#0d1117;border:1px solid var(--border);border-radius:6px;padding:12px;margin:8px 0;font-family:'Courier New',monospace;font-size:.82rem;color:var(--dim);overflow-x:auto;white-space:pre-wrap}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:600;margin-right:4px}
+.tg{background:#0e4429;color:var(--green)}
+.ty{background:#3d1f00;color:var(--yellow)}
+.tr{background:#3d0d0d;color:var(--red)}
+.note{background:#0d2b45;border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;border-radius:0 6px 6px 0;font-size:.9rem}
+.warn{background:#3d1f00;border-left:3px solid var(--yellow);padding:12px 16px;margin:12px 0;border-radius:0 6px 6px 0;font-size:.9rem}
+.badge{display:inline-block;padding:4px 10px;border-radius:12px;font-size:.75rem;font-weight:600}
+.ba{background:#1a7f37;color:#fff}
+.bi{background:#30363d;color:var(--dim)}
+hr.sep{border:none;border-top:1px solid var(--border);margin:40px 0}
+ul{margin:8px 0 12px 24px}li{margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="c">
+
+<h1>প্রোভাইডার অরকেস্ট্রেশন সিস্টেম</h1>
+<p class="sub">ZombieCoder Proxi Bridge — কিভাবে বিভিন্ন AI প্রোভাইডারকে এক জায়গায় পরিচালনা করা হয়</p>
+
+<h2>১. মূল ধারণা — সহজ ভাষায়</h2>
+
+<div class="card hl">
+<h3>শুধু কথায় বলি</h3>
+<p>আমাদের সিস্টেম একটি <strong>টেলিফোন এক্সচেঞ্জের</strong> মতো। আপনি যখন ফোন করেন, তখন অপারেটর আপনাকে সঠিক নম্বরে কনেক্ট করেন। আমাদের সিস্টেমেও একই কাজ হয় — আপনার (বা এজেন্টের) চাহিদা অনুযায়ী সঠিক AI প্রোভাইডারের কাছে আপনার অনুরোধ পাঠানো হয়।</p>
+<p><strong>গুরুত্বপূর্ণ:</strong> আমরা শুধু <em>রাউটার</em> — আমরা নিজে AI চালাই না। আমরা বিভিন্ন প্রোভাইডারকে বলি: "এই কাজটুকু করো", আর তারা করে দেয়। আমরা শুধু সেই ফলাফলকে সুন্দর করে আপনার কাছে পৌঁছে দিই।</p>
+</div>
+
+<div class="dia"><span class="hl">ইউজার/এজেন্ট</span>  ──→  <span class="g">পাবলিক গেটওয়ে</span>  ──→  <span class="y">প্রোভাইডার গেটওয়ে</span>  ──→  <span class="p">প্রোভাইডার</span>  ──→  <span class="g">ফলাফল</span>
+       │                      │                        │                       │
+       │                  ইনপুট সংগ্রহ              কোন প্রোভাইডারে?        API কল
+       │                  এজেন্ট পার্সোনা          মডেল সিলেক্ট            রেসপন্স
+       │                  মেমোরি লোড                                   টুল কল
+       │                                                                       │
+       └───────────────────────────────────────────────────────────────────────┘
+                              <span class="r">সবকিছু OpenAI-compatible ফরম্যাটে</span></div>
+
+<hr class="sep">
+
+<h2>২. পাঁচটি ফাইল — প্রতিটির কাজ</h2>
+
+<div class="card">
+<h3>ফাইল ১: types.ts — সবার জন্য একই নিয়ম</h3>
+<p>এটি একটি <strong>চুক্তিপত্র</strong> (contract)। যেকোনো প্রোভাইডার যদি আমাদের সিস্টেমে যুক্ত হতে চায়, তাকে এই চুক্তির সব নিয়ম মানতে হবে।</p>
+<ul>
+<li><strong>ProviderCapabilities:</strong> প্রোভাইডার কী কী করতে পারে (চ্যাট, স্ট্রিমিং, টুল কল, ভিশন, অডিও, এম্বেডিং)</li>
+<li><strong>ProviderHealth:</strong> প্রোভাইডার কি সচল আছে, কত দ্রুত উত্তর দিচ্ছে</li>
+<li><strong>ChatMessage:</strong> বার্তার ফরম্যাট (role + content)</li>
+<li><strong>StreamChunk:</strong> স্ট্রিমিংয়ের সময় একটি একটি টোকেন কিভাবে আসবে</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>ফাইল ২: base.provider.ts — সব প্রোভাইডারের বাবা</h3>
+<p>এটি একটি <strong>বেস ক্লাস</strong>। প্রতিটি প্রোভাইডার (OpenAI, Groq, Gemini ইত্যাদি) এই ক্লাসকে inherit করবে।</p>
+<ul>
+<li><strong>chat():</strong> একটি সম্পূর্ণ উত্তর ফেরত দাও</li>
+<li><strong>chatStream():</strong> উত্তরটুকু টুকরো টুকরো করে দাও (স্ট্রিমিং)</li>
+<li><strong>testConnection():</strong> পরীক্ষা করো প্রোভাইডার কি কাজ করছে</li>
+<li><strong>listModels():</strong> কোন কোন মডেল আছে সেগুলো দাও</li>
+<li><strong>getHealth():</strong> স্বাস্থ্য রিপোর্ট দাও</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>ফাইল ৩: provider-registry.ts — ফ্যাক্টরি + রেজিস্ট্রি</h3>
+<p>এটি একটি <strong>ফ্যাক্টরি</strong>। যখন আমাদের একটি প্রোভাইডার দরকার, তখন এই ফ্যাক্টরি সেই প্রোভাইডারকে তৈরি করে বা আগে থেকে তৈরি থাকলে সেটি দেয়।</p>
+<ul>
+<li><strong>create():</strong> নতুন প্রোভাইডার তৈরি করো</li>
+<li><strong>get():</strong> আগে তৈরি প্রোভাইডার খুঁজে বের করো</li>
+<li><strong>cache:</strong> একই প্রোভাইডার বারবার তৈরি না করে মনে রাখো</li>
+<li><strong>dispose():</strong> প্রোভাইডার বন্ধ করলে সব পরিষ্কার করো</li>
+</ul>
+<div class="note"><strong>কেন ফ্যাক্টরি?</strong> — ৫০০টি প্রোভাইডার থাকলেও একই কোড কাজ করবে। প্রতিটি প্রোভাইডারকে আলাদাভাবে ম্যানুয়ালি তৈরি করার দরকার নেই। ডাটাবেস থেকে কনফিগ পড়ে অটোমেটিক্যালি তৈরি হয়।</div>
+</div>
+
+<div class="card">
+<h3>ফাইল ৪: provider-gateway.ts — মূল ব্রেইন</h3>
+<p>এটিই সিস্টেমের <strong>সবচেয়ে গুরুত্বপূর্ণ অংশ</strong>। এটি জানে:</p>
+<ul>
+<li>কোন প্রোভাইডারকে কীভাবে রিকোয়েস্ট পাঠাতে হবে</li>
+<li>প্রোভাইডার কী কী করতে পারে (স্ট্রিমিং, টুল কল, মিডিয়া)</li>
+<li>ভুল হলে অন্য প্রোভাইডারে পাঠাতে হবে (ফলব্যাচ)</li>
+<li>বাজেট মেনে চলতে হবে</li>
+<li>রেট লিমিট মানতে হবে</li>
+</ul>
+<table>
+<tr><th>মেথড</th><th>কাজ</th></tr>
+<tr><td>getActiveProvider()</td><td>বর্তমানে সক্রিয় প্রোভাইডার খুঁজে বের করে</td></tr>
+<tr><td>chat()</td><td>চ্যাট রিকোয়েস্ট পাঠায়</td></tr>
+<tr><td>chatStream()</td><td>স্ট্রিমিং রিকোয়েস্ট পাঠায়</td></tr>
+<tr><td>createProvider()</td><td>নতুন প্রোভাইডার যোগ করে</td></tr>
+<tr><td>testProvider()</td><td>প্রোভাইডার পরীক্ষা করে</td></tr>
+<tr><td>listRuntimeModels()</td><td>প্রোভাইডারের সব মডেল দেখায়</td></tr>
+<tr><td>setActiveProvider()</td><td>সক্রিয় প্রোভাইডার পরিবর্তন করে</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>ফাইল ৫: normalizer.ts — ফরম্যাট একীকরণ</h3>
+<p>বিভিন্ন প্রোভাইডার <strong>ভিন্ন ভিন্ন ফরম্যাটে</strong> উত্তর দেয়। এই ফাইল সেগুলোকে একটি ফরম্যাটে আনে — যেটা <strong>OpenAI-এর অফিসিয়াল ফরম্যাট</strong>।</p>
+<div class="g2">
+<div class="card" style="margin:0"><h4>Ollama দেয়:</h4><div class="ex">{ "message": { "content": "..." } }</div></div>
+<div class="card" style="margin:0"><h4>আমরা পাঠাই:</h4><div class="ex">{ "choices": [{ "message": { "content": "..." } }] }</div></div>
+</div>
+<p><strong>টুল কলও একইভাবে নরমালাইজ হয়:</strong></p>
+<div class="g2">
+<div class="card" style="margin:0"><h4>Anthropic দেয়:</h4><div class="ex">{ "content": [{ "type": "tool_use", "name": "...", "input": {} }] }</div></div>
+<div class="card" style="margin:0"><h4>আমরা পাঠাই:</h4><div class="ex">{ "tool_calls": [{ "function": { "name": "...", "arguments": "{}" } }] }</div></div>
+</div>
+</div>
+
+<hr class="sep">
+
+<h2>৩. ডাটাবেজ — একটি টেবিল, সব ডাটা</h2>
+
+<div class="card">
+<h3>কেন একটি টেবিল?</h3>
+<p>আপনি ঠিকই বলেছেন — একটি টেবিলে সব ডাটা থাকলে:</p>
+<ul>
+<li>একই <strong>স্টোর মেথড</strong> ব্যবহার করা যায়</li>
+<li>একই <strong>সিঙ্ক লজিক</strong> কাজ করে</li>
+<li>একই <strong>ভ্যালিডেশন</strong> প্রয়োগ হয়</li>
+<li>কোড কম থাকে, ভুল কম হয়</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>টেবিল: providers</h3>
+<table>
+<tr><th>কলাম</th><th>ধরন</th><th>বর্ণনা</th></tr>
+<tr><td>id</td><td>TEXT PK</td><td>অনন্য নাম (যেমন: "groq", "openai")</td></tr>
+<tr><td>name</td><td>TEXT</td><td>মানুষের পড়ার নাম</td></tr>
+<tr><td>type</td><td>TEXT</td><td>কোন ধরনের API</td></tr>
+<tr><td>base_url</td><td>TEXT</td><td>API-র ঠিকানা</td></tr>
+<tr><td>api_key_env</td><td>TEXT</td><td>API key কোন env variable-এ আছে</td></tr>
+<tr><td>api_key</td><td>TEXT</td><td>সরাসরি API key (ঐচ্ছিক)</td></tr>
+<tr><td>priority</td><td>INTEGER</td><td>গুরুত্ব (১ = সবচেয়ে বেশি)</td></tr>
+<tr><td>is_active</td><td>INTEGER</td><td>চালু (১) বা বন্ধ (০)</td></tr>
+<tr><td>capabilities</td><td>TEXT JSON</td><td>কী কী করতে পারে</td></tr>
+<tr><td>rate_limit_rpm</td><td>INTEGER</td><td>মিনিটে রিকোয়েস্ট সীমা</td></tr>
+<tr><td>rate_limit_tpm</td><td>INTEGER</td><td>মিনিটে টোকেন সীমা</td></tr>
+<tr><td>health_status</td><td>TEXT</td><td>healthy / degraded / error</td></tr>
+<tr><td>last_health_check</td><td>DATETIME</td><td>শেষ পরীক্ষা</td></tr>
+<tr><td>error_count</td><td>INTEGER</td><td>ভুল সংখ্যা</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>টেবিল: provider_models</h3>
+<table>
+<tr><th>কলাম</th><th>ধরন</th><th>বর্ণনা</th></tr>
+<tr><td>id</td><td>TEXT PK</td><td>"groq:llama-3.3-70b"</td></tr>
+<tr><td>provider_id</td><td>TEXT FK</td><td>কোন প্রোভাইডারের</td></tr>
+<tr><td>model_id</td><td>TEXT</td><td>মডেলের আসল ID</td></tr>
+<tr><td>context_window</td><td>INTEGER</td><td>কতটুকু টেক্স্ট পড়তে পারে</td></tr>
+<tr><td>max_output_tokens</td><td>INTEGER</td><td>কতটুকু উত্তর দিতে পারে</td></tr>
+<tr><td>category</td><td>TEXT</td><td>fast / balanced / powerful / vision</td></tr>
+<tr><td>input_price_per_1k</td><td>REAL</td><td>প্রতি ১k টোকেন ইনপুট দাম</td></tr>
+<tr><td>output_price_per_1k</td><td>REAL</td><td>প্রতি ১k টোকেন আউটপুট দাম</td></tr>
+<tr><td>is_free</td><td>INTEGER</td><td>বিনামূল্যে কিনা</td></tr>
+<tr><td>supports_tools</td><td>INTEGER</td><td>টুল কল সাপোর্ট</td></tr>
+<tr><td>supports_vision</td><td>INTEGER</td><td>ছবি বোঝা সাপোর্ট</td></tr>
+<tr><td>supports_streaming</td><td>INTEGER</td><td>স্ট্রিমিং সাপোর্ট</td></tr>
+<tr><td>is_active</td><td>INTEGER</td><td>ব্যবহারযোগ্য</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>টেবিল: agent_profiles</h3>
+<table>
+<tr><th>কলাম</th><th>ধরন</th><th>বর্ণনা</th></tr>
+<tr><td>id</td><td>TEXT PK</td><td>এজেন্টের অনন্য নাম</td></tr>
+<tr><td>name</td><td>TEXT</td><td>মানুষের পড়ার নাম</td></tr>
+<tr><td>persona</td><td>TEXT</td><td>চরিত্র</td></tr>
+<tr><td>preferred_provider_id</td><td>TEXT</td><td>পছন্দের প্রোভাইডার</td></tr>
+<tr><td>preferred_model_id</td><td>TEXT</td><td>পছন্দের মডেল</td></tr>
+<tr><td>budget_limit</td><td>REAL</td><td>মাসিক বাজেট (USD)</td></tr>
+<tr><td>auto_select</td><td>INTEGER</td><td>অটো সিলেক্ট চালু</td></tr>
+<tr><td>allowed_providers</td><td>TEXT JSON</td><td>অনুমোদিত প্রোভাইডার</td></tr>
+<tr><td>allowed_models</td><td>TEXT JSON</td><td>অনুমোদিত মডেল</td></tr>
+<tr><td>memory</td><td>TEXT JSON</td><td>আগের স্মৃতি</td></tr>
+</table>
+</div>
+
+<hr class="sep">
+
+<h2>৪. পূর্ণ ফ্লো — রিকোয়েস্ট কিভাবে যায়</h2>
+
+<div class="fs"><div class="fn">১</div><div class="fc"><strong>ইউজার/এজেন্ট রিকোয়েস্ট পাঠায়</strong><br>POST /v1/chat/completions এ JSON পাঠানো হয়। মডেলের নাম (অথবা "auto"), বার্তা, টুল ডেফিনিশন।<div class="ex">{ "model": "auto", "messages": [{"role":"user","content":"..."}], "tools": [...] }</div></div></div>
+
+<div class="fs"><div class="fn">২</div><div class="fc"><strong>পাবলিক গেটওয়ে ইনপুট সংগ্রহ করে</strong><br>যাচাই করে: এজেন্ট কি আছে? পার্সোনা কী? মেমোরি কী? বাজেট কত? কোন প্রোভাইডার অনুমোদিত?</div></div>
+
+<div class="fs"><div class="fn">৩</div><div class="fc"><strong>মডেল সিলেক্ট হয়</strong><br>দুইভাবে: (ক) নির্দিষ্ট মডেল দিলে → সরাসরি সেই প্রোভাইডারে যায়। (খ) "auto" দিলে → স্মার্ট সিলেকশন: ইনপুট দৈর্ঘ্য, টুল চাহিদা, ভিশন, বাজেট — সব মিলিয়ে সেরাটি বাছাই।</div></div>
+
+<div class="fs"><div class="fn">৪</div><div class="fc"><strong>প্রোভাইডার গেটওয়ে পাঠায়</strong><br>provider-gateway.ts প্রোভাইডারের TS ফাইলকে বলে: "এই বার্তা পাঠাও, এই মডেলে।" TS ফাইল: ডাটাবেস থেকে API key নেয় → না পেলে env variable থেকে নেয় → endpoint-এ POST করে → ফলাফল ফেরত দেয়।</div></div>
+
+<div class="fs"><div class="fn">৫</div><div class="fc"><strong>ফলাফল নরমালাইজ হয়</strong><br>প্রোভাইডার যে ফরম্যাটে দিয়েছে, normalizer.ts সেটাকে OpenAI-compatible ফরম্যাটে রূপান্তরিত করে। টুল কলও একইভাবে।</div></div>
+
+<div class="fs"><div class="fn">৬</div><div class="fc"><strong>টুল কল এক্সিকিউট হয়</strong><br>মডেল যদি বলে "এই ফাংশনটি চালাও" → আমাদের সিস্টেম চালায় → ফলাফল মডেলকে ফিরিয়ে দেয় → মডেল চূড়ান্ত উত্তর দেয়।</div></div>
+
+<div class="fs"><div class="fn">৭</div><div class="fc"><strong>চূড়ান্ত উত্তর ইউজারের কাছে পৌঁছায়</strong><br>সবকিছু OpenAI-compatible ফরম্যাটে থাকে। ইউজার যেকোনো OpenAI-সাপোর্টেড ক্লায়েন্ট ব্যবহার করতে পারবে।</div></div>
+
+<hr class="sep">
+
+<h2>৫. প্রোভাইডার ক্লাস — API key কোথায় খুঁজে</h2>
+
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">১</div><div class="fc"><strong>ডাটাবেস চেক করো</strong> — providers টেবিলে api_key কলাম <span class="tag tg">প্রথমে এখানে</span></div></div>
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">২</div><div class="fc"><strong>না পেলে env variable</strong> — api_key_env কলামের নাম দিয়ে খুঁজো <span class="tag ty">দ্বিতীয় পছন্দ</span></div></div>
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">৩</div><div class="fc"><strong>দুটোই না পেলে</strong> — এরর: "API key not configured" <span class="tag tr">শেষ রিসোর্ট</span></div></div>
+
+<hr class="sep">
+
+<h2>৬. অটো সিলেক্ট — "১০০ টাকায় সেরা"</h2>
+
+<div class="card hl">
+<h3>অটো মানে কী?</h3>
+<p>অটো মানে <strong>বাজেট, চাহিদা এবং গুণমানের মধ্যে ভারসাম্য</strong>। "১০০ টাকায় সেরা" — এটাই মূল নীতি।</p>
+</div>
+
+<div class="card">
+<h3>কিভাবে কাজ করে:</h3>
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">১</div><div class="fc"><strong>যোগ্য মডেল খুঁজে বের করো</strong><br>ডাটাবেস থেকে is_active=1 মডেল আনো। ফিল্টার: টুল লাগলে supports_tools=1, ছবি থাকলে supports_vision=1, এজেন্টের allowed_models-এ আছে কিনা।</div></div>
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">২</div><div class="fc"><strong>বাজেট ফিল্টার</strong><br>প্রতিটি মডেলের দাম দেখো। ইনপুট + আনুমানিক আউটপুট = মোট খরচ। budget_limit এর চেয়ে বেশি হলে বাদ।</div></div>
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">৩</div><div class="fc"><strong>স্কোরিং</strong><br>প্রতিটি মডেলকে ০-১০০ স্কোর: বিনামূল্যে +২০, দ্রুত +১৫, শক্তিশালী +১০, কম দাম +১৫, স্বাস্থ্য ভালো +১০।</div></div>
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">৪</div><div class="fc"><strong>সেরাটি রিটার্ন</strong><br>সবচেয়ে বেশি স্কোর পাওয়া মডেলটি বাছাই হয়।</div></div>
+</div>
+
+<hr class="sep">
+
+<h2>৭. এডমিন প্যানেল — কী কী হবে</h2>
+
+<div class="card">
+<h3>প্রোভাইডার ম্যানেজমেন্ট:</h3>
+<table>
+<tr><th>কাজ</th><th>কিভাবে</th><th>ফলাফল</th></tr>
+<tr><td>নতুন যোগ</td><td>ফর্মে নাম, URL, API key</td><td>ডাটাবেসে সেভ, <span class="badge bi">inactive</span></td></tr>
+<tr><td>চালু করা</td><td>Test বাটন</td><td>সফল হলে <span class="badge ba">active</span></td></tr>
+<tr><td>মডেল সিঙ্ক</td><td>Sync বাটন</td><td>সব মডেল আসে, ডুপ্লিকেট বাদ</td></tr>
+<tr><td>মডেল টেস্ট</td><td>Test বাটন</td><td>ছোট রিকোয়েস্ট, ফলাফল দেখায়</td></tr>
+<tr><td>সক্রিয় পরিবর্তন</td><td>ড্রপডাউন</td><td>সব রিকোয়েস্ট নতুন প্রোভাইডারে</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>স্ট্যাটাস:</h3>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin:8px 0">
+<div><span class="badge ba">active</span> <span style="color:var(--dim);font-size:.85rem;margin-left:4px">= ঠিক আছে</span></div>
+<div><span class="badge" style="background:#3d1f00;color:var(--yellow)">degraded</span> <span style="color:var(--dim);font-size:.85rem;margin-left:4px">= ধীর হতে পারে</span></div>
+<div><span class="badge bi">inactive</span> <span style="color:var(--dim);font-size:.85rem;margin-left:4px">= বন্ধ</span></div>
+<div><span class="badge" style="background:#3d0d0d;color:var(--red)">error</span> <span style="color:var(--dim);font-size:.85rem;margin-left:4px">= ভুল বা ডাউন</span></div>
+</div>
+</div>
+
+<hr class="sep">
+
+<h2>৮. এজেন্ট টেমপ্লেট — ফলব্যাচ হিসেবে</h2>
+
+<div class="card">
+<h3>কেন টেমপ্লেট দরকার?</h3>
+<p>মনে করুন ডাটাবেসে সমস্যা হলো, প্রোভাইডার কাছে খবর পৌঁছাচ্ছে না। তাহলেও সিস্টেম চলতে হবে। এজন্য <strong>৫টি ফিক্সড এজেন্ট টেমপ্লেট</strong> কোডের মধ্যেই লেখা থাকবে:</p>
+<table>
+<tr><th>টেমপ্লেট</th><th>কাজ</th><th>ব্যবহার</th></tr>
+<tr><td>Chat Agent</td><td>সাধারণ কথোপকথন</td><td>ডিফল্ট</td></tr>
+<tr><td>Code Agent</td><td>কোড লেখা/ডিবাগ</td><td>প্রোগ্রামিং</td></tr>
+<tr><td>Document Agent</td><td>ডকুমেন্ট পড়া/বোঝা</td><td>রিসার্চ</td></tr>
+<tr><td>Debug Agent</td><td>সমস্যা খুঁজে বের করা</td><td>ডিবাগিং</td></tr>
+<tr><td>CLI Agent</td><td>কমান্ড লাইন কাজ</td><td>সিস্টেম</td></tr>
+</table>
+<div class="note"><strong>ফলব্যাচ:</strong> ডাটাবেস থেকে প্রোভাইডার না পেলেও এই টেমপ্লেটগুলো কাজ করবে। এগুলো "জরুরি সময়ের প্রোভাইডার"।</div>
+</div>
+
+<hr class="sep">
+
+<h2>৯. ৫০০+ প্রোভাইডার — কেন সম্ভব?</h2>
+
+<div class="card">
+<ul>
+<li><strong>ডাটাবেস-ড্রিভেন:</strong> প্রোভাইডার যোগ/মুছে ডাটাবেস থেকে, কোড চেঞ্জ লাগে না</li>
+<li><strong>অটো-সিঙ্ক:</strong> Sync endpoint দিয়ে একসাথে সব মডেল সিঙ্ক</li>
+<li><strong>ক্যাশ:</strong> Provider instances TTL-based cache, বারবার create হয় না</li>
+<li><strong>ব্যাচ হেলথ চেক:</strong> Promise.allSettled দিয়ে একসাথে সব চেক</li>
+<li><strong>গ্রুপিং:</strong> একই টাইপের প্রোভাইডার গ্রুপ করা যায়</li>
+</ul>
+</div>
+
+<hr class="sep">
+
+<h2>১০. সময়কাল এবং পর্যায়</h2>
+
+<div class="card">
+<table>
+<tr><th>পর্যায়</th><th>কাজ</th><th>সময়</th></tr>
+<tr><td>১</td><td>types.ts + base.provider.ts</td><td>১৫ মিনিট</td></tr>
+<tr><td>২</td><td>ডাটাবেস স্কিমা + মাইগ্রেশন</td><td>১০ মিনিট</td></tr>
+<tr><td>৩</td><td>provider-registry.ts</td><td>১৫ মিনিট</td></tr>
+<tr><td>৪</td><td>normalizer.ts + tool-normalizer.ts</td><td>১৫ মিনিট</td></tr>
+<tr><td>৫</td><td>৫টি প্রোভাইডার (opencode, groq, openai, gemini, anthropic)</td><td>২৫ মিনিট</td></tr>
+<tr><td>৬</td><td>provider-gateway.ts</td><td>২০ মিনিট</td></tr>
+<tr><td>৭</td><td>এজেন্ট প্রোফাইল + টেমপ্লেট</td><td>১০ মিনিট</td></tr>
+<tr><td>৮</td><td>কন্ট্রোলার আপডেট + ইন্টিগ্রেশন</td><td>১০ মিনিট</td></tr>
+<tr><td colspan="2"><strong>মোট</strong></td><td><strong>~১২০ মিনিট (২ ঘণ্টা)</strong></td></tr>
+</table>
+</div>
+
+<hr class="sep">
+
+<h2>১১. সারসংক্ষেপ — চক্রটি এক নজরে</h2>
+
+<div class="dia">
+<span class="hl">ইউজার</span> ──→ <span class="g">ইনপুট</span> ──→ <span class="y">গেটওয়ে</span> ──→ <span class="p">মডেল সিলেক্ট</span> ──→ <span class="hl">প্রোভাইডার TS</span> ──→ <span class="g">API কল</span>
+                                      │
+                              <span class="r">ডাটাবেস থেকে API key</span>
+                              <span class="y">না পেলে env variable</span>
+                                      │
+                                      ▼
+<span class="hl">ফলাফল</span> ←── <span class="g">নরমালাইজ</span> ←── <span class="p">প্রোভাইডার রেসপন্স</span> ←── <span class="g">API থেকে</span>
+    │
+    ├── <span class="y">টুল কল আছে?</span> ──→ <span class="r">এক্সিকিউট</span> ──→ <span class="p">ফিরিয়ে দাও</span> ──→ <span class="g">চূড়ান্ত উত্তর</span>
+    │
+    └── <span class="g">OpenAI-compatible ফরম্যাটে ইউজারের কাছে</span>
+</div>
+
+<p style="text-align:center;color:var(--dim);margin-top:40px;font-size:.85rem">
+ZombieCoder Proxi Bridge — Provider Orchestration Documentation<br>
+সর্বশেষ হালনাগাদ: জুন ২০২৬
+</p>
+
+</div>
+</body>
+</html>

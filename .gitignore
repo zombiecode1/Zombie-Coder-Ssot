@@ -1,0 +1,64 @@
+# ─── Dependencies ─────────────────────────────────────────
+node_modules/
+package-lock.json
+
+# ─── Build Output ─────────────────────────────────────────
+dist/
+build/
+*.tsbuildinfo
+
+# ─── Environment & Secrets ────────────────────────────────
+.env
+.env.local
+.env.production
+.env.*.local
+
+# ─── Database Files ───────────────────────────────────────
+*.db
+*.db-shm
+*.db-wal
+.zombiecoder/
+
+# ─── Logs ─────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+
+# ─── IDE & Editor ─────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ─── Temp & Cache ─────────────────────────────────────────
+tmp/
+tmp_payload.json
+*.tmp
+.cache/
+*.cache
+
+# ─── Binary & Large Files ─────────────────────────────────
+*.gguf
+*.safetensors
+*.exe
+embedding/bin/
+
+# ─── Archives ─────────────────────────────────────────────
+*.zip
+*.tar.gz
+*.rar
+proxi_new.zip
+
+# ─── Test Output ──────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ─── Junie / AI Config ───────────────────────────────────
+.junie/
+.opencode/
+
+# ─── Runtime ──────────────────────────────────────────────
+mcp/.zombiecoder/

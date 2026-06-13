@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Groq মডেল রিপোর্ট</title>
+  <style>
+    body { background:#0b1220; color:#e6edf3; font-family:Inter,system-ui,sans-serif; margin:0; padding:24px; }
+    h1,h2 { margin:0 0 12px 0; }
+    .hero { display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; align-items:flex-end; margin-bottom:24px; }
+    .card { background:#111827; border:1px solid #273147; border-radius:18px; padding:18px; box-shadow:0 16px 40px rgba(0,0,0,.25); }
+    .summary { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); }
+    .stat { padding:16px; border-radius:14px; background:#141c2f; }
+    .stat strong { display:block; font-size:1.9rem; line-height:1; margin-bottom:4px; color:#58a6ff; }
+    table { width:100%; border-collapse:collapse; margin-top:16px; }
+    th, td { text-align:left; padding:12px 14px; border-bottom:1px solid #1f283d; vertical-align:top; }
+    th { background:#121a2d; color:#8fa4bf; font-size:.85rem; text-transform:uppercase; letter-spacing:.04em; }
+    tr.row-error td { color:#ffb3b3; }
+    tr.row-success td { color:#e6edf3; }
+    code { font-family:source-code-pro,monospace; background:#172136; padding:4px 6px; border-radius:6px; }
+    pre { margin:0; white-space:pre-wrap; word-break:break-word; font-size:.82rem; background:#101623; padding:10px; border-radius:10px; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div>
+      <h1>Groq মডেল রেসপন্স রিপোর্ট</h1>
+      <p><code>http://localhost:9999</code> থেকে তৈরি হয়েছে 2026-06-11T07:12:57.471Z তারিখে।</p>
+      <p>57টি মডেল পরীক্ষা করা হয়েছে, 57টি সফল, 0টি ত্রুটিপূর্ণ।</p>
+    </div>
+    <div class="card" style="min-width:240px;">
+      <div class="summary">
+        <div class="stat"><strong>57</strong>মডেল</div>
+        <div class="stat"><strong>57</strong>সফল</div>
+        <div class="stat"><strong>0</strong>ত্রুটি</div>
+        <div class="stat"><strong>1857ms</strong>গড় ল্যাটেন্সি</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>মডেল মেটাডেটা</h2>
+    <table>
+      <thead>
+        <tr><th>মডেল আইডি</th><th>মালিক</th><th>ক্যাটাগরি</th><th>কনটেক্সট</th><th>ম্যাক্স টোকেন</th></tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><code>whisper-large-v3</code></td>
+        <td>OpenAI</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>whisper-large-v3-turbo</code></td>
+        <td>OpenAI</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>llama-3.3-70b-versatile</code></td>
+        <td>Meta</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>openai/gpt-oss-120b</code></td>
+        <td>OpenAI</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>qwen/qwen3-32b</code></td>
+        <td>Alibaba Cloud</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>groq/compound-mini</code></td>
+        <td>Groq</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>llama-3.1-8b-instant</code></td>
+        <td>Meta</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>meta-llama/llama-prompt-guard-2-22m</code></td>
+        <td>Meta</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>meta-llama/llama-prompt-guard-2-86m</code></td>
+        <td>Meta</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>openai/gpt-oss-safeguard-20b</code></td>
+        <td>OpenAI</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>allam-2-7b</code></td>
+        <td>SDAIA</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>canopylabs/orpheus-arabic-saudi</code></td>
+        <td>Canopy Labs</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>canopylabs/orpheus-v1-english</code></td>
+        <td>Canopy Labs</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>groq/compound</code></td>
+        <td>Groq</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>meta-llama/llama-4-scout-17b-16e-instruct</code></td>
+        <td>Meta</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>openai/gpt-oss-20b</code></td>
+        <td>OpenAI</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>gpt-oss:120b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>cogito-2.1:671b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>deepseek-v3.1:671b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>deepseek-v4-flash</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>gemini-3-flash-preview</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>gemma4:31b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>minimax-m2</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>minimax-m2.1</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>minimax-m2.5</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>minimax-m2.7</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>minimax-m3</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>ministral-3:14b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>ministral-3:3b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>ministral-3:8b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>rnj-1:8b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>deepseek-v3.2</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>deepseek-v4-pro</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>devstral-2:123b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>devstral-small-2:24b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>gemma3:12b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>gemma3:27b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>gemma3:4b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>glm-4.6</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>glm-4.7</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>glm-5</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>glm-5.1</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>gpt-oss:20b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>kimi-k2-thinking</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>kimi-k2.5</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>kimi-k2.6</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>kimi-k2:1t</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>mistral-large-3:675b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>nemotron-3-nano:30b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>nemotron-3-super</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>nemotron-3-ultra</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>qwen3-coder-next</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>qwen3-coder:480b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>qwen3-next:80b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>qwen3-vl:235b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>qwen3-vl:235b-instruct</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr>
+      <tr>
+        <td><code>qwen3.5:397b</code></td>
+        <td>ollama</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+        <td>ন/এ</td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:24px;">
+    <h2>ফলাফলের বিবরণ</h2>
+    <table>
+      <thead>
+        <tr><th>মডেল</th><th>স্ট্যাটাস</th><th>সময়</th><th>প্রম্পট</th><th>প্রতিক্রিয়া</th><th>কি হওয়া উচিত</th><th>কোথায় ব্যবহার</th><th>উন্নতির পরামর্শ</th><th>স্ট্রিম</th><th>চাঙ্ক</th><th>স্ট্রিম স্যাম্পল</th><th>ইউসেজ</th><th>ত্রুটি</th></tr>
+      </thead>
+      <tbody>
+      <tr class="row-success">
+        <td><code>whisper-large-v3</code></td>
+        <td>সফল</td>
+        <td>310ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model whisper-large-v3.</td>
+        <td>I am responding from model whisper-large-v3.</td>
+        <td>এই মডেল চ্যাট কমপ্লিশন সমর্থন করে না; অডিও ট্রান্সক্রিপশনের ফলাফল প্রত্যাশিত।</td>
+        <td>স্পিচ-টু-টেক্সট (অডিও ট্রান্সক্রিপশন) ও ভয়েস প্রসেসিং।</td>
+        <td>উন্নত অডিও ইনপুট, স্যাম্পলিং ও নোয়েজ রিডাকশন; ভাষা নির্ধারণ যোগ করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>6</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:57,&quot;23&quot;:56,&quot;24&quot;:49,&quot;25&quot;:53,&quot;26&quot;:54,&quot;27&quot;:53,&quot;28&quot;:97,&quot;29&quot;:48,&quot;30&quot;:45,&quot;31&quot;:57,&quot;32&quot;:57,&quot;33&quot;:49,&quot;34&quot;:57,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:101,&quot;38&quot;:97,&quot;39&quot;:48,&quot;40&quot;:45,&quot;41&quot;:98,&quot;42&quot;:52,&quot;43&quot;:100,&quot;44&quot;:54,&quot;45&quot;:45,&quot;46&quot;:100,&quot;47&quot;:101,&quot;48&quot;:100,&quot;49&quot;:100,&quot;50&quot;:48,&quot;51&quot;:56,&quot;52&quot;:54,&quot;53&quot;:48,&quot;54&quot;:53,&quot;55&quot;:51,&quot;56&quot;:100,&quot;57&quot;:102,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.166000726,
+  &quot;prompt_tokens&quot;: 221,
+  &quot;prompt_time&quot;: 0.013482943,
+  &quot;completion_tokens&quot;: 11,
+  &quot;completion_time&quot;: 0.036586181,
+  &quot;total_tokens&quot;: 232,
+  &quot;total_time&quot;: 0.050069124
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>whisper-large-v3-turbo</code></td>
+        <td>সফল</td>
+        <td>186ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model whisper-large-v3-turbo.</td>
+        <td>I am responding from model whisper-large-v3-turbo.</td>
+        <td>এই মডেল চ্যাট কমপ্লিশন সমর্থন করে না; অডিও ট্রান্সক্রিপশনের ফলাফল প্রত্যাশিত।</td>
+        <td>স্পিচ-টু-টেক্সট (অডিও ট্রান্সক্রিপশন) ও ভয়েস প্রসেসিং।</td>
+        <td>উন্নত অডিও ইনপুট, স্যাম্পলিং ও নোয়েজ রিডাকশন; ভাষা নির্ধারণ যোগ করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>6</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:48,&quot;23&quot;:56,&quot;24&quot;:102,&quot;25&quot;:51,&quot;26&quot;:52,&quot;27&quot;:101,&quot;28&quot;:49,&quot;29&quot;:99,&quot;30&quot;:45,&quot;31&quot;:52,&quot;32&quot;:53,&quot;33&quot;:51,&quot;34&quot;:98,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:55,&quot;38&quot;:50,&quot;39&quot;:101,&quot;40&quot;:45,&quot;41&quot;:57,&quot;42&quot;:98,&quot;43&quot;:55,&quot;44&quot;:98,&quot;45&quot;:45,&quot;46&quot;:50,&quot;47&quot;:54,&quot;48&quot;:101,&quot;49&quot;:53,&quot;50&quot;:56,&quot;51&quot;:49,&quot;52&quot;:101,&quot;53&quot;:98,&quot;54&quot;:99,&quot;55&quot;:54,&quot;56&quot;:97,&quot;57&quot;:50,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.073863413,
+  &quot;prompt_tokens&quot;: 224,
+  &quot;prompt_time&quot;: 0.022879962,
+  &quot;completion_tokens&quot;: 14,
+  &quot;completion_time&quot;: 0.016408811,
+  &quot;total_tokens&quot;: 238,
+  &quot;total_time&quot;: 0.039288773
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>llama-3.3-70b-versatile</code></td>
+        <td>সফল</td>
+        <td>198ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model llama-3.3-70b-versatile.</td>
+        <td>I am responding from model llama-3.3-70b-versatile.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>6</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:56,&quot;23&quot;:53,&quot;24&quot;:101,&quot;25&quot;:50,&quot;26&quot;:102,&quot;27&quot;:54,&quot;28&quot;:52,&quot;29&quot;:52,&quot;30&quot;:45,&quot;31&quot;:53,&quot;32&quot;:51,&quot;33&quot;:98,&quot;34&quot;:57,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:49,&quot;38&quot;:98,&quot;39&quot;:100,&quot;40&quot;:45,&quot;41&quot;:98,&quot;42&quot;:55,&quot;43&quot;:102,&quot;44&quot;:51,&quot;45&quot;:45,&quot;46&quot;:54,&quot;47&quot;:48,&quot;48&quot;:52,&quot;49&quot;:98,&quot;50&quot;:99,&quot;51&quot;:49,&quot;52&quot;:57,&quot;53&quot;:100,&quot;54&quot;:102,&quot;55&quot;:57,&quot;56&quot;:54,&quot;57&quot;:52,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:34</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.079896957,
+  &quot;prompt_tokens&quot;: 227,
+  &quot;prompt_time&quot;: 0.026359091,
+  &quot;completion_tokens&quot;: 17,
+  &quot;completion_time&quot;: 0.020640762,
+  &quot;total_tokens&quot;: 244,
+  &quot;total_time&quot;: 0.046999853
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>openai/gpt-oss-120b</code></td>
+        <td>সফল</td>
+        <td>446ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model openai/gpt-oss-120b.</td>
+        <td></td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>20</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:98,&quot;23&quot;:98,&quot;24&quot;:98,&quot;25&quot;:57,&quot;26&quot;:48,&quot;27&quot;:99,&quot;28&quot;:55,&quot;29&quot;:51,&quot;30&quot;:45,&quot;31&quot;:100,&quot;32&quot;:53,&quot;33&quot;:49,&quot;34&quot;:50,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:51,&quot;38&quot;:54,&quot;39&quot;:98,&quot;40&quot;:45,&quot;41&quot;:56,&quot;42&quot;:54,&quot;43&quot;:98,&quot;44&quot;:57,&quot;45&quot;:45,&quot;46&quot;:100,&quot;47&quot;:48,&quot;48&quot;:54,&quot;49&quot;:52,&quot;50&quot;:98,&quot;51&quot;:97,&quot;52&quot;:97,&quot;53&quot;:53,&quot;54&quot;:54,&quot;55&quot;:51,&quot;56&quot;:52,&quot;57&quot;:51,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:34,&quot;61</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.280238695,
+  &quot;prompt_tokens&quot;: 263,
+  &quot;prompt_time&quot;: 0.013569039,
+  &quot;completion_tokens&quot;: 40,
+  &quot;completion_time&quot;: 0.082766865,
+  &quot;total_tokens&quot;: 303,
+  &quot;total_time&quot;: 0.096335904,
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 38
+  }
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>qwen/qwen3-32b</code></td>
+        <td>সফল</td>
+        <td>284ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model qwen/qwen3-32b.</td>
+        <td>I am responding from model qwen/qwen3-32b.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>16</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:55,&quot;23&quot;:57,&quot;24&quot;:56,&quot;25&quot;:102,&quot;26&quot;:101,&quot;27&quot;:51,&quot;28&quot;:99,&quot;29&quot;:53,&quot;30&quot;:45,&quot;31&quot;:50,&quot;32&quot;:99,&quot;33&quot;:50,&quot;34&quot;:98,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:97,&quot;38&quot;:50,&quot;39&quot;:99,&quot;40&quot;:45,&quot;41&quot;:97,&quot;42&quot;:55,&quot;43&quot;:101,&quot;44&quot;:56,&quot;45&quot;:45,&quot;46&quot;:101,&quot;47&quot;:54,&quot;48&quot;:101,&quot;49&quot;:101,&quot;50&quot;:55,&quot;51&quot;:51,&quot;52&quot;:97,&quot;53&quot;:55,&quot;54&quot;:51,&quot;55&quot;:52,&quot;56&quot;:50,&quot;57&quot;:48,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:34</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.160162946,
+  &quot;prompt_tokens&quot;: 203,
+  &quot;prompt_time&quot;: 0.019956652,
+  &quot;completion_tokens&quot;: 20,
+  &quot;completion_time&quot;: 0.032405244,
+  &quot;total_tokens&quot;: 223,
+  &quot;total_time&quot;: 0.052361896
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>groq/compound-mini</code></td>
+        <td>সফল</td>
+        <td>1159ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model groq/compound-mini.</td>
+        <td>I am responding from the groq/compound-mini model.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>লো-ল্যাটেন্সি সার্ভিস, রিয়েলটাইম উত্তরের জন্য উপযোগী।</td>
+        <td>বহু রিকোয়ারমেন্টে টেস্ট করুন; ব্যালান্সড টেম্পারেচার এবং কনটেক্সট প্রয়োগ করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>5</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:48,&quot;23&quot;:100,&quot;24&quot;:97,&quot;25&quot;:52,&quot;26&quot;:97,&quot;27&quot;:101,&quot;28&quot;:57,&quot;29&quot;:100,&quot;30&quot;:45,&quot;31&quot;:50,&quot;32&quot;:49,&quot;33&quot;:100,&quot;34&quot;:52,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:98,&quot;38&quot;:49,&quot;39&quot;:52,&quot;40&quot;:45,&quot;41&quot;:56,&quot;42&quot;:98,&quot;43&quot;:101,&quot;44&quot;:98,&quot;45&quot;:45,&quot;46&quot;:55,&quot;47&quot;:97,&quot;48&quot;:54,&quot;49&quot;:57,&quot;50&quot;:101,&quot;51&quot;:52,&quot;52&quot;:48,&quot;53&quot;:99,&quot;54&quot;:101,&quot;55&quot;:55,&quot;56&quot;:56,&quot;57&quot;:101,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.362159,
+  &quot;prompt_tokens&quot;: 814,
+  &quot;prompt_time&quot;: 0.125995,
+  &quot;completion_tokens&quot;: 241,
+  &quot;completion_time&quot;: 0.517049,
+  &quot;total_tokens&quot;: 1055,
+  &quot;total_time&quot;: 0.643044
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>llama-3.1-8b-instant</code></td>
+        <td>সফল</td>
+        <td>424ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model llama-3.1-8b-instant.</td>
+        <td>I am ZombieCoder, a local-first AI assistant, and I am currently responding from model llama-3.1-8b-instant.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>17</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:53,&quot;23&quot;:52,&quot;24&quot;:99,&quot;25&quot;:102,&quot;26&quot;:98,&quot;27&quot;:49,&quot;28&quot;:97,&quot;29&quot;:98,&quot;30&quot;:45,&quot;31&quot;:102,&quot;32&quot;:56,&quot;33&quot;:97,&quot;34&quot;:52,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:102,&quot;38&quot;:48,&quot;39&quot;:100,&quot;40&quot;:45,&quot;41&quot;:98,&quot;42&quot;:57,&quot;43&quot;:55,&quot;44&quot;:99,&quot;45&quot;:45,&quot;46&quot;:100,&quot;47&quot;:52,&quot;48&quot;:53,&quot;49&quot;:56,&quot;50&quot;:49,&quot;51&quot;:55,&quot;52&quot;:57,&quot;53&quot;:51,&quot;54&quot;:57,&quot;55&quot;:53,&quot;56&quot;:49,&quot;57&quot;:101,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:34</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.065416091,
+  &quot;prompt_tokens&quot;: 227,
+  &quot;prompt_time&quot;: 0.014689018,
+  &quot;completion_tokens&quot;: 30,
+  &quot;completion_time&quot;: 0.240262729,
+  &quot;total_tokens&quot;: 257,
+  &quot;total_time&quot;: 0.254951747
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>meta-llama/llama-prompt-guard-2-22m</code></td>
+        <td>সফল</td>
+        <td>304ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model meta-llama/llama-prompt-guard-2-22m.</td>
+        <td>I am responding from model meta-llama/llama-prompt-guard-2-22m.</td>
+        <td>গার্ড মডেল: আউটপুট সংক্ষিপ্ত বা সংখ্যাসূচক হতে পারে (সিকিউরিটি লেয়ার)।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>6</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:51,&quot;23&quot;:52,&quot;24&quot;:50,&quot;25&quot;:52,&quot;26&quot;:49,&quot;27&quot;:102,&quot;28&quot;:54,&quot;29&quot;:56,&quot;30&quot;:45,&quot;31&quot;:51,&quot;32&quot;:98,&quot;33&quot;:49,&quot;34&quot;:55,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:100,&quot;38&quot;:57,&quot;39&quot;:50,&quot;40&quot;:45,&quot;41&quot;:57,&quot;42&quot;:51,&quot;43&quot;:97,&quot;44&quot;:53,&quot;45&quot;:45,&quot;46&quot;:54,&quot;47&quot;:102,&quot;48&quot;:102,&quot;49&quot;:99,&quot;50&quot;:52,&quot;51&quot;:55,&quot;52&quot;:98,&quot;53&quot;:54,&quot;54&quot;:56,&quot;55&quot;:52,&quot;56&quot;:101,&quot;57&quot;:55,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.160919615,
+  &quot;prompt_tokens&quot;: 232,
+  &quot;prompt_time&quot;: 0.012492565,
+  &quot;completion_tokens&quot;: 22,
+  &quot;completion_time&quot;: 0.052007429,
+  &quot;total_tokens&quot;: 254,
+  &quot;total_time&quot;: 0.064499994
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>meta-llama/llama-prompt-guard-2-86m</code></td>
+        <td>সফল</td>
+        <td>360ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model meta-llama/llama-prompt-guard-2-86m.</td>
+        <td>I am responding from model meta-llama/llama-prompt-guard-2-86m.</td>
+        <td>গার্ড মডেল: আউটপুট সংক্ষিপ্ত বা সংখ্যাসূচক হতে পারে (সিকিউরিটি লেয়ার)।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>7</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:51,&quot;23&quot;:99,&quot;24&quot;:101,&quot;25&quot;:56,&quot;26&quot;:50,&quot;27&quot;:102,&quot;28&quot;:53,&quot;29&quot;:100,&quot;30&quot;:45,&quot;31&quot;:54,&quot;32&quot;:98,&quot;33&quot;:53,&quot;34&quot;:99,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:50,&quot;38&quot;:99,&quot;39&quot;:97,&quot;40&quot;:45,&quot;41&quot;:57,&quot;42&quot;:49,&quot;43&quot;:100,&quot;44&quot;:57,&quot;45&quot;:45,&quot;46&quot;:57,&quot;47&quot;:102,&quot;48&quot;:101,&quot;49&quot;:53,&quot;50&quot;:99,&quot;51&quot;:55,&quot;52&quot;:101,&quot;53&quot;:48,&quot;54&quot;:49,&quot;55&quot;:100,&quot;56&quot;:57,&quot;57&quot;:53,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.219193483,
+  &quot;prompt_tokens&quot;: 232,
+  &quot;prompt_time&quot;: 0.011981814,
+  &quot;completion_tokens&quot;: 22,
+  &quot;completion_time&quot;: 0.049748204,
+  &quot;total_tokens&quot;: 254,
+  &quot;total_time&quot;: 0.061730018
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>openai/gpt-oss-safeguard-20b</code></td>
+        <td>সফল</td>
+        <td>286ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model openai/gpt-oss-safeguard-20b.</td>
+        <td>I am responding from model openai/gpt-oss-safeguard-20b.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>6</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:102,&quot;23&quot;:53,&quot;24&quot;:49,&quot;25&quot;:56,&quot;26&quot;:51,&quot;27&quot;:55,&quot;28&quot;:99,&quot;29&quot;:56,&quot;30&quot;:45,&quot;31&quot;:55,&quot;32&quot;:102,&quot;33&quot;:56,&quot;34&quot;:53,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:48,&quot;38&quot;:49,&quot;39&quot;:50,&quot;40&quot;:45,&quot;41&quot;:97,&quot;42&quot;:55,&quot;43&quot;:49,&quot;44&quot;:55,&quot;45&quot;:45,&quot;46&quot;:56,&quot;47&quot;:50,&quot;48&quot;:48,&quot;49&quot;:55,&quot;50&quot;:53,&quot;51&quot;:54,&quot;52&quot;:99,&quot;53&quot;:53,&quot;54&quot;:54,&quot;55&quot;:56,&quot;56&quot;:99,&quot;57&quot;:99,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:34,&quot;61</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.16206587,
+  &quot;prompt_tokens&quot;: 229,
+  &quot;prompt_time&quot;: 0.01219821,
+  &quot;completion_tokens&quot;: 19,
+  &quot;completion_time&quot;: 0.046846498,
+  &quot;total_tokens&quot;: 248,
+  &quot;total_time&quot;: 0.059044708
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>allam-2-7b</code></td>
+        <td>সফল</td>
+        <td>2649ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model allam-2-7b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model allam-2-7b.&quot; The user wants a short sentence stating that we are responding from model all</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>আঞ্চলিক ভাষা মডেল—লোকালাইজড অ্যাপ্লিকেশন ও ভাষাগত কাজ।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>18</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:56,&quot;14&quot;:50,&quot;15&quot;:53,&quot;16&quot;:54,&quot;17&quot;:99,&quot;18&quot;:97,&quot;19&quot;:97,&quot;20&quot;:48,&quot;21&quot;:45,&quot;22&quot;:97,&quot;23&quot;:55,&quot;24&quot;:48,&quot;25&quot;:52,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:101,&quot;29&quot;:48,&quot;30&quot;:99,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:57,&quot;34&quot;:52,&quot;35&quot;:50,&quot;36&quot;:45,&quot;37&quot;:52,&quot;38&quot;:50,&quot;39&quot;:100,&quot;40&quot;:100,&quot;41&quot;:50,&quot;42&quot;:98,&quot;43&quot;:98,&quot;44&quot;:49,&quot;45&quot;:48,&quot;46&quot;:102,&quot;47&quot;:50,&quot;48&quot;:56,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,&quot;6</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 0
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 0,
+  &quot;prompt_cache_miss_tokens&quot;: 273
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>canopylabs/orpheus-arabic-saudi</code></td>
+        <td>সফল</td>
+        <td>1881ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model canopylabs/orpheus-arabic-saudi.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model canopylabs/orpheus-arabic-saudi.&quot;
+
+We need to respond in one short sentence stating that</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>19</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:48,&quot;14&quot;:100,&quot;15&quot;:97,&quot;16&quot;:50,&quot;17&quot;:55,&quot;18&quot;:100,&quot;19&quot;:98,&quot;20&quot;:49,&quot;21&quot;:45,&quot;22&quot;:100,&quot;23&quot;:49,&quot;24&quot;:51,&quot;25&quot;:56,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:99,&quot;2&quot;:50,&quot;3&quot;:99,&quot;4&quot;:45,&quot;5&quot;:97,&quot;6&quot;:52,&quot;7&quot;:98,&quot;8&quot;:54,&quot;9&quot;:45,&quot;10&quot;:55,&quot;11&quot;:51,&quot;12&quot;:101,&quot;13&quot;:57,&quot;14&quot;:102,&quot;15&quot;:51,&quot;16&quot;:52,&quot;17&quot;:97,&quot;18&quot;:97,&quot;19&quot;:57,&quot;20&quot;:52,&quot;21&quot;:57,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98,&quot;27&quot;:106,&quot;28&quot;:101,&quot;29&quot;:99,&quot;30&quot;:116,&quot;31&quot;:34,&quot;32&quot;:58,&quot;33&quot;:34,&quot;3</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 277,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 317,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 21
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>canopylabs/orpheus-v1-english</code></td>
+        <td>সফল</td>
+        <td>1671ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model canopylabs/orpheus-v1-english.</td>
+        <td>We are asked to respond in one short sentence stating that we are responding from model canopylabs/orpheus-v1-english. The instruction says &quot;In one short sentence, tell me that</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>17</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:57,&quot;14&quot;:50,&quot;15&quot;:101,&quot;16&quot;:100,&quot;17&quot;:99,&quot;18&quot;:50,&quot;19&quot;:99,&quot;20&quot;:55,&quot;21&quot;:45,&quot;22&quot;:52,&quot;23&quot;:51,&quot;24&quot;:100,&quot;25&quot;:101,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:98,&quot;29&quot;:102,&quot;30&quot;:56,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:50,&quot;34&quot;:102,&quot;35&quot;:48,&quot;36&quot;:45,&quot;37&quot;:57,&quot;38&quot;:55,&quot;39&quot;:99,&quot;40&quot;:57,&quot;41&quot;:55,&quot;42&quot;:56,&quot;43&quot;:48,&quot;44&quot;:98,&quot;45&quot;:100,&quot;46&quot;:100,&quot;47&quot;:101,&quot;48&quot;:49,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 277,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 317,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 21
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>groq/compound</code></td>
+        <td>সফল</td>
+        <td>925ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model groq/compound.</td>
+        <td>I am responding from model groq/compound.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>লো-ল্যাটেন্সি সার্ভিস, রিয়েলটাইম উত্তরের জন্য উপযোগী।</td>
+        <td>বহু রিকোয়ারমেন্টে টেস্ট করুন; ব্যালান্সড টেম্পারেচার এবং কনটেক্সট প্রয়োগ করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>15</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:52,&quot;23&quot;:57,&quot;24&quot;:57,&quot;25&quot;:98,&quot;26&quot;:99,&quot;27&quot;:50,&quot;28&quot;:52,&quot;29&quot;:99,&quot;30&quot;:45,&quot;31&quot;:55,&quot;32&quot;:54,&quot;33&quot;:100,&quot;34&quot;:97,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:100,&quot;38&quot;:55,&quot;39&quot;:99,&quot;40&quot;:45,&quot;41&quot;:98,&quot;42&quot;:55,&quot;43&quot;:48,&quot;44&quot;:97,&quot;45&quot;:45,&quot;46&quot;:55,&quot;47&quot;:99,&quot;48&quot;:48,&quot;49&quot;:53,&quot;50&quot;:53,&quot;51&quot;:56,&quot;52&quot;:54,&quot;53&quot;:100,&quot;54&quot;:50,&quot;55&quot;:48,&quot;56&quot;:54,&quot;57&quot;:102,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:34,&quot;</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.411719,
+  &quot;prompt_tokens&quot;: 1446,
+  &quot;prompt_time&quot;: 0.066207,
+  &quot;completion_tokens&quot;: 169,
+  &quot;completion_time&quot;: 0.35749,
+  &quot;total_tokens&quot;: 1615,
+  &quot;total_time&quot;: 0.423698
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>meta-llama/llama-4-scout-17b-16e-instruct</code></td>
+        <td>সফল</td>
+        <td>216ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model meta-llama/llama-4-scout-17b-16e-instruct.</td>
+        <td>I am responding as ZombieCoder, a local-first AI assistant developed by Sahon Srabon of Developer Zone in Dhaka, Bangladesh.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>10</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:99,&quot;14&quot;:104,&quot;15&quot;:97,&quot;16&quot;:116,&quot;17&quot;:99,&quot;18&quot;:109,&quot;19&quot;:112,&quot;20&quot;:108,&quot;21&quot;:45,&quot;22&quot;:99,&quot;23&quot;:102,&quot;24&quot;:102,&quot;25&quot;:49,&quot;26&quot;:56,&quot;27&quot;:97,&quot;28&quot;:97,&quot;29&quot;:52,&quot;30&quot;:45,&quot;31&quot;:100,&quot;32&quot;:56,&quot;33&quot;:55,&quot;34&quot;:50,&quot;35&quot;:45,&quot;36&quot;:52,&quot;37&quot;:50,&quot;38&quot;:55,&quot;39&quot;:52,&quot;40&quot;:45,&quot;41&quot;:97,&quot;42&quot;:100,&quot;43&quot;:98,&quot;44&quot;:55,&quot;45&quot;:45,&quot;46&quot;:57,&quot;47&quot;:97,&quot;48&quot;:97,&quot;49&quot;:49,&quot;50&quot;:48,&quot;51&quot;:56,&quot;52&quot;:52,&quot;53&quot;:53,&quot;54&quot;:51,&quot;55&quot;:101,&quot;56&quot;:53,&quot;57&quot;:97,&quot;58&quot;:34,&quot;59&quot;:44,&quot;60&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;queue_time&quot;: 0.074811137,
+  &quot;prompt_tokens&quot;: 214,
+  &quot;prompt_time&quot;: 0.009358108,
+  &quot;completion_tokens&quot;: 28,
+  &quot;completion_time&quot;: 0.063004056,
+  &quot;total_tokens&quot;: 242,
+  &quot;total_time&quot;: 0.072362164
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>openai/gpt-oss-20b</code></td>
+        <td>সফল</td>
+        <td>1675ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model openai/gpt-oss-20b.</td>
+        <td>We are asked to respond in one short sentence stating that we are responding from model openai/gpt-oss-20b. But note that the instruction says &quot;You are ZombieCoder&quot;</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>14</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:57,&quot;14&quot;:100,&quot;15&quot;:97,&quot;16&quot;:53,&quot;17&quot;:97,&quot;18&quot;:102,&quot;19&quot;:51,&quot;20&quot;:51,&quot;21&quot;:45,&quot;22&quot;:50,&quot;23&quot;:98,&quot;24&quot;:49,&quot;25&quot;:53,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:98,&quot;29&quot;:57,&quot;30&quot;:49,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:49,&quot;34&quot;:56,&quot;35&quot;:100,&quot;36&quot;:45,&quot;37&quot;:52,&quot;38&quot;:51,&quot;39&quot;:48,&quot;40&quot;:55,&quot;41&quot;:101,&quot;42&quot;:55,&quot;43&quot;:50,&quot;44&quot;:52,&quot;45&quot;:52,&quot;46&quot;:98,&quot;47&quot;:101,&quot;48&quot;:98,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,&quot;</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 275,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 315,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 19
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>gpt-oss:120b</code></td>
+        <td>সফল</td>
+        <td>3070ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model gpt-oss:120b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model gpt-oss:120b.&quot;
+
+The user wants me to state that I am responding from model gpt</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>12</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:52,&quot;14&quot;:52,&quot;15&quot;:98,&quot;16&quot;:55,&quot;17&quot;:98,&quot;18&quot;:101,&quot;19&quot;:51,&quot;20&quot;:51,&quot;21&quot;:45,&quot;22&quot;:56,&quot;23&quot;:57,&quot;24&quot;:100,&quot;25&quot;:57,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:97,&quot;29&quot;:55,&quot;30&quot;:98,&quot;31&quot;:45,&quot;32&quot;:97,&quot;33&quot;:99,&quot;34&quot;:100,&quot;35&quot;:49,&quot;36&quot;:45,&quot;37&quot;:53,&quot;38&quot;:49,&quot;39&quot;:97,&quot;40&quot;:102,&quot;41&quot;:52,&quot;42&quot;:48,&quot;43&quot;:100,&quot;44&quot;:56,&quot;45&quot;:49,&quot;46&quot;:55,&quot;47&quot;:100,&quot;48&quot;:57,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 17
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>cogito-2.1:671b</code></td>
+        <td>সফল</td>
+        <td>2465ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model cogito-2.1:671b.</td>
+        <td>We are asked to respond with a single short sentence stating that we are responding from model cogito-2.1:671b. The instruction is straightforward. The user says &quot;In one short sentence</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>17</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:48,&quot;14&quot;:100,&quot;15&quot;:49,&quot;16&quot;:102,&quot;17&quot;:99,&quot;18&quot;:52,&quot;19&quot;:101,&quot;20&quot;:97,&quot;21&quot;:45,&quot;22&quot;:98,&quot;23&quot;:99,&quot;24&quot;:102,&quot;25&quot;:54,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:97,&quot;29&quot;:98,&quot;30&quot;:98,&quot;31&quot;:45,&quot;32&quot;:57,&quot;33&quot;:48,&quot;34&quot;:98,&quot;35&quot;:49,&quot;36&quot;:45,&quot;37&quot;:97,&quot;38&quot;:102,&quot;39&quot;:100,&quot;40&quot;:100,&quot;41&quot;:52,&quot;42&quot;:49,&quot;43&quot;:50,&quot;44&quot;:98,&quot;45&quot;:100,&quot;46&quot;:99,&quot;47&quot;:97,&quot;48&quot;:97,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:3</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 275,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 315,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 19
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>deepseek-v3.1:671b</code></td>
+        <td>সফল</td>
+        <td>2175ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model deepseek-v3.1:671b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model deepseek-v3.1:671b.&quot;
+
+We are ZombieCoder, not deepseek-v3</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>15</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:57,&quot;14&quot;:100,&quot;15&quot;:51,&quot;16&quot;:102,&quot;17&quot;:57,&quot;18&quot;:97,&quot;19&quot;:98,&quot;20&quot;:48,&quot;21&quot;:45,&quot;22&quot;:54,&quot;23&quot;:49,&quot;24&quot;:56,&quot;25&quot;:50,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:50,&quot;2&quot;:57,&quot;3&quot;:49,&quot;4&quot;:45,&quot;5&quot;:97,&quot;6&quot;:53,&quot;7&quot;:51,&quot;8&quot;:100,&quot;9&quot;:45,&quot;10&quot;:53,&quot;11&quot;:48,&quot;12&quot;:57,&quot;13&quot;:100,&quot;14&quot;:57,&quot;15&quot;:54,&quot;16&quot;:57,&quot;17&quot;:53,&quot;18&quot;:57,&quot;19&quot;:97,&quot;20&quot;:57,&quot;21&quot;:53,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98,&quot;27&quot;:106,&quot;28&quot;:101,&quot;29&quot;:99,&quot;30&quot;:116,&quot;31&quot;:34,&quot;32&quot;:58,&quot;33&quot;:34,&quot;34</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 275,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 315,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 19
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>deepseek-v4-flash</code></td>
+        <td>সফল</td>
+        <td>2342ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model deepseek-v4-flash.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model deepseek-v4-flash.&quot; The user wants a very short sentence confirming that I am responding from model deep</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>13</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:101,&quot;14&quot;:99,&quot;15&quot;:49,&quot;16&quot;:50,&quot;17&quot;:49,&quot;18&quot;:53,&quot;19&quot;:53,&quot;20&quot;:48,&quot;21&quot;:45,&quot;22&quot;:52,&quot;23&quot;:50,&quot;24&quot;:49,&quot;25&quot;:51,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:100,&quot;29&quot;:99,&quot;30&quot;:97,&quot;31&quot;:45,&quot;32&quot;:97,&quot;33&quot;:102,&quot;34&quot;:99,&quot;35&quot;:50,&quot;36&quot;:45,&quot;37&quot;:56,&quot;38&quot;:55,&quot;39&quot;:102,&quot;40&quot;:98,&quot;41&quot;:50,&quot;42&quot;:49,&quot;43&quot;:102,&quot;44&quot;:53,&quot;45&quot;:52,&quot;46&quot;:48,&quot;47&quot;:101,&quot;48&quot;:50,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>gemini-3-flash-preview</code></td>
+        <td>সফল</td>
+        <td>2178ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model gemini-3-flash-preview.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model gemini-3-flash-preview.&quot; The user wants to be told in one short sentence that the model</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>19</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:48,&quot;14&quot;:51,&quot;15&quot;:101,&quot;16&quot;:54,&quot;17&quot;:56,&quot;18&quot;:97,&quot;19&quot;:57,&quot;20&quot;:100,&quot;21&quot;:45,&quot;22&quot;:49,&quot;23&quot;:102,&quot;24&quot;:97,&quot;25&quot;:48,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:97,&quot;29&quot;:48,&quot;30&quot;:97,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:56,&quot;34&quot;:50,&quot;35&quot;:57,&quot;36&quot;:45,&quot;37&quot;:50,&quot;38&quot;:57,&quot;39&quot;:53,&quot;40&quot;:51,&quot;41&quot;:100,&quot;42&quot;:57,&quot;43&quot;:53,&quot;44&quot;:53,&quot;45&quot;:49,&quot;46&quot;:51,&quot;47&quot;:98,&quot;48&quot;:57,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34,&quot;</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 274,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 314,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 18
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>gemma4:31b</code></td>
+        <td>সফল</td>
+        <td>2243ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model gemma4:31b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model gemma4:31b.&quot; The instruction is to respond succinctly. The user says &quot;You are a</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>18</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:49,&quot;14&quot;:51,&quot;15&quot;:98,&quot;16&quot;:54,&quot;17&quot;:101,&quot;18&quot;:102,&quot;19&quot;:48,&quot;20&quot;:100,&quot;21&quot;:45,&quot;22&quot;:97,&quot;23&quot;:57,&quot;24&quot;:51,&quot;25&quot;:98,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:50,&quot;29&quot;:52,&quot;30&quot;:51,&quot;31&quot;:45,&quot;32&quot;:97,&quot;33&quot;:100,&quot;34&quot;:98,&quot;35&quot;:55,&quot;36&quot;:45,&quot;37&quot;:55,&quot;38&quot;:55,&quot;39&quot;:102,&quot;40&quot;:53,&quot;41&quot;:55,&quot;42&quot;:57,&quot;43&quot;:53,&quot;44&quot;:102,&quot;45&quot;:98,&quot;46&quot;:49,&quot;47&quot;:97,&quot;48&quot;:50,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>minimax-m2</code></td>
+        <td>সফল</td>
+        <td>2290ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model minimax-m2.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model minimax-m2.&quot;
+
+We need to respond in a short sentence stating that we are responding from model minimax</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>16</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:101,&quot;14&quot;:99,&quot;15&quot;:50,&quot;16&quot;:55,&quot;17&quot;:48,&quot;18&quot;:52,&quot;19&quot;:50,&quot;20&quot;:53,&quot;21&quot;:45,&quot;22&quot;:102,&quot;23&quot;:100,&quot;24&quot;:102,&quot;25&quot;:97,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:50,&quot;29&quot;:97,&quot;30&quot;:51,&quot;31&quot;:45,&quot;32&quot;:57,&quot;33&quot;:102,&quot;34&quot;:101,&quot;35&quot;:51,&quot;36&quot;:45,&quot;37&quot;:98,&quot;38&quot;:54,&quot;39&quot;:100,&quot;40&quot;:57,&quot;41&quot;:48,&quot;42&quot;:102,&quot;43&quot;:55,&quot;44&quot;:50,&quot;45&quot;:49,&quot;46&quot;:98,&quot;47&quot;:98,&quot;48&quot;:55,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 270,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 310,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 14
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>minimax-m2.1</code></td>
+        <td>সফল</td>
+        <td>1987ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model minimax-m2.1.</td>
+        <td>We are asked to respond in one short sentence, stating that we are responding from model minimax-m2.1. The user says &quot;You are a helpful assistant. In one short sentence, tell</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>19</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:97,&quot;14&quot;:53,&quot;15&quot;:54,&quot;16&quot;:53,&quot;17&quot;:53,&quot;18&quot;:48,&quot;19&quot;:101,&quot;20&quot;:53,&quot;21&quot;:45,&quot;22&quot;:55,&quot;23&quot;:98,&quot;24&quot;:51,&quot;25&quot;:102,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:57,&quot;2&quot;:51,&quot;3&quot;:52,&quot;4&quot;:45,&quot;5&quot;:97,&quot;6&quot;:51,&quot;7&quot;:99,&quot;8&quot;:57,&quot;9&quot;:45,&quot;10&quot;:57,&quot;11&quot;:57,&quot;12&quot;:52,&quot;13&quot;:98,&quot;14&quot;:50,&quot;15&quot;:50,&quot;16&quot;:99,&quot;17&quot;:55,&quot;18&quot;:51,&quot;19&quot;:98,&quot;20&quot;:53,&quot;21&quot;:49,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98,&quot;27&quot;:106,&quot;28&quot;:101,&quot;29&quot;:99,&quot;30&quot;:116,&quot;31&quot;:34,&quot;32&quot;:58,&quot;33&quot;:34,&quot;34&quot;:</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>minimax-m2.5</code></td>
+        <td>সফল</td>
+        <td>2515ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model minimax-m2.5.</td>
+        <td>We are asked to respond in one short sentence telling that we are responding from model minimax-m2.5. The user instruction says &quot;You are a helpful assistant. In one short sentence, tell</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>23</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:102,&quot;14&quot;:99,&quot;15&quot;:101,&quot;16&quot;:101,&quot;17&quot;:98,&quot;18&quot;:99,&quot;19&quot;:99,&quot;20&quot;:97,&quot;21&quot;:45,&quot;22&quot;:51,&quot;23&quot;:99,&quot;24&quot;:55,&quot;25&quot;:52,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:97,&quot;2&quot;:51,&quot;3&quot;:57,&quot;4&quot;:45,&quot;5&quot;:97,&quot;6&quot;:54,&quot;7&quot;:54,&quot;8&quot;:49,&quot;9&quot;:45,&quot;10&quot;:101,&quot;11&quot;:53,&quot;12&quot;:51,&quot;13&quot;:49,&quot;14&quot;:55,&quot;15&quot;:102,&quot;16&quot;:53,&quot;17&quot;:101,&quot;18&quot;:52,&quot;19&quot;:56,&quot;20&quot;:98,&quot;21&quot;:53,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>minimax-m2.7</code></td>
+        <td>সফল</td>
+        <td>2266ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model minimax-m2.7.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model minimax-m2.7.&quot; The user wants a direct statement that I am responding from model minimax-m</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>13</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:50,&quot;14&quot;:99,&quot;15&quot;:52,&quot;16&quot;:48,&quot;17&quot;:102,&quot;18&quot;:51,&quot;19&quot;:52,&quot;20&quot;:50,&quot;21&quot;:45,&quot;22&quot;:98,&quot;23&quot;:102,&quot;24&quot;:48,&quot;25&quot;:57,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:53,&quot;29&quot;:56,&quot;30&quot;:56,&quot;31&quot;:45,&quot;32&quot;:56,&quot;33&quot;:100,&quot;34&quot;:98,&quot;35&quot;:51,&quot;36&quot;:45,&quot;37&quot;:99,&quot;38&quot;:48,&quot;39&quot;:98,&quot;40&quot;:97,&quot;41&quot;:56,&quot;42&quot;:49,&quot;43&quot;:101,&quot;44&quot;:49,&quot;45&quot;:100,&quot;46&quot;:57,&quot;47&quot;:54,&quot;48&quot;:97,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,&quot;</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>minimax-m3</code></td>
+        <td>সফল</td>
+        <td>1998ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model minimax-m3.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model minimax-m3.&quot; So we should respond directly stating that we are responding from model minimax-m3.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>15</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:50,&quot;14&quot;:49,&quot;15&quot;:99,&quot;16&quot;:100,&quot;17&quot;:53,&quot;18&quot;:49,&quot;19&quot;:49,&quot;20&quot;:56,&quot;21&quot;:45,&quot;22&quot;:57,&quot;23&quot;:100,&quot;24&quot;:102,&quot;25&quot;:99,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:102,&quot;2&quot;:53,&quot;3&quot;:50,&quot;4&quot;:45,&quot;5&quot;:56,&quot;6&quot;:53,&quot;7&quot;:51,&quot;8&quot;:49,&quot;9&quot;:45,&quot;10&quot;:57,&quot;11&quot;:97,&quot;12&quot;:97,&quot;13&quot;:98,&quot;14&quot;:52,&quot;15&quot;:102,&quot;16&quot;:50,&quot;17&quot;:48,&quot;18&quot;:102,&quot;19&quot;:101,&quot;20&quot;:48,&quot;21&quot;:48,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98}
+
+data: {&quot;0&quot;:106,&quot;1&quot;:101,&quot;2&quot;:99,&quot;3&quot;:116,&quot;4&quot;:34,&quot;5&quot;:58,&quot;6&quot;:3</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 270,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 310,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 14
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>ministral-3:14b</code></td>
+        <td>সফল</td>
+        <td>1964ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model ministral-3:14b.</td>
+        <td>We are asked: &quot;You are a helpful assistant. In one short sentence, tell me that you are responding from model ministral-3:14b.&quot;
+
+We need to respond in one short sentence</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>14</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:100,&quot;14&quot;:102,&quot;15&quot;:51,&quot;16&quot;:49,&quot;17&quot;:54,&quot;18&quot;:49,&quot;19&quot;:97,&quot;20&quot;:55,&quot;21&quot;:45,&quot;22&quot;:52,&quot;23&quot;:102,&quot;24&quot;:52,&quot;25&quot;:101,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:100,&quot;29&quot;:98,&quot;30&quot;:100,&quot;31&quot;:45,&quot;32&quot;:57,&quot;33&quot;:57,&quot;34&quot;:101,&quot;35&quot;:98,&quot;36&quot;:45,&quot;37&quot;:97,&quot;38&quot;:54,&quot;39&quot;:50,&quot;40&quot;:49,&quot;41&quot;:49,&quot;42&quot;:55,&quot;43&quot;:49,&quot;44&quot;:52,&quot;45&quot;:56,&quot;46&quot;:48,&quot;47&quot;:57,&quot;48&quot;:98,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:3</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 17
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>ministral-3:3b</code></td>
+        <td>সফল</td>
+        <td>2005ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model ministral-3:3b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model ministral-3:3b.&quot;
+
+We need to output a single short sentence stating that we are responding from</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>21</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:100,&quot;14&quot;:49,&quot;15&quot;:100,&quot;16&quot;:51,&quot;17&quot;:52,&quot;18&quot;:48,&quot;19&quot;:50,&quot;20&quot;:53,&quot;21&quot;:45,&quot;22&quot;:102,&quot;23&quot;:54,&quot;24&quot;:101,&quot;25&quot;:49,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:52,&quot;2&quot;:56,&quot;3&quot;:49,&quot;4&quot;:45,&quot;5&quot;:56,&quot;6&quot;:102,&quot;7&quot;:50,&quot;8&quot;:56,&quot;9&quot;:45,&quot;10&quot;:57,&quot;11&quot;:54,&quot;12&quot;:100,&quot;13&quot;:52,&quot;14&quot;:54,&quot;15&quot;:56,&quot;16&quot;:51,&quot;17&quot;:99,&quot;18&quot;:48,&quot;19&quot;:53,&quot;20&quot;:102,&quot;21&quot;:57,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 17
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>ministral-3:8b</code></td>
+        <td>সফল</td>
+        <td>2167ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model ministral-3:8b.</td>
+        <td>We are asked to respond in one short sentence, stating that we are responding from model ministral-3:8b. The instruction is straightforward. We need to output exactly that.
+
+We must not</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>18</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:101,&quot;14&quot;:56,&quot;15&quot;:52,&quot;16&quot;:57,&quot;17&quot;:48,&quot;18&quot;:50,&quot;19&quot;:49,&quot;20&quot;:53,&quot;21&quot;:45,&quot;22&quot;:51,&quot;23&quot;:56,&quot;24&quot;:53,&quot;25&quot;:57,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:48,&quot;2&quot;:50,&quot;3&quot;:51,&quot;4&quot;:45,&quot;5&quot;:56,&quot;6&quot;:57,&quot;7&quot;:56,&quot;8&quot;:101,&quot;9&quot;:45,&quot;10&quot;:98,&quot;11&quot;:51,&quot;12&quot;:49,&quot;13&quot;:102,&quot;14&quot;:98,&quot;15&quot;:54,&quot;16&quot;:55,&quot;17&quot;:102,&quot;18&quot;:53,&quot;19&quot;:49,&quot;20&quot;:56,&quot;21&quot;:54,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98,&quot;27&quot;:106,&quot;28&quot;:101,&quot;29&quot;:99,&quot;30&quot;:116,&quot;31&quot;:34,&quot;32&quot;:58,&quot;33&quot;:34,&quot;34</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 17
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>rnj-1:8b</code></td>
+        <td>সফল</td>
+        <td>2174ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model rnj-1:8b.</td>
+        <td>First, the user says: &quot;You are a helpful assistant. In one short sentence, tell me that you are responding from model rnj-1:8b.&quot;
+
+I need to respond in one</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>17</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:50,&quot;14&quot;:54,&quot;15&quot;:50,&quot;16&quot;:99,&quot;17&quot;:101,&quot;18&quot;:101,&quot;19&quot;:56,&quot;20&quot;:52,&quot;21&quot;:45,&quot;22&quot;:51,&quot;23&quot;:57,&quot;24&quot;:57,&quot;25&quot;:98,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:48,&quot;29&quot;:53,&quot;30&quot;:53,&quot;31&quot;:45,&quot;32&quot;:97,&quot;33&quot;:102,&quot;34&quot;:55,&quot;35&quot;:102,&quot;36&quot;:45,&quot;37&quot;:99,&quot;38&quot;:55,&quot;39&quot;:49,&quot;40&quot;:102,&quot;41&quot;:56,&quot;42&quot;:57,&quot;43&quot;:49,&quot;44&quot;:99,&quot;45&quot;:56,&quot;46&quot;:98,&quot;47&quot;:102,&quot;48&quot;:100,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:3</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 17
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>deepseek-v3.2</code></td>
+        <td>সফল</td>
+        <td>2178ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model deepseek-v3.2.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model deepseek-v3.2.&quot;
+
+But my identity as ZombieCoder is fixed. The user might be</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>20</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:54,&quot;14&quot;:51,&quot;15&quot;:100,&quot;16&quot;:56,&quot;17&quot;:98,&quot;18&quot;:56,&quot;19&quot;:99,&quot;20&quot;:50,&quot;21&quot;:45,&quot;22&quot;:97,&quot;23&quot;:55,&quot;24&quot;:49,&quot;25&quot;:57,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:101,&quot;2&quot;:57,&quot;3&quot;:98,&quot;4&quot;:45,&quot;5&quot;:56,&quot;6&quot;:98,&quot;7&quot;:57,&quot;8&quot;:51,&quot;9&quot;:45,&quot;10&quot;:98,&quot;11&quot;:51,&quot;12&quot;:51,&quot;13&quot;:48,&quot;14&quot;:52,&quot;15&quot;:54,&quot;16&quot;:54,&quot;17&quot;:52,&quot;18&quot;:99,&quot;19&quot;:100,&quot;20&quot;:98,&quot;21&quot;:51,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34,&quot;8&quot;</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>deepseek-v4-pro</code></td>
+        <td>সফল</td>
+        <td>2143ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model deepseek-v4-pro.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model deepseek-v4-pro.&quot;
+
+We need to respond with a short sentence stating that we are responding from model deep</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>13</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:52,&quot;14&quot;:100,&quot;15&quot;:102,&quot;16&quot;:55,&quot;17&quot;:102,&quot;18&quot;:52,&quot;19&quot;:48,&quot;20&quot;:101,&quot;21&quot;:45,&quot;22&quot;:48,&quot;23&quot;:49,&quot;24&quot;:100,&quot;25&quot;:55,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:48,&quot;2&quot;:102,&quot;3&quot;:49,&quot;4&quot;:45,&quot;5&quot;:97,&quot;6&quot;:54,&quot;7&quot;:53,&quot;8&quot;:54,&quot;9&quot;:45,&quot;10&quot;:52,&quot;11&quot;:99,&quot;12&quot;:48,&quot;13&quot;:51,&quot;14&quot;:100,&quot;15&quot;:101,&quot;16&quot;:102,&quot;17&quot;:54,&quot;18&quot;:54,&quot;19&quot;:48,&quot;20&quot;:53,&quot;21&quot;:56,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98,&quot;27&quot;:106,&quot;28&quot;:101,&quot;29&quot;:99,&quot;30&quot;:116,&quot;31&quot;:34,&quot;32&quot;:58,&quot;33&quot;:3</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 271,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 311,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 15
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>devstral-2:123b</code></td>
+        <td>সফল</td>
+        <td>2199ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model devstral-2:123b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model devstral-2:123b.&quot; So we need to output a short sentence stating that we are responding from</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>12</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:51,&quot;14&quot;:49,&quot;15&quot;:97,&quot;16&quot;:51,&quot;17&quot;:51,&quot;18&quot;:97,&quot;19&quot;:54,&quot;20&quot;:55,&quot;21&quot;:45,&quot;22&quot;:50,&quot;23&quot;:57,&quot;24&quot;:51,&quot;25&quot;:53,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:99,&quot;29&quot;:100,&quot;30&quot;:56,&quot;31&quot;:45,&quot;32&quot;:56,&quot;33&quot;:101,&quot;34&quot;:98,&quot;35&quot;:54,&quot;36&quot;:45,&quot;37&quot;:56,&quot;38&quot;:100,&quot;39&quot;:54,&quot;40&quot;:50,&quot;41&quot;:56,&quot;42&quot;:48,&quot;43&quot;:57,&quot;44&quot;:98,&quot;45&quot;:50,&quot;46&quot;:56,&quot;47&quot;:54,&quot;48&quot;:100,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34,&quot;</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 17
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>devstral-small-2:24b</code></td>
+        <td>সফল</td>
+        <td>2302ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model devstral-small-2:24b.</td>
+        <td>We are asked to respond in one short sentence stating that we are the model devstral-small-2:24b. The user says &quot;You are a helpful assistant.&quot; and then the request. So</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>23</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:51,&quot;14&quot;:53,&quot;15&quot;:55,&quot;16&quot;:98,&quot;17&quot;:100,&quot;18&quot;:98,&quot;19&quot;:97,&quot;20&quot;:102,&quot;21&quot;:45,&quot;22&quot;:51,&quot;23&quot;:50,&quot;24&quot;:57,&quot;25&quot;:56,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:53,&quot;2&quot;:99,&quot;3&quot;:52,&quot;4&quot;:45,&quot;5&quot;:97,&quot;6&quot;:50,&quot;7&quot;:50,&quot;8&quot;:100,&quot;9&quot;:45,&quot;10&quot;:52,&quot;11&quot;:97,&quot;12&quot;:99,&quot;13&quot;:55,&quot;14&quot;:54,&quot;15&quot;:49,&quot;16&quot;:97,&quot;17&quot;:51,&quot;18&quot;:50,&quot;19&quot;:51,&quot;20&quot;:102,&quot;21&quot;:53,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98,&quot;27&quot;:106,&quot;28&quot;:101,&quot;29&quot;:99,&quot;30&quot;:116,&quot;31&quot;:34,&quot;32&quot;:58,&quot;33&quot;:34,&quot;34</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 274,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 314,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 18
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>gemma3:12b</code></td>
+        <td>সফল</td>
+        <td>2225ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model gemma3:12b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model gemma3:12b.&quot;
+
+We must respond directly, no internal reasoning. The instruction says answer directly.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>20</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:102,&quot;14&quot;:99,&quot;15&quot;:54,&quot;16&quot;:49,&quot;17&quot;:57,&quot;18&quot;:102,&quot;19&quot;:52,&quot;20&quot;:50,&quot;21&quot;:45,&quot;22&quot;:49,&quot;23&quot;:56,&quot;24&quot;:101,&quot;25&quot;:98,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:57,&quot;29&quot;:97,&quot;30&quot;:100,&quot;31&quot;:45,&quot;32&quot;:97,&quot;33&quot;:99,&quot;34&quot;:52,&quot;35&quot;:56,&quot;36&quot;:45,&quot;37&quot;:51,&quot;38&quot;:100,&quot;39&quot;:99,&quot;40&quot;:102,&quot;41&quot;:50,&quot;42&quot;:54,&quot;43&quot;:53,&quot;44&quot;:101,&quot;45&quot;:50,&quot;46&quot;:50,&quot;47&quot;:101,&quot;48&quot;:50,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:3</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>gemma3:27b</code></td>
+        <td>সফল</td>
+        <td>1994ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model gemma3:27b.</td>
+        <td>First, the user says: &quot;In one short sentence, tell me that you are responding from model gemma3:27b.&quot;
+
+I need to craft a response that confirms I am responding from the</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>17</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:51,&quot;14&quot;:52,&quot;15&quot;:51,&quot;16&quot;:50,&quot;17&quot;:52,&quot;18&quot;:56,&quot;19&quot;:54,&quot;20&quot;:101,&quot;21&quot;:45,&quot;22&quot;:100,&quot;23&quot;:99,&quot;24&quot;:56,&quot;25&quot;:99,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:99,&quot;29&quot;:54,&quot;30&quot;:102,&quot;31&quot;:45,&quot;32&quot;:57,&quot;33&quot;:97,&quot;34&quot;:97,&quot;35&quot;:56,&quot;36&quot;:45,&quot;37&quot;:97,&quot;38&quot;:102,&quot;39&quot;:97,&quot;40&quot;:48,&quot;41&quot;:57,&quot;42&quot;:48,&quot;43&quot;:102,&quot;44&quot;:52,&quot;45&quot;:55,&quot;46&quot;:53,&quot;47&quot;:53,&quot;48&quot;:98,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>gemma3:4b</code></td>
+        <td>সফল</td>
+        <td>2481ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model gemma3:4b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model gemma3:4b.&quot;
+
+We need to output a short sentence that says &quot;I am responding from model</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>18</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:54,&quot;14&quot;:49,&quot;15&quot;:98,&quot;16&quot;:57,&quot;17&quot;:97,&quot;18&quot;:50,&quot;19&quot;:100,&quot;20&quot;:57,&quot;21&quot;:45,&quot;22&quot;:102,&quot;23&quot;:55,&quot;24&quot;:51,&quot;25&quot;:101,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:49,&quot;29&quot;:53,&quot;30&quot;:102,&quot;31&quot;:45,&quot;32&quot;:56,&quot;33&quot;:55,&quot;34&quot;:99,&quot;35&quot;:97,&quot;36&quot;:45,&quot;37&quot;:98,&quot;38&quot;:55,&quot;39&quot;:56,&quot;40&quot;:98,&quot;41&quot;:100,&quot;42&quot;:99,&quot;43&quot;:98,&quot;44&quot;:49,&quot;45&quot;:57,&quot;46&quot;:56,&quot;47&quot;:98,&quot;48&quot;:49,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>glm-4.6</code></td>
+        <td>সফল</td>
+        <td>2247ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model glm-4.6.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model glm-4.6.&quot;
+
+The instruction: &quot;You are a helpful assistant. In one short sentence, tell</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>18</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:50,&quot;14&quot;:50,&quot;15&quot;:55,&quot;16&quot;:50,&quot;17&quot;:50,&quot;18&quot;:102,&quot;19&quot;:52,&quot;20&quot;:51,&quot;21&quot;:45,&quot;22&quot;:57,&quot;23&quot;:48,&quot;24&quot;:97,&quot;25&quot;:50,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:54,&quot;29&quot;:56,&quot;30&quot;:51,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:52,&quot;34&quot;:56,&quot;35&quot;:57,&quot;36&quot;:45,&quot;37&quot;:99,&quot;38&quot;:51,&quot;39&quot;:56,&quot;40&quot;:54,&quot;41&quot;:51,&quot;42&quot;:50,&quot;43&quot;:52,&quot;44&quot;:49,&quot;45&quot;:53,&quot;46&quot;:52,&quot;47&quot;:99,&quot;48&quot;:56,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,&quot;61&quot;:</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 271,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 311,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 15
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>glm-4.7</code></td>
+        <td>সফল</td>
+        <td>2239ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model glm-4.7.</td>
+        <td>We are asked: &quot;You are a helpful assistant. In one short sentence, tell me that you are responding from model glm-4.7.&quot; However, the system prompt identifies me as Zombie</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>22</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:54,&quot;14&quot;:50,&quot;15&quot;:54,&quot;16&quot;:98,&quot;17&quot;:56,&quot;18&quot;:54,&quot;19&quot;:51,&quot;20&quot;:100,&quot;21&quot;:45,&quot;22&quot;:53,&quot;23&quot;:54,&quot;24&quot;:48,&quot;25&quot;:102,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:49,&quot;29&quot;:55,&quot;30&quot;:100,&quot;31&quot;:45,&quot;32&quot;:57,&quot;33&quot;:53,&quot;34&quot;:57,&quot;35&quot;:50,&quot;36&quot;:45,&quot;37&quot;:53,&quot;38&quot;:56,&quot;39&quot;:53,&quot;40&quot;:55,&quot;41&quot;:53,&quot;42&quot;:101,&quot;43&quot;:55,&quot;44&quot;:101,&quot;45&quot;:52,&quot;46&quot;:101,&quot;47&quot;:50,&quot;48&quot;:49,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 271,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 311,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 15
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>glm-5</code></td>
+        <td>সফল</td>
+        <td>2272ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model glm-5.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model glm-5.&quot; The user says &quot;You are a helpful assistant.&quot; The instruction requires me to respond in one</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>22</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:100,&quot;14&quot;:51,&quot;15&quot;:100,&quot;16&quot;:97,&quot;17&quot;:53,&quot;18&quot;:98,&quot;19&quot;:48,&quot;20&quot;:99,&quot;21&quot;:45,&quot;22&quot;:49,&quot;23&quot;:101,&quot;24&quot;:102,&quot;25&quot;:53,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:56,&quot;2&quot;:98,&quot;3&quot;:48,&quot;4&quot;:45,&quot;5&quot;:57,&quot;6&quot;:52,&quot;7&quot;:98,&quot;8&quot;:100,&quot;9&quot;:45,&quot;10&quot;:50,&quot;11&quot;:55,&quot;12&quot;:56,&quot;13&quot;:100,&quot;14&quot;:56,&quot;15&quot;:50,&quot;16&quot;:53,&quot;17&quot;:48,&quot;18&quot;:54,&quot;19&quot;:57,&quot;20&quot;:101,&quot;21&quot;:102,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:3</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 269,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 309,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 13
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>glm-5.1</code></td>
+        <td>সফল</td>
+        <td>2143ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model glm-5.1.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model glm-5.1.&quot;
+
+We need to respond in one short sentence, stating that we are responding from model</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>16</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:101,&quot;14&quot;:98,&quot;15&quot;:55,&quot;16&quot;:49,&quot;17&quot;:48,&quot;18&quot;:55,&quot;19&quot;:50,&quot;20&quot;:54,&quot;21&quot;:45,&quot;22&quot;:52,&quot;23&quot;:99,&quot;24&quot;:49,&quot;25&quot;:48,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:98,&quot;2&quot;:56,&quot;3&quot;:101,&quot;4&quot;:45,&quot;5&quot;:56,&quot;6&quot;:56,&quot;7&quot;:55,&quot;8&quot;:100,&quot;9&quot;:45,&quot;10&quot;:52,&quot;11&quot;:97,&quot;12&quot;:97,&quot;13&quot;:97,&quot;14&quot;:57,&quot;15&quot;:50,&quot;16&quot;:52,&quot;17&quot;:100,&quot;18&quot;:55,&quot;19&quot;:102,&quot;20&quot;:102,&quot;21&quot;:56,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98,&quot;27&quot;:106,&quot;28&quot;:101,&quot;29&quot;:99,&quot;30&quot;:116,&quot;31&quot;:34,&quot;32&quot;:58,&quot;33&quot;:34,&quot;</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 271,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 311,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 15
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>gpt-oss:20b</code></td>
+        <td>সফল</td>
+        <td>2440ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model gpt-oss:20b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model gpt-oss:20b.&quot; The instruction says: &quot;Role: You are ZombieCoder...</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>11</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:53,&quot;14&quot;:97,&quot;15&quot;:102,&quot;16&quot;:55,&quot;17&quot;:53,&quot;18&quot;:50,&quot;19&quot;:100,&quot;20&quot;:100,&quot;21&quot;:45,&quot;22&quot;:57,&quot;23&quot;:51,&quot;24&quot;:53,&quot;25&quot;:56,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:54,&quot;29&quot;:99,&quot;30&quot;:57,&quot;31&quot;:45,&quot;32&quot;:97,&quot;33&quot;:51,&quot;34&quot;:53,&quot;35&quot;:49,&quot;36&quot;:45,&quot;37&quot;:55,&quot;38&quot;:98,&quot;39&quot;:49,&quot;40&quot;:48,&quot;41&quot;:57,&quot;42&quot;:48,&quot;43&quot;:102,&quot;44&quot;:56,&quot;45&quot;:57,&quot;46&quot;:54,&quot;47&quot;:57,&quot;48&quot;:101,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,&quot;</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 17
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>kimi-k2-thinking</code></td>
+        <td>সফল</td>
+        <td>2332ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model kimi-k2-thinking.</td>
+        <td>We are asked to respond in one short sentence, stating that we are responding from model kimi-k2-thinking. However, note that the user also says &quot;You are a helpful assistant.&quot; and then</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>20</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:52,&quot;14&quot;:53,&quot;15&quot;:100,&quot;16&quot;:57,&quot;17&quot;:49,&quot;18&quot;:101,&quot;19&quot;:98,&quot;20&quot;:50,&quot;21&quot;:45,&quot;22&quot;:49,&quot;23&quot;:100,&quot;24&quot;:51,&quot;25&quot;:56,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:50,&quot;2&quot;:52,&quot;3&quot;:48,&quot;4&quot;:45,&quot;5&quot;:98,&quot;6&quot;:55,&quot;7&quot;:99,&quot;8&quot;:102,&quot;9&quot;:45,&quot;10&quot;:52,&quot;11&quot;:102,&quot;12&quot;:52,&quot;13&quot;:57,&quot;14&quot;:55,&quot;15&quot;:50,&quot;16&quot;:102,&quot;17&quot;:100,&quot;18&quot;:101,&quot;19&quot;:52,&quot;20&quot;:48,&quot;21&quot;:101,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98}
+
+data: {&quot;0&quot;:106,&quot;1&quot;:101,&quot;2&quot;:99,&quot;3&quot;:116,&quot;4&quot;:34,&quot;5&quot;:58,&quot;6&quot;</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 271,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 311,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 15
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>kimi-k2.5</code></td>
+        <td>সফল</td>
+        <td>2516ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model kimi-k2.5.</td>
+        <td>We are asked to respond in one short sentence stating that we are responding from model &quot;kimi-k2.5&quot;. The assistant should simply comply.
+
+We must output only the exact sentence as per instruction</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>15</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:56,&quot;14&quot;:57,&quot;15&quot;:52,&quot;16&quot;:48,&quot;17&quot;:52,&quot;18&quot;:55,&quot;19&quot;:52,&quot;20&quot;:49,&quot;21&quot;:45,&quot;22&quot;:51,&quot;23&quot;:50,&quot;24&quot;:52,&quot;25&quot;:97,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:98,&quot;29&quot;:100,&quot;30&quot;:48,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:54,&quot;34&quot;:57,&quot;35&quot;:52,&quot;36&quot;:45,&quot;37&quot;:57,&quot;38&quot;:54,&quot;39&quot;:99,&quot;40&quot;:98,&quot;41&quot;:53,&quot;42&quot;:48,&quot;43&quot;:56,&quot;44&quot;:101,&quot;45&quot;:100,&quot;46&quot;:56,&quot;47&quot;:101,&quot;48&quot;:55,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,&quot;6</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>kimi-k2.6</code></td>
+        <td>সফল</td>
+        <td>2262ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model kimi-k2.6.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model kimi-k2.6.&quot; The user wants a sentence that says I am responding from that model. But</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>10</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:101,&quot;14&quot;:53,&quot;15&quot;:55,&quot;16&quot;:101,&quot;17&quot;:98,&quot;18&quot;:55,&quot;19&quot;:101,&quot;20&quot;:102,&quot;21&quot;:45,&quot;22&quot;:102,&quot;23&quot;:100,&quot;24&quot;:50,&quot;25&quot;:51,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:53,&quot;29&quot;:98,&quot;30&quot;:57,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:101,&quot;34&quot;:48,&quot;35&quot;:53,&quot;36&quot;:45,&quot;37&quot;:48,&quot;38&quot;:48,&quot;39&quot;:57,&quot;40&quot;:51,&quot;41&quot;:51,&quot;42&quot;:54,&quot;43&quot;:48,&quot;44&quot;:98,&quot;45&quot;:48,&quot;46&quot;:97,&quot;47&quot;:51,&quot;48&quot;:57,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>kimi-k2:1t</code></td>
+        <td>সফল</td>
+        <td>2187ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model kimi-k2:1t.</td>
+        <td>First, the user says: &quot;You are a helpful assistant. In one short sentence, tell me that you are responding from model kimi-k2:1t.&quot;
+
+I need to respond directly and</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>18</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:52,&quot;14&quot;:97,&quot;15&quot;:101,&quot;16&quot;:54,&quot;17&quot;:54,&quot;18&quot;:102,&quot;19&quot;:98,&quot;20&quot;:102,&quot;21&quot;:45,&quot;22&quot;:54,&quot;23&quot;:100,&quot;24&quot;:57,&quot;25&quot;:101,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:53,&quot;29&quot;:98,&quot;30&quot;:54,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:50,&quot;34&quot;:49,&quot;35&quot;:53,&quot;36&quot;:45,&quot;37&quot;:48,&quot;38&quot;:49,&quot;39&quot;:48,&quot;40&quot;:54,&quot;41&quot;:52,&quot;42&quot;:48,&quot;43&quot;:102,&quot;44&quot;:101,&quot;45&quot;:50,&quot;46&quot;:102,&quot;47&quot;:56,&quot;48&quot;:53,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:3</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 17
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>mistral-large-3:675b</code></td>
+        <td>সফল</td>
+        <td>2274ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model mistral-large-3:675b.</td>
+        <td>We are asked to respond in one short sentence stating that we are responding from model mistral-large-3:675b. We need to directly answer with that information.
+
+The instruction says: &quot;In</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>15</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:101,&quot;14&quot;:50,&quot;15&quot;:99,&quot;16&quot;:57,&quot;17&quot;:98,&quot;18&quot;:54,&quot;19&quot;:52,&quot;20&quot;:99,&quot;21&quot;:45,&quot;22&quot;:57,&quot;23&quot;:48,&quot;24&quot;:98,&quot;25&quot;:53,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:99,&quot;29&quot;:48,&quot;30&quot;:54,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:57,&quot;34&quot;:99,&quot;35&quot;:101,&quot;36&quot;:45,&quot;37&quot;:101,&quot;38&quot;:53,&quot;39&quot;:54,&quot;40&quot;:52,&quot;41&quot;:100,&quot;42&quot;:50,&quot;43&quot;:56,&quot;44&quot;:101,&quot;45&quot;:48,&quot;46&quot;:52,&quot;47&quot;:100,&quot;48&quot;:50,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 274,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 314,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 18
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>nemotron-3-nano:30b</code></td>
+        <td>সফল</td>
+        <td>2394ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model nemotron-3-nano:30b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model nemotron-3-nano:30b.&quot;
+
+The user wants a confirmation that the response is from that specific</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>13</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:97,&quot;14&quot;:54,&quot;15&quot;:97,&quot;16&quot;:98,&quot;17&quot;:56,&quot;18&quot;:102,&quot;19&quot;:56,&quot;20&quot;:53,&quot;21&quot;:45,&quot;22&quot;:49,&quot;23&quot;:48,&quot;24&quot;:97,&quot;25&quot;:49,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:56,&quot;29&quot;:54,&quot;30&quot;:100,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:101,&quot;34&quot;:100,&quot;35&quot;:52,&quot;36&quot;:45,&quot;37&quot;:100,&quot;38&quot;:49,&quot;39&quot;:98,&quot;40&quot;:53,&quot;41&quot;:51,&quot;42&quot;:100,&quot;43&quot;:49,&quot;44&quot;:56,&quot;45&quot;:48,&quot;46&quot;:54,&quot;47&quot;:56,&quot;48&quot;:99,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 275,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 315,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 19
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>nemotron-3-super</code></td>
+        <td>সফল</td>
+        <td>2533ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model nemotron-3-super.</td>
+        <td>We are asked to respond in one short sentence, saying that we are responding from model nemotron-3-super. The user says &quot;You are a helpful assistant.&quot; Then asks to &quot;tell me</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>16</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:48,&quot;14&quot;:48,&quot;15&quot;:98,&quot;16&quot;:57,&quot;17&quot;:50,&quot;18&quot;:54,&quot;19&quot;:53,&quot;20&quot;:57,&quot;21&quot;:45,&quot;22&quot;:57,&quot;23&quot;:56,&quot;24&quot;:99,&quot;25&quot;:54,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:54,&quot;29&quot;:49,&quot;30&quot;:57,&quot;31&quot;:45,&quot;32&quot;:57,&quot;33&quot;:48,&quot;34&quot;:99,&quot;35&quot;:48,&quot;36&quot;:45,&quot;37&quot;:56,&quot;38&quot;:101,&quot;39&quot;:102,&quot;40&quot;:98,&quot;41&quot;:100,&quot;42&quot;:52,&quot;43&quot;:56,&quot;44&quot;:99,&quot;45&quot;:56,&quot;46&quot;:48,&quot;47&quot;:101,&quot;48&quot;:99,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34,&quot;</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>nemotron-3-ultra</code></td>
+        <td>সফল</td>
+        <td>2164ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model nemotron-3-ultra.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model nemotron-3-ultra.&quot;
+
+The user says &quot;You are a helpful assistant.&quot; then the instruction.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>জেনেরিক টেক্সট প্রসেসিং ও প্রোটোটাইপিং; প্রম্পট টিউনিং ব্যবহার করুন।</td>
+        <td>ইনপুট স্যানিটাইজেশন, প্রম্পট স্পষ্টীকরণ এবং পুনরাবৃত্তি পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>21</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:53,&quot;14&quot;:49,&quot;15&quot;:49,&quot;16&quot;:56,&quot;17&quot;:52,&quot;18&quot;:97,&quot;19&quot;:48,&quot;20&quot;:57,&quot;21&quot;:45,&quot;22&quot;:98,&quot;23&quot;:55,&quot;24&quot;:50,&quot;25&quot;:48,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:55,&quot;2&quot;:100,&quot;3&quot;:55,&quot;4&quot;:45,&quot;5&quot;:56,&quot;6&quot;:50,&quot;7&quot;:101,&quot;8&quot;:101,&quot;9&quot;:45,&quot;10&quot;:102,&quot;11&quot;:101,&quot;12&quot;:102,&quot;13&quot;:50,&quot;14&quot;:51,&quot;15&quot;:56,&quot;16&quot;:97,&quot;17&quot;:98,&quot;18&quot;:98,&quot;19&quot;:57,&quot;20&quot;:98,&quot;21&quot;:55,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 17
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>qwen3-coder-next</code></td>
+        <td>সফল</td>
+        <td>2285ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model qwen3-coder-next.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model qwen3-coder-next.&quot;
+
+We must respond directly, in one short sentence, stating that we are responding</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>15</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:56,&quot;14&quot;:100,&quot;15&quot;:51,&quot;16&quot;:56,&quot;17&quot;:53,&quot;18&quot;:49,&quot;19&quot;:101,&quot;20&quot;:50,&quot;21&quot;:45,&quot;22&quot;:99,&quot;23&quot;:56,&quot;24&quot;:57,&quot;25&quot;:97,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:53,&quot;29&quot;:100,&quot;30&quot;:56,&quot;31&quot;:45,&quot;32&quot;:56,&quot;33&quot;:49,&quot;34&quot;:53,&quot;35&quot;:56,&quot;36&quot;:45,&quot;37&quot;:100,&quot;38&quot;:99,&quot;39&quot;:55,&quot;40&quot;:102,&quot;41&quot;:52,&quot;42&quot;:48,&quot;43&quot;:48,&quot;44&quot;:101,&quot;45&quot;:99,&quot;46&quot;:52,&quot;47&quot;:97,&quot;48&quot;:48,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111}
+
+data: {&quot;0&quot;:98,&quot;1&quot;:106,&quot;2&quot;:101,&quot;3&quot;:99,&quot;4&quot;:116,&quot;5&quot;:34,&quot;6&quot;:58,&quot;7&quot;:34</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 272,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 312,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 16
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>qwen3-coder:480b</code></td>
+        <td>সফল</td>
+        <td>2286ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model qwen3-coder:480b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model qwen3-coder:480b.&quot; So we need to say that we are responding from that model.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>17</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:50,&quot;14&quot;:101,&quot;15&quot;:53,&quot;16&quot;:101,&quot;17&quot;:55,&quot;18&quot;:100,&quot;19&quot;:49,&quot;20&quot;:55,&quot;21&quot;:45,&quot;22&quot;:98,&quot;23&quot;:101,&quot;24&quot;:98,&quot;25&quot;:51,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:52,&quot;2&quot;:55,&quot;3&quot;:51,&quot;4&quot;:45,&quot;5&quot;:97,&quot;6&quot;:49,&quot;7&quot;:99,&quot;8&quot;:102,&quot;9&quot;:45,&quot;10&quot;:100,&quot;11&quot;:52,&quot;12&quot;:101,&quot;13&quot;:54,&quot;14&quot;:53,&quot;15&quot;:52,&quot;16&quot;:53,&quot;17&quot;:48,&quot;18&quot;:57,&quot;19&quot;:100,&quot;20&quot;:50,&quot;21&quot;:50,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98,&quot;27&quot;:106,&quot;28&quot;:101,&quot;29&quot;:99,&quot;30&quot;:116,&quot;31&quot;:34,&quot;32&quot;:58,&quot;33&quot;:34</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 274,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 314,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 18
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>qwen3-next:80b</code></td>
+        <td>সফল</td>
+        <td>2176ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model qwen3-next:80b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model qwen3-next:80b.&quot; So we need to state that we are responding from that specific model.</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>13</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:51,&quot;14&quot;:51,&quot;15&quot;:97,&quot;16&quot;:49,&quot;17&quot;:55,&quot;18&quot;:53,&quot;19&quot;:100,&quot;20&quot;:99,&quot;21&quot;:45,&quot;22&quot;:97,&quot;23&quot;:52,&quot;24&quot;:100,&quot;25&quot;:99,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:98,&quot;29&quot;:51,&quot;30&quot;:101,&quot;31&quot;:45,&quot;32&quot;:98,&quot;33&quot;:100,&quot;34&quot;:97,&quot;35&quot;:57,&quot;36&quot;:45,&quot;37&quot;:51,&quot;38&quot;:99,&quot;39&quot;:102,&quot;40&quot;:99,&quot;41&quot;:53,&quot;42&quot;:56,&quot;43&quot;:100,&quot;44&quot;:49,&quot;45&quot;:52,&quot;46&quot;:55,&quot;47&quot;:54,&quot;48&quot;:98,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 273,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 313,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 17
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>qwen3-vl:235b</code></td>
+        <td>সফল</td>
+        <td>2212ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model qwen3-vl:235b.</td>
+        <td>First, the user says: &quot;You are a helpful assistant. In one short sentence, tell me that you are responding from model qwen3-vl:235b.&quot;
+
+I need to respond in</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>14</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:57,&quot;14&quot;:98,&quot;15&quot;:49,&quot;16&quot;:56,&quot;17&quot;:48,&quot;18&quot;:48,&quot;19&quot;:51,&quot;20&quot;:50,&quot;21&quot;:45,&quot;22&quot;:51,&quot;23&quot;:51,&quot;24&quot;:101,&quot;25&quot;:55,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:99,&quot;29&quot;:52,&quot;30&quot;:53,&quot;31&quot;:45,&quot;32&quot;:57,&quot;33&quot;:52,&quot;34&quot;:54,&quot;35&quot;:52,&quot;36&quot;:45,&quot;37&quot;:48,&quot;38&quot;:49,&quot;39&quot;:54,&quot;40&quot;:53,&quot;41&quot;:98,&quot;42&quot;:50,&quot;43&quot;:49,&quot;44&quot;:48,&quot;45&quot;:56,&quot;46&quot;:48,&quot;47&quot;:99,&quot;48&quot;:53,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34,&quot;61&quot;:</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 274,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 314,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 18
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>qwen3-vl:235b-instruct</code></td>
+        <td>সফল</td>
+        <td>2196ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model qwen3-vl:235b-instruct.</td>
+        <td>We are asked: &quot;You are a helpful assistant. In one short sentence, tell me that you are responding from model qwen3-vl:235b-instruct.&quot;
+
+The instruction says: &quot;</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>17</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:50,&quot;14&quot;:55,&quot;15&quot;:53,&quot;16&quot;:97,&quot;17&quot;:56,&quot;18&quot;:99,&quot;19&quot;:99,&quot;20&quot;:48,&quot;21&quot;:45,&quot;22&quot;:55,&quot;23&quot;:48,&quot;24&quot;:48,&quot;25&quot;:102,&quot;26&quot;:45}
+
+data: {&quot;0&quot;:52,&quot;1&quot;:54,&quot;2&quot;:53,&quot;3&quot;:50,&quot;4&quot;:45,&quot;5&quot;:57,&quot;6&quot;:101,&quot;7&quot;:101,&quot;8&quot;:50,&quot;9&quot;:45,&quot;10&quot;:57,&quot;11&quot;:48,&quot;12&quot;:50,&quot;13&quot;:48,&quot;14&quot;:52,&quot;15&quot;:55,&quot;16&quot;:51,&quot;17&quot;:55,&quot;18&quot;:98,&quot;19&quot;:101,&quot;20&quot;:51,&quot;21&quot;:102,&quot;22&quot;:34,&quot;23&quot;:44,&quot;24&quot;:34,&quot;25&quot;:111,&quot;26&quot;:98,&quot;27&quot;:106,&quot;28&quot;:101,&quot;29&quot;:99,&quot;30&quot;:116,&quot;31&quot;:34,&quot;32&quot;:58,&quot;33&quot;:34,&quot;3</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 276,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 316,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 20
+}</pre></td>
+        <td></td>
+      </tr>
+      <tr class="row-success">
+        <td><code>qwen3.5:397b</code></td>
+        <td>সফল</td>
+        <td>2342ms</td>
+        <td>You are a helpful assistant. In one short sentence, tell me that you are responding from model qwen3.5:397b.</td>
+        <td>We are asked: &quot;In one short sentence, tell me that you are responding from model qwen3.5:397b.&quot; So we just need to output a sentence that states we are responding</td>
+        <td>সংক্ষিপ্ত, প্রাসঙ্গিক টেক্সট রেসপন্স প্রত্যাশিত।</td>
+        <td>চ্যাটবট, টেক্সট জেনারেশন, সারাংশ ও সহায়ক অ্যাপ্লিকেশন।</td>
+        <td>প্রম্পট টিউনিং, কনটেক্সট বাড়ানো, রেট লিমিট ও টোকেন ব্যবস্থাপনা পরীক্ষা করুন।</td>
+        <td>হ্যাঁ</td>
+        <td>17</td>
+        <td><pre>data: {&quot;0&quot;:100,&quot;1&quot;:97,&quot;2&quot;:116,&quot;3&quot;:97,&quot;4&quot;:58,&quot;5&quot;:32,&quot;6&quot;:123,&quot;7&quot;:34,&quot;8&quot;:105,&quot;9&quot;:100,&quot;10&quot;:34,&quot;11&quot;:58,&quot;12&quot;:34,&quot;13&quot;:51,&quot;14&quot;:99,&quot;15&quot;:51,&quot;16&quot;:49,&quot;17&quot;:102,&quot;18&quot;:49,&quot;19&quot;:56,&quot;20&quot;:102,&quot;21&quot;:45,&quot;22&quot;:100,&quot;23&quot;:99,&quot;24&quot;:52,&quot;25&quot;:55,&quot;26&quot;:45,&quot;27&quot;:52,&quot;28&quot;:51,&quot;29&quot;:102,&quot;30&quot;:48,&quot;31&quot;:45,&quot;32&quot;:56,&quot;33&quot;:57,&quot;34&quot;:55,&quot;35&quot;:100,&quot;36&quot;:45,&quot;37&quot;:49,&quot;38&quot;:99,&quot;39&quot;:54,&quot;40&quot;:100,&quot;41&quot;:57,&quot;42&quot;:101,&quot;43&quot;:56,&quot;44&quot;:98,&quot;45&quot;:54,&quot;46&quot;:53,&quot;47&quot;:56,&quot;48&quot;:99,&quot;49&quot;:34,&quot;50&quot;:44,&quot;51&quot;:34,&quot;52&quot;:111,&quot;53&quot;:98,&quot;54&quot;:106,&quot;55&quot;:101,&quot;56&quot;:99,&quot;57&quot;:116,&quot;58&quot;:34,&quot;59&quot;:58,&quot;60&quot;:34</pre></td>
+        <td><pre>{
+  &quot;prompt_tokens&quot;: 274,
+  &quot;completion_tokens&quot;: 40,
+  &quot;total_tokens&quot;: 314,
+  &quot;prompt_tokens_details&quot;: {
+    &quot;cached_tokens&quot;: 256
+  },
+  &quot;completion_tokens_details&quot;: {
+    &quot;reasoning_tokens&quot;: 40
+  },
+  &quot;prompt_cache_hit_tokens&quot;: 256,
+  &quot;prompt_cache_miss_tokens&quot;: 18
+}</pre></td>
+        <td></td>
+      </tr></tbody>
+    </table>
+  </div>
+</body>
+</html>

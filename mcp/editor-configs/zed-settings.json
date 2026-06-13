@@ -1,0 +1,18 @@
+{
+  "context_servers": {
+    "proxi-mcp": {
+      "command": "node",
+      "args": ["${workspaceFolder}/dist/index.js"],
+      "cwd": "${workspaceFolder}"
+    }
+  },
+  "agent": {
+    "tool_permissions": {
+      "tools": {
+        "mcp:proxi-mcp:verify_session": { "default": "allow" },
+        "mcp:proxi-mcp:run_agent": { "default": "allow" },
+        "mcp:proxi-mcp:ping_agent": { "default": "allow" }
+      }
+    }
+  }
+}

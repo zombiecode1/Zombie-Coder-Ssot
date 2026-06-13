@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Proxi Agent: Tool / Agent / Memory / Session / Routing বিশ্লেষণ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 960px;
+            margin: 24px auto;
+            padding: 0 16px;
+            color: #111;
+            background: #f7f7f7;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #222;
+        }
+
+        pre {
+            background: #222;
+            color: #f8f8f2;
+            padding: 16px;
+            overflow-x: auto;
+            border-radius: 8px;
+        }
+
+        code {
+            background: #eef;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffca28;
+            padding: 12px;
+            margin: 16px 0;
+        }
+
+        .alert {
+            background: #f8d7da;
+            border-left: 4px solid #d32f2f;
+            padding: 12px;
+            margin: 16px 0;
+        }
+
+        section {
+            margin-bottom: 32px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Proxi Agent সিস্টেম: টুল, এজেন্ট, সেশন, মেমরি, রাউটিং</h1>
+    <p>এই পেজটি প্রজেক্টের মূল ফাইল ও সার্ভিসের কাজ, ত্রুটি উৎস, এবং বাস্তব ব্যবহারের ব্যাখ্যা বাংলায় দেয়া হয়েছে।</p>
+
+    <section>
+        <h2>১. প্রধান সমস্যা</h2>
+        <p>রিপোর্ট করা ত্রুটি:</p>
+        <blockquote>
+            <p><strong>Provider source 'opencode' is unavailable</strong></p>
+            <p>এবং VS Code JSON schema warning:
+                <code>Unable to load schema from 'https://opencode.ai/config.json': Location ... is untrusted.</code>
+            </p>
+        </blockquote>
+        <p>এটার আসল মানে হচ্ছে:</p>
+        <ul>
+            <li><code>opencode.json</code> ফাইলটি <code>$schema</code> হিসেবে
+                <code>https://opencode.ai/config.json</code> ব্যবহার করছে।
+            </li>
+            <li>VS Code সেটাকে “untrusted” হিসেবে দেখছে, তাই স্কিমা লোড হচ্ছে না।</li>
+            <li>রানটাইমে প্রকৃত provider হিসেবে</li>
+            <li><code>proxi-bridge</code> ব্যবহার হচ্ছে, কিন্তু কোডে <code>opencode-zen</code> ডিফল্ট ব্যাকএন্ড হিসাবে
+                সেট আছে।</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>২. <code>opencode.json</code> ও <code>.opencode/opencode.json</code> কী করছে</h2>
+        <p>এই ফাইল দুটি একদম একই কনফিগারেশন শেয়ার করে। মূল বিষয়:</p>
+        <ul>
+            <li><code>provider.proxi-bridge</code> ব্যবহার করে, যে URL দিচ্ছে <code>http://localhost:9999/v1</code>.
+            </li>
+            <li>এখানে মডেল তালিকা দেয়া আছে, যেমন <code>llama-3.3-70b-versatile</code>, <code>qwen/qwen3-32b</code>,
+                <code>openai/gpt-oss-120b</code> ইত্যাদি।
+            </li>
+            <li><code>mcp.mcp-agent-server</code> remote MCP সার্ভার হিসাবে <code>http://localhost:3000/mcp</code>
+                ব্যবহার করছে।</li>
+            <li>এজেন্ট সংজ্ঞা দুইটি আছে: <code>zombie-coder</code> ও <code>zombie-explorer</code>।</li>
+        </ul>
+
+        <div class="note">
+            <strong>মন্তব্য:</strong> এখানে <code>provider</code> হিসাবে <code>opencode</code> নয়,
+            <code>proxi-bridge</code> ব্যবহার হচ্ছে। তাই runtime তে যদি <code>opencode</code> রুট খোঁজার চেষ্টা হয়, তা
+            ভুল বা mismatch।
+        </div>
+    </section>
+
+    <section>
+        <h2>৩. <code>src/wrapper/config.ts</code> আর ব্যাকএন্ড রেজোলিউশন</h2>
+        <p>এই ফাইল নির্ধারণ করে কোন ব্যাকএন্ড থেকে মডেল চালানো হবে:</p>
+        <ul>
+            <li><strong>local-bridge</strong>: ডিফল্ট এবং সবচেয়ে আগে চেক করা হয়, URL
+                <code>http://localhost:9999/v1</code>.
+            </li>
+            <li><strong>opencode-zen</strong>: দ্বিতীয় ব্যাকএন্ড, URL <code>https://opencode.ai/zen/v1</code> এবং
+                <code>OPENCODE_API_KEY</code প্রয়োজন।</li>
+      <li><code>defaultBackend</code> ডিফল্টভাবে <code>opencode-zen</code>, কিন্তু <code>resolveModel()</code> প্রথমে
+                <code>zen</code> মডেল চেক করে, তারপর <code>bridge</code>fallback করে।
+            </li>
+        </ul>
+
+        <p>এখানে সমস্যা: যদি <code>OPENCODE_API_KEY</code না থাকে অথবা <code>opencode.ai</code> ব্লক করা থাকে, তাহলে
+            প্রথমত <code>opencode-zen</code> ব্যাকএন্ডকে ব্যবহার করার চেষ্টা হতে পারে এবং সেই সময় “provider unavailable”
+            বা অ্যাক্সেস ত্রুটি উঠে আসতে পারে।</p>
+
+        <pre><code>if (zen && zen.models.includes(model)) {
+  return { backend: zen, modelName: model }
+}
+
+if (bridge && bridge.models.includes(model)) {
+  return { backend: bridge, modelName: model }
+}
+</code></pre>
+
+        <p>এই লজিকে যদি মডেলটি <code>opencode-zen</code>-এর তালিকায় থাকে, কিন্তু <code>OPENCODE_API_KEY</code না থাকে, তাহলে পরের ফ্যালব্যাক লাইনও আসবে না।</p>
+
+    <div class="alert">
+      <strong>সুস্পষ্ট ভুল:</strong> ডিফল্ট সেকশন <code>defaultBackend: 'opencode-zen'</code> কিন্তু বাস্তবে আপনার
+            <code>opencode.json</code> ব্যাকএন্ড হল <code>proxi-bridge</code>। এই mismatch runtime-এ বিভ্রান্তি তৈরি
+            করতে পারে।
+            </div>
+    </section>
+
+    <section>
+        <h2>৪. <code>src/controllers/mcpController.ts</code>: MCP সেশন, টুল, রিসোর্স, রাউট</h2>
+        <p>এই ফাইলটি মূলত MCP-সাপোর্টেড JSON-RPC সার্ভার হিসেবে কাজ করে। প্রধান কাজ:</p>
+        <ul>
+            <li>সেশন তৈরি ও টাচ করা (<code>initialize</code>, <code>touchSession</code>)</li>
+            <li>সেশনের টিএলএল: ৩০ মিনিট জীবিত রাখা</li>
+            <li>`buildTools()` ফাংশন যে টুলগুলো প্রকাশ করে:</li>
+        </ul>
+        <pre><code>workspace_index, workspace_search, conversation_create,
+conversation_history, conversation_list, ssot_read, project_status, agent_routes
+</code></pre>
+        <p>এই মানে হলো: MCP ক্লায়েন্ট একাধিক পরিষেবা একসাথে ব্যবহার করতে পারে — ওয়ার্কস্পেস ইনডেক্স, সার্চ, কনভারসেশন
+            লিস্ট, SSOT পড়া, এজেন্ট স্ট্যাটাস, এজেন্ট রাউট।</p>
+
+        <p><strong>রাউটিং সম্পর্কিত অংশ:</strong></p>
+        <ul>
+            <li><code>agent_routes</code> নামক টুল আছে, যা `getMawlanaRouter()?.getAllRoutes()` থেকে রুট তালিকা ফেরত
+                দেয়।</li>
+            <li>এই রুটগুলো active agent decision বা subagent route নির্বাচন দেখাতে পারে।</li>
+            <li>এখানে `resources` ও `status` ফিল্ড আছে, যেমন <code>zombiecoder://status</code>,
+                <code>zombiecoder://ssot</code> ইত্যাদি।
+            </li>
+        </ul>
+
+        <p>অর্থাৎ, MCP সাপোর্টের প্রধান ফোকাস:</p>
+        <ol>
+            <li>সেশন লাইফসাইকেল ও ট্র্যাকিং</li>
+            <li>সেশন ভিত্তিক লগ স্তর ও ক্লায়েন্ট তথ্য</li>
+            <li>agent-র রাস্তাগুলি প্রকাশ করা</li>
+            <li>SSOT ও স্ট্যাটাস রিডিং</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>৫. <code>src/index.ts</code> ও সার্ভার স্টার্টআপ</h2>
+        <p>এই ফাইলটি সার্ভিস চালু করে এবং runtime manifest লিখে:</p>
+        <ul>
+            <li>এক্সপ্রেস অ্যাপ বানায়, CORS ও JSON পার্সার ব্যবহার করে।</li>
+            <li>`/v1`, `/api`, `/dashboard`, `/admin`-এ authentication যোগ করে।</li>
+            <li>`initializeAgentSystem(DEFAULT_WORKSPACE)` কল করে।</li>
+            <li>প্রিন্ট করে যে agent ও model endpoints কী।</li>
+        </ul>
+
+        <p>এখানে `runtime.json` তৈরি করে, যেখানে থাকে:</p>
+        <ul>
+            <li><code>workspaceRoot</code></li>
+            <li><code>mcpUrl</code> ও <code>sseUrl</code></li>
+            <li>editor config path</li>
+        </ul>
+
+        <p>এই ফাইল দেখায় যে প্রকৃত উদ্দেশ্য হলো একটি OpenAI-Compatible ব্রিজ এবং একইসঙ্গে ZombieCoder এজেন্ট সিস্টেম
+            একসাথে চালানো।</p>
+    </section>
+
+    <section>
+        <h2>৬. মেমরি / সেশন / রাউটিং বাস্তবে কী কাজ করে</h2>
+        <p>এই প্রজেক্টের মূল বৈশিষ্ট্যগুলো:</p>
+        <ul>
+            <li><strong>মেমরি</strong>: এখানে সরাসরি মেমোরি স্টোর নেই, তবে MCP সেশন সংরক্ষণ করে <code>mcpSessions</code>
+                ম্যাপে।</li>
+            <li><strong>সেশন</strong>: ক্লায়েন্ট <code>initialize</code> করলে নতুন sessionId তৈরি হয়, response-এ
+                <code>Mcp-Session-Id</code> পাঠায়।
+            </li>
+            <li><strong>রাউটিং</strong>: agent routes endpoint এজেন্টের সিদ্ধান্ত ও সাবএজেন্ট রাউট দেখায়।</li>
+            <li><strong>টুলস</strong>: JSON-RPC মেকানিজমে গ্রাহককে tools এবং resources উপলব্ধ করে।</li>
+        </ul>
+
+        <div class="note">
+            <strong>সারসংক্ষেপ:</strong> এই সিস্টেমের কাজ হল মেমরি নয়, বরং সেশন পরিচালনা, agent routes প্রকাশ করা এবং
+            MCC প্রোটোকল ভিত্তিক ক্লায়েন্ট/সার্ভার ইন্টিগ্রেশন নিশ্চিত করা।
+        </div>
+    </section>
+
+    <section>
+        <h2>৭. কি ঠিক আছে, কি বদলাতে হবে</h2>
+        <p><strong>ঠিক আছে:</strong></p>
+        <ul>
+            <li><code>opencode.json</code> ও <code>.opencode/opencode.json</code> একই কনফিগারেশন শেয়ার করছে।</li>
+            <li><code>src/controllers/mcpController.ts</code> সেশন, টুলস, resources, এবং স্ট্যাটাস সার্ভিস কভার করছে।
+            </li>
+            <li><code>src/index.ts</code> ওপেনএআই-কম্প্যাটিবল ব্রিজ সার্ভার এবং agent সিস্টেম একসঙ্গে চালানোর পরিকল্পনা
+                দেখায়।</li>
+        </ul>
+
+        <p><strong>বদলাতে হবে:</strong></p>
+        <ul>
+            <li><code>src/wrapper/config.ts</code> থেকে যদি বাস্তব রিয়েল-টাইম ডিফল্ট হয় <code>proxi-bridge</code>,
+                তাহলে <code>defaultBackend</code> আপডেট করা উচিত।</li>
+            <li>`opencode.json` এর <code>$schema</code> কেউ সরাসরি লোড করতে বাধা পেলে, IDE warnings আসবে; এটা সারফেস
+                এনালাইসিস এ ছাড়া runtime-এ বাধা দেয় না।</li>
+            <li>যদি <code>opencode-zen</code> ব্যাকএন্ড ব্যবহার করা হয়, তবে <code>OPENCODE_API_KEY</code> আবশ্যক। না
+                থাকলে config রুটিন নিশ্চতভাবে fallback করতে হবে।</li>
+            <li>`provider source 'opencode' unavailable` মেসেজ হলে প্রথমে চেক করতে হবে যে ব্যাকএন্ডের URL/কী ঠিক আছে
+                নাকি provider registration ভুল।</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>৮. নিরাপদ সুপারিশ</h2>
+        <ol>
+            <li><strong>IDE স্কিমা সমস্যা সমাধান</strong><br />VS Code-এ <code>$schema</code> লোড না হলে `opencode.ai`
+                ব্লক হতে পারে। এটি স্কিমা লোড সমস্যা, প্রকৃত ক্লাউড সার্ভিস সমস্যা না।</li>
+            <li><strong>ব্যাকএন্ড মিলানো</strong><br />`opencode.json`-এ provider হিসেবে <code>proxi-bridge</code> ঠিক
+                আছে, তাই runtime config-এও ডিফল্ট ব্যাকএন্ড একই রাখা উচিৎ।</li>
+            <li><strong>মডেল রাউটিং বৈধতা</strong><br />`resolveModel()`-এ প্রথমে ব্রিজ, তারপর opencode-zen ফর্ক ব্যবহার
+                করলে runtime রাউটিং বেশি স্থিতিশীল হবে।</li>
+            <li><strong>MCP সেশন মনিটর</strong><br />`mcpController.ts` তে লস্ট সেশন বা SSE ট্র্যাকিং যাচাই করতে হবে,
+                কারণ session-ভিত্তিক agent operation এখানে নির্ভর করে।</li>
+        </ol>
+    </section>
+
+    <footer>
+        <p>লিখিত: প্রক্সি মডেল সিস্টেমের বিশ্লেষণ। এই পেজটি তৈরি হয়েছে <code>documentation/today</code> ফোল্ডারে আপনার
+            নির্দেশানুসারে।</p>
+    </footer>
+</body>
+
+</html>

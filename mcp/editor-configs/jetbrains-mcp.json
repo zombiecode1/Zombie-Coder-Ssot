@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "proxi-mcp": {
+      "command": "node",
+      "args": ["${workspaceFolder}/dist/index.js"],
+      "cwd": "${workspaceFolder}"
+    }
+  }
+}
