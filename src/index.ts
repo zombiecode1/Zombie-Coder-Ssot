@@ -17,31 +17,55 @@ import { bootstrapProviders } from './services/providerBootstrap';
 
 dotenv.config();
 
+// Track the MCP config directory found during startup
+let MCP_CONFIG_DIR: string | null = null;
+
+function buildRuntimeManifest(workspaceDir: string, serverPort: string | number) {
+  return {
+    workspaceRoot: workspaceDir,
+    server: {
+      port: Number(serverPort),
+      mcpUrl: `http://localhost:${serverPort}/mcp`,
+      sseUrl: `http://localhost:${serverPort}/sse`,
+    },
+    editorConfigs: {
+      vscode: 'mcp/editor-configs/vscode-mcp.json',
+      zed: 'mcp/editor-configs/zed-settings.json',
+      windsurf: 'mcp/editor-configs/windsurf-mcp_config.json',
+      jetbrains: 'mcp/editor-configs/jetbrains-mcp.json',
+    },
+    updatedAt: new Date().toISOString(),
+  };
+}
+
 function writeRuntimeManifest(workspaceDir: string, serverPort: string | number) {
-  try {
-    const runtimeDir = path.join(workspaceDir, 'mcp', '.zombiecoder');
-    const runtimePath = path.join(runtimeDir, 'runtime.json');
-    if (!fs.existsSync(runtimeDir)) {
-      fs.mkdirSync(runtimeDir, { recursive: true });
+  const manifest = buildRuntimeManifest(workspaceDir, serverPort);
+  const locations: string[] = [];
+
+  // 1. Workspace root: /home/sahon/mcp/.zombiecoder/runtime.json
+  locations.push(path.join(workspaceDir, '.zombiecoder'));
+
+  // 2. MCP config dir (where mcp.json was found): /home/sahon/mcp/proxi_new/mcp/.zombiecoder/runtime.json
+  if (MCP_CONFIG_DIR) {
+    locations.push(MCP_CONFIG_DIR);
+  }
+
+  // 3. Current working dir as fallback: process.cwd()/mcp/.zombiecoder/runtime.json
+  const cwdMcpDir = path.join(process.cwd(), 'mcp', '.zombiecoder');
+  if (!locations.includes(cwdMcpDir)) {
+    locations.push(cwdMcpDir);
+  }
+
+  for (const dir of locations) {
+    try {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      const runtimePath = path.join(dir, 'runtime.json');
+      fs.writeFileSync(runtimePath, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
+    } catch (err: any) {
+      console.warn(`Failed to write runtime manifest to ${dir}:`, err?.message || err);
     }
-    const manifest = {
-      workspaceRoot: workspaceDir,
-      server: {
-        port: Number(serverPort),
-        mcpUrl: `http://localhost:${serverPort}/mcp`,
-        sseUrl: `http://localhost:${serverPort}/sse`,
-      },
-      editorConfigs: {
-        vscode: 'mcp/editor-configs/vscode-mcp.json',
-        zed: 'mcp/editor-configs/zed-settings.json',
-        windsurf: 'mcp/editor-configs/windsurf-mcp_config.json',
-        jetbrains: 'mcp/editor-configs/jetbrains-mcp.json',
-      },
-      updatedAt: new Date().toISOString(),
-    };
-    fs.writeFileSync(runtimePath, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
-  } catch (err: any) {
-    console.warn('Failed to write runtime manifest:', err?.message || err);
   }
 }
 
@@ -66,12 +90,12 @@ app.use(identityMiddleware);
 
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
-app.use(['/v1', '/api', '/dashboard', '/admin', '/db'], authenticate);
+app.use(['/v1', '/api', '/dashboard', '/db'], authenticate);
 
 app.use(routes);
 
 async function start() {
-  const service = initializeService(GROQ_API_KEY!);
+  const service = initializeService(GROQ_API_KEY || '');
   // Initialize Agent & RAG system
   // Preference order for workspace dir: editor mcp config -> env WORKSPACE_DIR -> process.cwd()
   function findMcpConfig(): string | null {
@@ -104,6 +128,9 @@ async function start() {
   const mcpConfigPath = findMcpConfig();
   let DEFAULT_WORKSPACE = process.env.WORKSPACE_DIR || process.cwd();
   if (mcpConfigPath) {
+    // Store the MCP config directory for runtime manifest writing
+    MCP_CONFIG_DIR = path.join(path.dirname(mcpConfigPath), '.zombiecoder');
+    console.log(`📁 MCP config found: ${mcpConfigPath} → runtime will write to ${MCP_CONFIG_DIR}`);
     const resolved = resolveWorkspaceFromConfig(mcpConfigPath);
     if (resolved) {
       DEFAULT_WORKSPACE = resolved;
@@ -151,9 +178,11 @@ async function start() {
     console.warn('⚠️ Provider bootstrap failed:', err?.message || err);
   }
 
-  writeRuntimeManifest(process.cwd(), PORT);
+  writeRuntimeManifest(DEFAULT_WORKSPACE, PORT);
   cleanupOldLogs();
   setInterval(cleanupOldLogs, 3600000);
+  // Update runtime.json every 5 minutes with current timestamp
+  setInterval(() => writeRuntimeManifest(DEFAULT_WORKSPACE, PORT), 5 * 60 * 1000);
   const agentSvc = getAgentService();
   const persona = agentSvc?.getPersonaName() || 'ZombieCoder';
 

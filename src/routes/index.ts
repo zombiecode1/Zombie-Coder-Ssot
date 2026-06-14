@@ -47,12 +47,14 @@ import {
   handleAdminDeleteSession, handleAdminDeleteConversation, handleAdminClearUsage,
   handleAdminModelPriority, handleAdminModelUsage,
   handleAdminMonitorSSE, handleAdminAgentHealth,
-  handleAdminProvidersList, handleAdminProviderSave, handleAdminProviderDelete,
+  handleAdminProvidersList, handleAdminProviderGet, handleAdminProviderSave, handleAdminProviderDelete,
   handleAdminProviderToggle, handleAdminProviderTest, handleAdminProviderSync,
   handleAdminProviderSyncAll, handleAdminModelTest, handleAdminAutoRouteTest,
   handleAdminSetDefaultModel, handleAdminProviderCosts,
   handleAdminProviderTools, handleAdminProviderToolTest, handleAdminProviderCapabilities,
+  handleAdminPricing,
 } from '../admin/controller';
+import { requireAdmin } from '../middleware/authMiddleware';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 * 1024 * 1024 } });
@@ -84,43 +86,52 @@ router.get('/dashboard', handleDashboard);
 // ─── Admin Dashboard ──────────────────────────────────────
 router.get('/admin/dashboard', handleAdminDashboard);
 router.get('/admin/dashboard/:page', handleAdminPage);
-router.get('/api/admin/stats', handleAdminStats);
-router.get('/api/admin/models', handleAdminModels);
-router.post('/api/admin/models/sync', handleAdminModelsSync);
-router.patch('/api/admin/models/:id/active', handleAdminModelActive);
-router.patch('/api/admin/models/:id', handleAdminModelUpdate);
-router.delete('/api/admin/models/:id', handleAdminModelDelete);
-router.get('/api/admin/mapping', handleAdminMapping);
-router.post('/api/admin/mapping', handleAdminMappingSave);
-router.delete('/api/admin/mapping/:id', handleAdminMappingDelete);
-router.get('/api/admin/sessions', handleAdminSessions);
-router.delete('/api/admin/sessions/:id', handleAdminDeleteSession);
-router.get('/api/admin/conversations', handleAdminConversations);
-router.get('/api/admin/conversations/:id', handleAdminConversationDetail);
-router.delete('/api/admin/conversations/:id', handleAdminDeleteConversation);
-router.get('/api/admin/usage', handleAdminUsage);
-router.delete('/api/admin/usage', handleAdminClearUsage);
-router.get('/api/admin/identity', handleAdminIdentity);
-router.patch('/api/admin/models/:id/priority', handleAdminModelPriority);
-router.get('/api/admin/models/:id/usage', handleAdminModelUsage);
-router.get('/api/admin/monitor', handleAdminMonitorSSE);
-router.get('/api/admin/agent-health', handleAdminAgentHealth);
+
+// ─── Admin API (protected by requireAdmin) ────────────────
+const adminApi = Router();
+adminApi.use(requireAdmin);
+
+adminApi.get('/stats', handleAdminStats);
+adminApi.get('/models', handleAdminModels);
+adminApi.post('/models/sync', handleAdminModelsSync);
+adminApi.patch('/models/:id/active', handleAdminModelActive);
+adminApi.patch('/models/:id', handleAdminModelUpdate);
+adminApi.delete('/models/:id', handleAdminModelDelete);
+adminApi.get('/mapping', handleAdminMapping);
+adminApi.post('/mapping', handleAdminMappingSave);
+adminApi.delete('/mapping/:id', handleAdminMappingDelete);
+adminApi.get('/sessions', handleAdminSessions);
+adminApi.delete('/sessions/:id', handleAdminDeleteSession);
+adminApi.get('/conversations', handleAdminConversations);
+adminApi.get('/conversations/:id', handleAdminConversationDetail);
+adminApi.delete('/conversations/:id', handleAdminDeleteConversation);
+adminApi.get('/usage', handleAdminUsage);
+adminApi.delete('/usage', handleAdminClearUsage);
+adminApi.get('/identity', handleAdminIdentity);
+adminApi.patch('/models/:id/priority', handleAdminModelPriority);
+adminApi.get('/models/:id/usage', handleAdminModelUsage);
+adminApi.get('/monitor', handleAdminMonitorSSE);
+adminApi.get('/agent-health', handleAdminAgentHealth);
 
 // ─── Provider Orchestration API ───────────────────────────
-router.get('/api/admin/providers', handleAdminProvidersList);
-router.post('/api/admin/providers', handleAdminProviderSave);
-router.delete('/api/admin/providers/:id', handleAdminProviderDelete);
-router.patch('/api/admin/providers/:id/toggle', handleAdminProviderToggle);
-router.post('/api/admin/providers/:id/test', handleAdminProviderTest);
-router.post('/api/admin/providers/:id/sync', handleAdminProviderSync);
-router.post('/api/admin/providers/sync-all', handleAdminProviderSyncAll);
-router.post('/api/admin/models/:id/test', handleAdminModelTest);
-router.post('/api/admin/auto-route', handleAdminAutoRouteTest);
-router.post('/api/admin/default-model', handleAdminSetDefaultModel);
-router.get('/api/admin/provider-costs', handleAdminProviderCosts);
-router.get('/api/admin/provider-tools', handleAdminProviderTools);
-router.post('/api/admin/providers/:id/tools/:type/test', handleAdminProviderToolTest);
-router.get('/api/admin/provider-capabilities', handleAdminProviderCapabilities);
+adminApi.get('/providers', handleAdminProvidersList);
+adminApi.get('/providers/:id', handleAdminProviderGet);
+adminApi.post('/providers', handleAdminProviderSave);
+adminApi.delete('/providers/:id', handleAdminProviderDelete);
+adminApi.patch('/providers/:id/toggle', handleAdminProviderToggle);
+adminApi.post('/providers/:id/test', handleAdminProviderTest);
+adminApi.post('/providers/:id/sync', handleAdminProviderSync);
+adminApi.post('/providers/sync-all', handleAdminProviderSyncAll);
+adminApi.post('/models/:id/test', handleAdminModelTest);
+adminApi.post('/auto-route', handleAdminAutoRouteTest);
+adminApi.post('/default-model', handleAdminSetDefaultModel);
+adminApi.get('/provider-costs', handleAdminProviderCosts);
+adminApi.get('/provider-tools', handleAdminProviderTools);
+adminApi.post('/providers/:id/tools/:type/test', handleAdminProviderToolTest);
+adminApi.get('/provider-capabilities', handleAdminProviderCapabilities);
+adminApi.get('/pricing', handleAdminPricing);
+
+router.use('/api/admin', adminApi);
 
 // Internal API
 router.get('/api/logs', (req: Request, res: Response) => {

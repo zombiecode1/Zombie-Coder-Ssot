@@ -64,6 +64,15 @@ export { ProviderRegistry, getProviderRegistry } from './provider-registry';
 export { ProviderGateway } from './provider-gateway';
 export type { AgentTemplate } from './provider-gateway';
 
+// Pricing
+export {
+  getModelPricing,
+  calculateCost,
+  getAllPricing,
+  getProviderPricing,
+  type ModelPricing,
+} from './pricing';
+
 // Provider implementations
 export { OpenCodeProvider } from './implementations/opencode.provider';
 export { GroqProvider } from './implementations/groq.provider';

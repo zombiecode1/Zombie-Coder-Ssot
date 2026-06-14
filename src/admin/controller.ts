@@ -18,26 +18,52 @@ function escapeHtml(s: string | undefined | null): string {
 }
 
 function layout(title: string, body: string, activePage: string): string {
-  const pages = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'providers', label: 'Providers', icon: '🔌' },
-    { id: 'models', label: 'Models', icon: '🤖' },
-    { id: 'test', label: 'Test', icon: '🧪' },
-    { id: 'chat', label: 'Chat', icon: '💬' },
-    { id: 'mapping', label: 'Routing', icon: '🗺️' },
-    { id: 'sessions', label: 'Sessions', icon: '📡' },
-    { id: 'conversations', label: 'Conversations', icon: '📝' },
-    { id: 'usage', label: 'Usage', icon: '📈' },
-    { id: 'monitor', label: 'Monitor', icon: '🔴' },
-    { id: 'agent', label: 'Agent', icon: '🧠' },
-    { id: 'docs', label: 'Docs', icon: '📖' },
+  const navCategories = [
+    {
+      category: 'Core',
+      items: [
+        { id: 'overview', label: 'Dashboard', icon: '📊' },
+        { id: 'providers', label: 'Providers', icon: '🔌' },
+        { id: 'models', label: 'Models', icon: '🤖' },
+        { id: 'test', label: 'API Test', icon: '🧪' },
+      ],
+    },
+    {
+      category: 'Development',
+      items: [
+        { id: 'chat', label: 'Chat', icon: '💬' },
+        { id: 'agent', label: 'Agent', icon: '🧠' },
+        { id: 'docs', label: 'Docs', icon: '📖' },
+      ],
+    },
+    {
+      category: 'Data',
+      items: [
+        { id: 'mapping', label: 'Routing', icon: '🗺️' },
+        { id: 'sessions', label: 'Sessions', icon: '📡' },
+        { id: 'conversations', label: 'Conversations', icon: '📝' },
+        { id: 'usage', label: 'Usage', icon: '📈' },
+      ],
+    },
+    {
+      category: 'System',
+      items: [
+        { id: 'monitor', label: 'Monitor', icon: '🔴' },
+      ],
+    },
   ];
-  const navItems = pages.map(p =>
-    `<a href="/admin/dashboard/${p.id}" class="nav-item${p.id === activePage ? ' active' : ''}" data-page="${p.id}">
-      <span class="nav-icon">${p.icon}</span>
-      <span class="nav-label">${p.label}</span>
-    </a>`
-  ).join('');
+
+  const navHtml = navCategories.map(cat => `
+    <div class="nav-category">
+      <div class="nav-category-label">${cat.category}</div>
+      ${cat.items.map(p => `
+        <a href="/admin/dashboard/${p.id}" class="nav-item${p.id === activePage ? ' active' : ''}" data-page="${p.id}">
+          <span class="nav-icon">${p.icon}</span>
+          <span class="nav-label">${p.label}</span>
+        </a>
+      `).join('')}
+    </div>
+  `).join('');
 
   return `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -45,110 +71,218 @@ function layout(title: string, body: string, activePage: string): string {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${escapeHtml(title)} - Proxi Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ═══ CSS Variables (shadcn/ui inspired) ═══════════════ */
+:root {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 5.5%;
+  --card-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 14.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 0% 83.1%;
+  --radius: 0.5rem;
+  --sidebar-bg: 0 0% 5.5%;
+  --sidebar-border: 0 0% 14.9%;
+  --sidebar-active: 0 0% 98%;
+  --green: 142 76% 36%;
+  --yellow: 38 92% 50%;
+  --red: 0 84% 60%;
+  --blue: 217 91% 60%;
+  --purple: 270 76% 58%;
+  --orange: 25 95% 53%;
+}
+
+/* ═══ Reset & Base ═════════════════════════════════════ */
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0d1117;color:#c9d1d9;display:flex;min-height:100vh}
-.sidebar{width:220px;background:#161b22;border-right:1px solid #30363d;padding:20px 0;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:10}
-.sidebar-header{padding:0 16px 16px;border-bottom:1px solid #30363d;margin-bottom:8px}
-.sidebar-header h1{font-size:1rem;color:#58a6ff}
-.sidebar-header .sub{font-size:.75rem;color:#8b949e;margin-top:2px}
-.nav-item{display:flex;align-items:center;gap:8px;padding:10px 16px;color:#8b949e;text-decoration:none;font-size:.875rem;transition:all .15s;border-left:3px solid transparent}
-.nav-item:hover{background:#1c2128;color:#c9d1d9}
-.nav-item.active{background:#1c2128;color:#58a6ff;border-left-color:#58a6ff;font-weight:600}
-.nav-icon{font-size:1.1rem;width:20px;text-align:center}
-.main{flex:1;margin-left:220px;padding:24px;max-width:calc(100vw - 220px)}
-.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.page-header h2{font-size:1.3rem;color:#e6edf3}
-.page-header .subtitle{font-size:.85rem;color:#8b949e}
-.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin-bottom:16px}
-.card h3{font-size:.95rem;color:#8b949e;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
-.stat-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;text-align:center}
-.stat-value{font-size:1.6rem;font-weight:700;color:#58a6ff}
-.stat-label{font-size:.75rem;color:#8b949e;text-transform:uppercase;margin-top:4px}
-table{width:100%;border-collapse:collapse;font-size:.875rem}
-th{text-align:left;padding:8px 12px;border-bottom:2px solid #30363d;color:#8b949e;font-weight:600;text-transform:uppercase;font-size:.75rem;letter-spacing:.5px;white-space:nowrap}
-td{padding:8px 12px;border-bottom:1px solid #21262d;vertical-align:middle}
-tr:hover td{background:#1c2128}
-code{font-family:"SF Mono","Fira Code",monospace;font-size:.8rem;background:#1c2128;padding:2px 6px;border-radius:4px;color:#7ee787}
-.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:600;text-transform:uppercase}
-.badge-opencode{background:#6e40c9;color:#fff}
-.badge-groq{background:#1a7f37;color:#fff}
-.badge-openai{background:#10a37f;color:#fff}
-.badge-gemini{background:#4285f4;color:#fff}
-.badge-ollama{background:#7b5804;color:#fff}
-.badge-other{background:#30363d;color:#8b949e}
-.progress{height:6px;background:#21262d;border-radius:4px;overflow:hidden;margin-top:4px}
-.progress-bar{height:100%;border-radius:4px;transition:width .3s}
-.progress-bar.green{background:#3fb950}
-.progress-bar.yellow{background:#d29922}
-.progress-bar.red{background:#f85149}
-.progress-bar.blue{background:#58a6ff}
-.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
-.status-dot.online{background:#3fb950;box-shadow:0 0 6px #3fb950}
-.status-dot.offline{background:#30363d}
-.status-dot.warning{background:#d29922}
-.filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.filter-bar input,.filter-bar select{padding:6px 12px;border:1px solid #30363d;border-radius:6px;background:#0d1117;color:#c9d1d9;font-size:.85rem}
-.filter-bar input:focus,.filter-bar select:focus{outline:none;border-color:#58a6ff}
-.btn{padding:6px 14px;border:1px solid #30363d;border-radius:6px;background:#21262d;color:#c9d1d9;cursor:pointer;font-size:.85rem;transition:all .15s}
-.btn:hover{background:#30363d;border-color:#8b949e}
-.btn-primary{background:#1f6feb;border-color:#1f6feb;color:#fff}
-.btn-primary:hover{background:#388bfd}
-.btn-danger{background:#f85149;border-color:#f85149;color:#fff}
-.btn-danger:hover{background:#da3633}
-.btn-success{background:#238636;border-color:#238636;color:#fff}
-.btn-success:hover{background:#2ea043}
-.empty-state{text-align:center;padding:40px;color:#8b949e}
-.empty-state .icon{font-size:2rem;margin-bottom:8px}
-.spinner{display:inline-block;width:20px;height:20px;border:2px solid #30363d;border-top-color:#58a6ff;border-radius:50%;animation:spin .8s linear infinite}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:hsl(var(--background));color:hsl(var(--foreground));display:flex;min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+/* ═══ Sidebar ══════════════════════════════════════════ */
+.sidebar{width:260px;background:hsl(var(--sidebar-bg));border-right:1px solid hsl(var(--sidebar-border));flex-shrink:0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:10;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:hsl(var(--border));border-radius:4px}
+.sidebar-header{padding:20px 16px 16px;border-bottom:1px solid hsl(var(--sidebar-border))}
+.sidebar-header h1{font-size:1.05rem;font-weight:700;color:hsl(var(--foreground));letter-spacing:-0.02em}
+.sidebar-header .sub{font-size:.7rem;color:hsl(var(--muted-foreground));margin-top:3px;text-transform:uppercase;letter-spacing:0.05em}
+.sidebar-nav{flex:1;padding:12px 8px;overflow-y:auto}
+.nav-category{margin-bottom:16px}
+.nav-category-label{padding:4px 12px;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:hsl(var(--muted-foreground));margin-bottom:4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 12px;color:hsl(var(--muted-foreground));font-size:.85rem;font-weight:500;border-radius:var(--radius);transition:all .15s;margin-bottom:2px}
+.nav-item:hover{background:hsl(var(--accent));color:hsl(var(--accent-foreground))}
+.nav-item.active{background:hsl(var(--accent));color:hsl(var(--foreground));font-weight:600}
+.nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.sidebar-footer{padding:12px 16px;border-top:1px solid hsl(var(--sidebar-border));font-size:.7rem;color:hsl(var(--muted-foreground))}
+
+/* ═══ Main Content ════════════════════════════════════ */
+.main{flex:1;margin-left:260px;padding:24px 32px;max-width:calc(100vw - 260px);min-height:100vh}
+
+/* ═══ Page Header ═════════════════════════════════════ */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.page-header h2{font-size:1.5rem;font-weight:700;color:hsl(var(--foreground));letter-spacing:-0.02em}
+.page-header .subtitle{font-size:.85rem;color:hsl(var(--muted-foreground));margin-top:4px}
+
+/* ═══ Cards ═══════════════════════════════════════════ */
+.card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:calc(var(--radius) + 2px);padding:20px;margin-bottom:16px}
+.card h3{font-size:.8rem;font-weight:600;color:hsl(var(--muted-foreground));margin-bottom:14px;text-transform:uppercase;letter-spacing:0.06em}
+
+/* ═══ Stat Grid ═══════════════════════════════════════ */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:calc(var(--radius) + 2px);padding:20px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,hsl(var(--blue)),hsl(var(--purple)))}
+.stat-card.green::before{background:linear-gradient(90deg,hsl(var(--green)),hsl(142,76%,46%))}
+.stat-card.yellow::before{background:linear-gradient(90deg,hsl(var(--yellow)),hsl(38,92%,60%))}
+.stat-card.red::before{background:linear-gradient(90deg,hsl(var(--red)),hsl(0,84%,70%))}
+.stat-value{font-size:1.75rem;font-weight:700;color:hsl(var(--foreground));letter-spacing:-0.02em}
+.stat-label{font-size:.7rem;color:hsl(var(--muted-foreground));text-transform:uppercase;letter-spacing:0.06em;margin-top:6px;font-weight:500}
+.stat-icon{position:absolute;top:16px;right:16px;font-size:1.2rem;opacity:.5}
+
+/* ═══ Tables ══════════════════════════════════════════ */
+.table-wrapper{overflow-x:auto;border:1px solid hsl(var(--border));border-radius:calc(var(--radius) + 2px)}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+thead{background:hsl(var(--muted))}
+th{text-align:left;padding:10px 16px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:hsl(var(--muted-foreground));white-space:nowrap;border-bottom:1px solid hsl(var(--border))}
+td{padding:10px 16px;border-bottom:1px solid hsl(var(--border));vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:hsl(var(--accent) / 0.3)}
+code{font-family:"SF Mono","Fira Code",monospace;font-size:.8rem;background:hsl(var(--muted));padding:2px 6px;border-radius:4px;color:hsl(142,76%,56%)}
+
+/* ═══ Badges ══════════════════════════════════════════ */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;line-height:1}
+.badge-opencode{background:hsl(var(--purple) / 0.2);color:hsl(270,76%,72%);border:1px solid hsl(var(--purple) / 0.3)}
+.badge-groq{background:hsl(var(--green) / 0.2);color:hsl(142,76%,56%);border:1px solid hsl(var(--green) / 0.3)}
+.badge-openai{background:hsl(160,84%,39% / 0.2);color:hsl(160,84%,55%);border:1px solid hsl(160,84%,39% / 0.3)}
+.badge-gemini{background:hsl(var(--blue) / 0.2);color:hsl(217,91%,70%);border:1px solid hsl(var(--blue) / 0.3)}
+.badge-ollama{background:hsl(var(--orange) / 0.2);color:hsl(25,95%,65%);border:1px solid hsl(var(--orange) / 0.3)}
+.badge-other{background:hsl(var(--muted));color:hsl(var(--muted-foreground));border:1px solid hsl(var(--border))}
+.badge-success{background:hsl(var(--green) / 0.2);color:hsl(142,76%,56%);border:1px solid hsl(var(--green) / 0.3)}
+.badge-warning{background:hsl(var(--yellow) / 0.2);color:hsl(38,92%,65%);border:1px solid hsl(var(--yellow) / 0.3)}
+.badge-error{background:hsl(var(--red) / 0.2);color:hsl(0,84%,70%);border:1px solid hsl(var(--red) / 0.3)}
+.badge-neutral{background:hsl(var(--muted));color:hsl(var(--muted-foreground));border:1px solid hsl(var(--border))}
+
+/* ═══ Progress ════════════════════════════════════════ */
+.progress{height:6px;background:hsl(var(--muted));border-radius:9999px;overflow:hidden;margin-top:6px}
+.progress-bar{height:100%;border-radius:9999px;transition:width .3s}
+.progress-bar.green{background:hsl(var(--green))}
+.progress-bar.yellow{background:hsl(var(--yellow))}
+.progress-bar.red{background:hsl(var(--red))}
+.progress-bar.blue{background:hsl(var(--blue))}
+
+/* ═══ Status Dots ═════════════════════════════════════ */
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;flex-shrink:0}
+.status-dot.online{background:hsl(var(--green));box-shadow:0 0 8px hsl(var(--green) / 0.5)}
+.status-dot.offline{background:hsl(var(--muted-foreground) / 0.3)}
+.status-dot.warning{background:hsl(var(--yellow))}
+
+/* ═══ Buttons ═════════════════════════════════════════ */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid hsl(var(--border));border-radius:var(--radius);background:hsl(var(--secondary));color:hsl(var(--secondary-foreground));cursor:pointer;font-size:.8rem;font-weight:500;font-family:inherit;transition:all .15s;line-height:1}
+.btn:hover{background:hsl(var(--accent));border-color:hsl(var(--muted-foreground) / 0.3)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:hsl(var(--foreground));color:hsl(var(--background));border-color:hsl(var(--foreground))}
+.btn-primary:hover{opacity:.9}
+.btn-danger{background:hsl(var(--destructive));color:hsl(var(--destructive-foreground));border-color:hsl(var(--destructive))}
+.btn-danger:hover{opacity:.9}
+.btn-success{background:hsl(var(--green));color:#fff;border-color:hsl(var(--green))}
+.btn-success:hover{opacity:.9}
+.btn-ghost{background:transparent;border-color:transparent;color:hsl(var(--muted-foreground))}
+.btn-ghost:hover{background:hsl(var(--accent));color:hsl(var(--foreground))}
+.btn-sm{padding:4px 10px;font-size:.75rem}
+
+/* ═══ Filter Bar ══════════════════════════════════════ */
+.filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.filter-bar input,.filter-bar select{padding:7px 12px;border:1px solid hsl(var(--border));border-radius:var(--radius);background:hsl(var(--background));color:hsl(var(--foreground));font-size:.85rem;font-family:inherit}
+.filter-bar input:focus,.filter-bar select:focus{outline:none;border-color:hsl(var(--ring));box-shadow:0 0 0 2px hsl(var(--ring) / 0.2)}
+.filter-bar input::placeholder{color:hsl(var(--muted-foreground) / 0.5)}
+
+/* ═══ Empty State ═════════════════════════════════════ */
+.empty-state{text-align:center;padding:48px 20px;color:hsl(var(--muted-foreground))}
+.empty-state .icon{font-size:2.5rem;margin-bottom:12px;opacity:.5}
+.empty-state p{font-size:.9rem}
+
+/* ═══ Spinner ═════════════════════════════════════════ */
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid hsl(var(--border));border-top-color:hsl(var(--foreground));border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:20px;right:20px;padding:12px 20px;border-radius:8px;color:#fff;font-size:.85rem;z-index:100;opacity:0;transition:opacity .3s}
+
+/* ═══ Toast ═══════════════════════════════════════════ */
+.toast{position:fixed;bottom:20px;right:20px;padding:12px 20px;border-radius:var(--radius);color:#fff;font-size:.85rem;font-weight:500;z-index:100;opacity:0;transition:opacity .3s;box-shadow:0 4px 12px rgba(0,0,0,.3)}
 .toast.show{opacity:1}
-.toast.success{background:#1a7f37}
-.toast.error{background:#f85149}
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:50;display:none;align-items:center;justify-content:center}
+.toast.success{background:hsl(var(--green))}
+.toast.error{background:hsl(var(--destructive))}
+
+/* ═══ Modal ═══════════════════════════════════════════ */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:50;display:none;align-items:center;justify-content:center}
 .modal-overlay.show{display:flex}
-.modal-content{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;max-width:700px;width:90%;max-height:80vh;overflow-y:auto}
-.modal-content h3{margin-bottom:12px;color:#e6edf3}
-.modal-close{float:right;cursor:pointer;color:#8b949e;font-size:1.2rem}
-.modal-close:hover{color:#c9d1d9}
-/* Provider cards */
-.provider-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
-.provider-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;transition:all .2s}
-.provider-card:hover{border-color:#58a6ff}
-.provider-card.active{border-color:#3fb950}
-.provider-card .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.provider-card .name{font-size:1.1rem;font-weight:600;color:#e6edf3}
-.provider-card .status{font-size:.75rem;padding:2px 8px;border-radius:10px}
-.provider-card .status.active{background:#1a7f37;color:#fff}
-.provider-card .status.disabled{background:#30363d;color:#8b949e}
-.provider-card .meta{font-size:.8rem;color:#8b949e;margin-bottom:8px}
-.provider-card .models-list{max-height:120px;overflow-y:auto;font-size:.8rem}
-.provider-card .model-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #21262d}
+.modal-content{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:calc(var(--radius) + 4px);padding:24px;max-width:700px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.modal-content h3{margin-bottom:16px;color:hsl(var(--foreground));font-size:1.1rem;font-weight:600}
+.modal-close{float:right;cursor:pointer;color:hsl(var(--muted-foreground));font-size:1.2rem;background:none;border:none;padding:4px;line-height:1}
+.modal-close:hover{color:hsl(var(--foreground))}
+
+/* ═══ Provider Cards ══════════════════════════════════ */
+.provider-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:24px}
+.provider-card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:calc(var(--radius) + 2px);padding:20px;transition:all .2s}
+.provider-card:hover{border-color:hsl(var(--ring) / 0.4)}
+.provider-card.active{border-color:hsl(var(--green) / 0.5)}
+.provider-card .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.provider-card .name{font-size:1rem;font-weight:600;color:hsl(var(--foreground))}
+.provider-card .status{font-size:.7rem;padding:3px 10px;border-radius:9999px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
+.provider-card .status.active{background:hsl(var(--green) / 0.2);color:hsl(142,76%,56%)}
+.provider-card .status.disabled{background:hsl(var(--muted));color:hsl(var(--muted-foreground))}
+.provider-card .meta{font-size:.8rem;color:hsl(var(--muted-foreground));margin-bottom:10px}
+.provider-card .models-list{max-height:140px;overflow-y:auto;font-size:.8rem}
+.provider-card .model-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid hsl(var(--border))}
 .provider-card .model-item:last-child{border-bottom:none}
-/* Chat */
-.chat-container{display:flex;flex-direction:column;height:calc(100vh - 200px);background:#0d1117;border:1px solid #30363d;border-radius:8px;overflow:hidden}
-.chat-header{padding:12px 16px;background:#161b22;border-bottom:1px solid #30363d;display:flex;justify-content:space-between;align-items:center}
-.chat-header select{padding:4px 8px;border:1px solid #30363d;border-radius:4px;background:#0d1117;color:#c9d1d9;font-size:.85rem}
+
+/* ═══ Chat ════════════════════════════════════════════ */
+.chat-container{display:flex;flex-direction:column;height:calc(100vh - 180px);background:hsl(var(--background));border:1px solid hsl(var(--border));border-radius:calc(var(--radius) + 2px);overflow:hidden}
+.chat-header{padding:12px 16px;background:hsl(var(--card));border-bottom:1px solid hsl(var(--border));display:flex;justify-content:space-between;align-items:center}
+.chat-header select{padding:6px 10px;border:1px solid hsl(var(--border));border-radius:var(--radius);background:hsl(var(--background));color:hsl(var(--foreground));font-size:.85rem;font-family:inherit}
 .chat-messages{flex:1;overflow-y:auto;padding:16px}
 .chat-message{margin-bottom:16px;display:flex;gap:12px}
 .chat-message.user{flex-direction:row-reverse}
-.chat-message .avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
-.chat-message.user .avatar{background:#1f6feb;color:#fff}
-.chat-message.assistant .avatar{background:#238636;color:#fff}
-.chat-message.system .avatar{background:#30363d;color:#8b949e}
-.chat-message .bubble{max-width:70%;padding:10px 14px;border-radius:12px;font-size:.9rem;line-height:1.5}
-.chat-message.user .bubble{background:#1f6feb;color:#fff;border-bottom-right-radius:4px}
-.chat-message.assistant .bubble{background:#21262d;color:#c9d1d9;border-bottom-left-radius:4px}
-.chat-message.system .bubble{background:#161b22;color:#8b949e;font-style:italic;font-size:.8rem}
-.chat-input{padding:12px 16px;background:#161b22;border-top:1px solid #30363d;display:flex;gap:8px}
-.chat-input textarea{flex:1;padding:8px 12px;border:1px solid #30363d;border-radius:6px;background:#0d1117;color:#c9d1d9;font-size:.9rem;resize:none;min-height:40px;max-height:120px;font-family:inherit}
-.chat-input textarea:focus{outline:none;border-color:#58a6ff}
-.chat-input button{padding:8px 16px;border:none;border-radius:6px;background:#1f6feb;color:#fff;cursor:pointer;font-size:.9rem}
-.chat-input button:hover{background:#388bfd}
-.chat-input button:disabled{background:#30363d;color:#8b949e;cursor:not-allowed}
-@media(max-width:768px){.sidebar{width:60px}.sidebar .nav-label{display:none}.sidebar-header h1,.sidebar-header .sub{display:none}.main{margin-left:60px;max-width:calc(100vw - 60px)}}
+.chat-message .avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;font-weight:600}
+.chat-message.user .avatar{background:hsl(var(--blue));color:#fff}
+.chat-message.assistant .avatar{background:hsl(var(--green));color:#fff}
+.chat-message.system .avatar{background:hsl(var(--muted));color:hsl(var(--muted-foreground))}
+.chat-message .bubble{max-width:70%;padding:10px 14px;border-radius:12px;font-size:.9rem;line-height:1.6}
+.chat-message.user .bubble{background:hsl(var(--blue));color:#fff;border-bottom-right-radius:4px}
+.chat-message.assistant .bubble{background:hsl(var(--card));color:hsl(var(--foreground));border:1px solid hsl(var(--border));border-bottom-left-radius:4px}
+.chat-message.system .bubble{background:hsl(var(--muted));color:hsl(var(--muted-foreground));font-style:italic;font-size:.8rem}
+.chat-input{padding:12px 16px;background:hsl(var(--card));border-top:1px solid hsl(var(--border));display:flex;gap:8px}
+.chat-input textarea{flex:1;padding:8px 12px;border:1px solid hsl(var(--border));border-radius:var(--radius);background:hsl(var(--background));color:hsl(var(--foreground));font-size:.9rem;resize:none;min-height:40px;max-height:120px;font-family:inherit}
+.chat-input textarea:focus{outline:none;border-color:hsl(var(--ring));box-shadow:0 0 0 2px hsl(var(--ring) / 0.2)}
+.chat-input button{padding:8px 16px;border:none;border-radius:var(--radius);background:hsl(var(--foreground));color:hsl(var(--background));cursor:pointer;font-size:.9rem;font-weight:500;font-family:inherit}
+.chat-input button:hover{opacity:.9}
+.chat-input button:disabled{background:hsl(var(--muted));color:hsl(var(--muted-foreground));cursor:not-allowed}
+
+/* ═══ Tabs ════════════════════════════════════════════ */
+.tabs{display:flex;gap:2px;background:hsl(var(--muted));border-radius:var(--radius);padding:3px;margin-bottom:16px;width:fit-content}
+.tab{padding:6px 14px;border-radius:calc(var(--radius) - 2px);font-size:.8rem;font-weight:500;color:hsl(var(--muted-foreground));cursor:pointer;transition:all .15s;background:transparent;border:none;font-family:inherit}
+.tab:hover{color:hsl(var(--foreground))}
+.tab.active{background:hsl(var(--card));color:hsl(var(--foreground));box-shadow:0 1px 2px rgba(0,0,0,.2)}
+
+/* ═══ Responsive ══════════════════════════════════════ */
+@media(max-width:768px){
+  .sidebar{width:60px}
+  .sidebar .nav-label,.sidebar .nav-category-label,.sidebar-header h1,.sidebar-header .sub,.sidebar-footer{display:none}
+  .nav-item{justify-content:center;padding:10px}
+  .nav-icon{width:auto}
+  .main{margin-left:60px;max-width:calc(100vw - 60px);padding:16px}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .provider-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -157,13 +291,16 @@ code{font-family:"SF Mono","Fira Code",monospace;font-size:.8rem;background:#1c2
     <h1>⚡ Proxi</h1>
     <div class="sub">Admin Dashboard</div>
   </div>
-  ${navItems}
+  <nav class="sidebar-nav">
+    ${navHtml}
+  </nav>
+  <div class="sidebar-footer">ZombieCoder v2.0</div>
 </div>
 <div class="main" id="main-content">
   ${body}
 </div>
 <script>
-const page = '${activePage}';
+const page = '${escapeHtml(activePage)}';
 function $(s){return document.getElementById(s)}
 function $$(s){return document.querySelectorAll(s)}
 async function api(url,opts){const r=await fetch(url,opts);if(!r.ok)throw new Error(await r.text());return r.json()}
@@ -1465,6 +1602,36 @@ export async function handleAdminProvidersList(req: Request, res: Response) {
   } catch (err: any) { res.status(500).json({ error: err.message }); }
 }
 
+// ─── Get Single Provider ────────────────────────────────
+export async function handleAdminProviderGet(req: Request, res: Response) {
+  try {
+    const db = getStateDb();
+    if (!db) return res.json({ provider: null });
+
+    const id = req.params.id;
+    const provider = db.prepare(`SELECT * FROM providers WHERE id = ?`).get(id) as any;
+    if (!provider) return res.status(404).json({ error: 'Provider not found' });
+
+    const models = db.prepare(`SELECT * FROM provider_models WHERE provider_id = ? ORDER BY category, model_id`).all(id) as any[];
+    const costs = db.prepare(`
+      SELECT SUM(requests) as total_requests, SUM(tokens_prompt) as total_prompt_tokens,
+             SUM(tokens_completion) as total_completion_tokens,
+             ROUND(SUM(tokens_prompt) * 0.00001 + SUM(tokens_completion) * 0.00002, 4) as estimated_cost_usd
+      FROM usage_stats WHERE provider = ? AND timestamp >= datetime('now', '-30 days')
+    `).get(id) as any;
+
+    res.json({
+      provider: {
+        ...provider,
+        capabilities: typeof provider.capabilities === 'string' ? JSON.parse(provider.capabilities || '{}') : provider.capabilities,
+        models,
+        model_count: models.length,
+      },
+      costs: costs || { total_requests: 0, total_prompt_tokens: 0, total_completion_tokens: 0, estimated_cost_usd: 0 },
+    });
+  } catch (err: any) { res.status(500).json({ error: err.message }); }
+}
+
 // ─── Save Provider (create/update) ───────────────────────
 export async function handleAdminProviderSave(req: Request, res: Response) {
   try {
@@ -1473,6 +1640,20 @@ export async function handleAdminProviderSave(req: Request, res: Response) {
 
     const { id, name, type, base_url, api_key_env, api_key, priority, capabilities, rate_limit_rpm, rate_limit_tpm } = req.body || {};
     if (!id || !name || !base_url) return res.status(400).json({ error: 'id, name, base_url required' });
+
+    // Input validation: sanitize and validate fields
+    const safeId = String(id).replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
+    const safeName = String(name).replace(/[<>"'`]/g, '').slice(0, 128);
+    const safeType = String(type || 'openai-compatible').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 64);
+    const safeUrl = String(base_url).slice(0, 2048);
+    if (!safeUrl.startsWith('http://') && !safeUrl.startsWith('https://')) {
+      return res.status(400).json({ error: 'base_url must be http:// or https://' });
+    }
+    const safeKeyEnv = api_key_env ? String(api_key_env).replace(/[^A-Z0-9_]/g, '').slice(0, 128) : null;
+    const safeApiKey = api_key ? String(api_key).slice(0, 512) : null;
+    const safePriority = Math.min(Math.max(Number(priority) || 0, 0), 1000);
+    const safeRateRpm = rate_limit_rpm ? Math.min(Math.max(Number(rate_limit_rpm), 1), 100000) : null;
+    const safeRateTpm = rate_limit_tpm ? Math.min(Math.max(Number(rate_limit_tpm), 1), 10000000) : null;
 
     db.prepare(`
       INSERT INTO providers(id, name, type, base_url, api_key_env, api_key, priority, capabilities, rate_limit_rpm, rate_limit_tpm, updated_at)
@@ -1483,9 +1664,9 @@ export async function handleAdminProviderSave(req: Request, res: Response) {
         priority=excluded.priority, capabilities=excluded.capabilities,
         rate_limit_rpm=excluded.rate_limit_rpm, rate_limit_tpm=excluded.rate_limit_tpm,
         updated_at=CURRENT_TIMESTAMP
-    `).run(id, name, type || 'openai-compatible', base_url, api_key_env || null, api_key || null, priority || 0, JSON.stringify(capabilities || {}), rate_limit_rpm || null, rate_limit_tpm || null);
+    `).run(safeId, safeName, safeType, safeUrl, safeKeyEnv, safeApiKey, safePriority, JSON.stringify(capabilities || {}), safeRateRpm, safeRateTpm);
 
-    res.json({ ok: true, id });
+    res.json({ ok: true, id: safeId });
   } catch (err: any) { res.status(500).json({ error: err.message }); }
 }
 
@@ -1888,14 +2069,16 @@ export async function handleAdminProviderCosts(req: Request, res: Response) {
     const db = getStateDb();
     if (!db) return res.json({ costs: [], total: { requests: 0, tokens: 0, cost: 0 } });
 
-    const costs = db.prepare(`
+    // Use real pricing from pricing module
+    const { calculateCost, getAllPricing } = require('../providers/pricing');
+
+    const rawCosts = db.prepare(`
       SELECT
         provider,
         model_id,
         SUM(requests) as total_requests,
         SUM(tokens_prompt) as total_prompt_tokens,
         SUM(tokens_completion) as total_completion_tokens,
-        ROUND(SUM(tokens_prompt) * 0.00001 + SUM(tokens_completion) * 0.00002, 6) as estimated_cost_usd,
         MAX(timestamp) as last_used
       FROM usage_stats
       WHERE timestamp >= datetime('now', '-30 days')
@@ -1903,16 +2086,40 @@ export async function handleAdminProviderCosts(req: Request, res: Response) {
       ORDER BY total_requests DESC
     `).all() as any[];
 
-    const total = db.prepare(`
-      SELECT
-        SUM(requests) as requests,
-        SUM(tokens_prompt + tokens_completion) as tokens,
-        ROUND(SUM(tokens_prompt) * 0.00001 + SUM(tokens_completion) * 0.00002, 4) as cost
-      FROM usage_stats
-      WHERE timestamp >= datetime('now', '-30 days')
-    `).get() as any;
+    // Calculate real costs using pricing data
+    let totalCost = 0;
+    let totalTokens = 0;
+    let totalRequests = 0;
 
-    res.json({ costs, total: total || { requests: 0, tokens: 0, cost: 0 } });
+    const costs = rawCosts.map((row: any) => {
+      const usage = {
+        prompt_tokens: row.total_prompt_tokens,
+        completion_tokens: row.total_completion_tokens,
+        total_tokens: row.total_prompt_tokens + row.total_completion_tokens,
+      };
+      const costInfo = calculateCost(row.provider, row.model_id, usage);
+      const cost = costInfo ? costInfo.totalCost : (usage.total_tokens * 0.00001);
+      totalCost += cost;
+      totalTokens += usage.total_tokens;
+      totalRequests += row.total_requests;
+
+      return {
+        provider: row.provider,
+        model_id: row.model_id,
+        total_requests: row.total_requests,
+        total_prompt_tokens: row.total_prompt_tokens,
+        total_completion_tokens: row.total_completion_tokens,
+        estimated_cost_usd: cost,
+        is_free: costInfo?.isFree || false,
+        last_used: row.last_used,
+      };
+    });
+
+    res.json({
+      costs,
+      total: { requests: totalRequests, tokens: totalTokens, cost: totalCost },
+      pricingModels: getAllPricing().length,
+    });
   } catch (err: any) { res.status(500).json({ error: err.message }); }
 }
 
@@ -2096,5 +2303,16 @@ export async function handleAdminAgentHealth(req: Request, res: Response) {
       uptime_ms: service ? Date.now() - service.startedAtMs : 0,
       last_activity: sessions.length > 0 ? sessions[0].updated_at : null,
     });
+  } catch (err: any) { res.status(500).json({ error: err.message }); }
+}
+
+// ─── PRICING TABLE ────────────────────────────────────────
+export async function handleAdminPricing(req: Request, res: Response) {
+  try {
+    const { getAllPricing, getProviderPricing } = require('../providers/pricing');
+    const providerId = req.query.provider_id as string;
+
+    const pricing = providerId ? getProviderPricing(providerId) : getAllPricing();
+    res.json({ pricing, count: pricing.length });
   } catch (err: any) { res.status(500).json({ error: err.message }); }
 }

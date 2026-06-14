@@ -338,7 +338,160 @@ ul{margin:8px 0 12px 24px}li{margin-bottom:6px}
 
 <hr class="sep">
 
-<h2>১১. সারসংক্ষেপ — চক্রটি এক নজরে</h2>
+<h2>১১. নিরাপত্তা সংস্কার — কোড রিভিউ ফলাফল</h2>
+
+<div class="card">
+<h3>মোট সমস্যা পাওয়া গেছে: ৭৮টি</h3>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin:12px 0">
+<div><span class="badge" style="background:#3d0d0d;color:var(--red)">৬টি Critical</span></div>
+<div><span class="badge" style="background:#3d1f00;color:var(--yellow)">১৯টি High</span></div>
+<div><span class="badge" style="background:#1a2332;color:var(--accent)">৩৪টি Medium</span></div>
+<div><span class="badge bi">১৯টি Low</span></div>
+</div>
+<p>সব গুরুতর সমস্যা (Critical + High) এখন সংশোধন করা হয়েছে।</p>
+</div>
+
+<div class="card">
+<h3>সংশোধিত Critical সমস্যাগুলো:</h3>
+
+<div class="fs"><div class="fn" style="background:var(--red);width:28px;height:28px;font-size:.8rem">১</div><div class="fc"><strong>Admin endpoints এ authentication ছিল না</strong><br>
+<span class="tag tr">Critical</span> সব /api/admin/* endpoint খোলা ছিল — যেকোনো API key দিয়ে এডমিন ডেটা দেখা যেত।<br>
+<strong>সমাধান:</strong> requireAdmin middleware যোগ করা হয়েছে। ADMIN_SECRET সেট করলে admin routes protected থাকবে।</div></div>
+
+<div class="fs"><div class="fn" style="background:var(--red);width:28px;height:28px;font-size:.8rem">২</div><div class="fc"><strong>SQL Injection — column name injection</strong><br>
+<span class="tag tr">Critical</span> getByIdFromTable() এ idCol user input থেকে আসত যা সরাসরি SQL query-তে ব্যবহৃত হত।<br>
+<strong>সমাধান:</strong> idCol কে TABLE_PK mapping-এর সাথে validate করা হয়েছে — শুধুমাত্র known PK columns allowed।</div></div>
+
+<div class="fs"><div class="fn" style="background:var(--red);width:28px;height:28px;font-size:.8rem">৩</div><div class="fc"><strong>GROQ_API_KEY! non-null assertion</strong><br>
+<span class="tag tr">Critical</span> GROQ_API_KEY undefined থাকলেও `!` assertion দিয়ে pass করা হত — runtime crash হত।<br>
+<strong>সমাধান:</strong> Fallback `|| ''` দিয়ে replace করা হয়েছে।</div></div>
+
+<div class="fs"><div class="fn" style="background:#3d1f00;width:28px;height:28px;font-size:.8rem">৪</div><div class="fc"><strong>XSS — activePage template injection</strong><br>
+<span class="tag ty">High</span> layout() function-এ activePage parameter সরাসরি template literal-এ inject করা হত — script injection সম্ভব।<br>
+<strong>সমাধান:</strong> escapeHtml() দিয়ে sanitize করা হয়েছে।</div></div>
+
+<div class="fs"><div class="fn" style="background:#3d1f00;width:28px;height:28px;font-size:.8rem">৫</div><div class="fc"><strong>Unhandled promise rejections</strong><br>
+<span class="tag ty">High</span> Provider Gateway-এ resolveModel() এবং fallback calls try/catch ছাড়া ছিল — unhandled rejection হত।<br>
+<strong>সমাধান:</strong> সব async calls wrap করা হয়েছে try/catch blocks দিয়ে।</div></div>
+
+<div class="fs"><div class="fn" style="background:#3d1f00;width:28px;height:28px;font-size:.8rem">৬</div><div class="fc"><strong>Provider save — input validation নেই</strong><br>
+<span class="tag ty">High</span> handleAdminProviderSave-এ id, name, base_url sanitize হত না — malicious data save হত।<br>
+<strong>সমাধান:</strong> Regex sanitization, length limits, URL scheme validation যোগ করা হয়েছে।</div></div>
+</div>
+
+<hr class="sep">
+
+<h2>১২. রেফারেন্স প্রজেক্ট তুলনা — AI-Workstation-Admin</h2>
+
+<div class="card">
+<h3>দুটি প্রজেক্টের মৌলিক পার্থক্য</h3>
+<table>
+<tr><th>বৈশিষ্ট্য</th><th>Proxi (আমাদের)</th><th>AI-Workstation-Admin</th></tr>
+<tr><td><strong>ফ্রেমওয়ার্ক</strong></td><td>Express.js + Server-rendered HTML</td><td>Next.js 16 + React 19 + Tailwind</td></tr>
+<tr><td><strong>UI</strong></td><td>Inline JS + Server templates</td><td>shadcn/ui + Radix UI + SPA</td></tr>
+<tr><td><strong>ডাটাবেস</strong></td><td>SQLite (better-sqlite3)</td><td>Supabase (PostgreSQL)</td></tr>
+<tr><td><strong>API</strong></td><td>OpenAI-compatible REST + JSON-RPC</td><td>Next.js API routes</td></tr>
+<tr><td><strong>ডিপ্লয়মেন্ট</strong></td><td>Self-hosted (Node.js process)</td><td>Vercel (serverless)</td></tr>
+<tr><td><strong>মূল কাজ</strong></td><td>Provider orchestration + routing</td><td>Dashboard administration</td></tr>
+<tr><td><strong>স্কেল</strong></td><td>৫০০+ providers support</td><td>Single workspace management</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>AI-Workstation-Admin থেকে শেখার বিষয়:</h3>
+<ul>
+<li><strong>Component library:</strong> shadcn/ui — re-usable UI components, আমাদের inline CSS থেকে ভালো</li>
+<li><strong>State management:</strong> React hooks + context — cleaner than inline DOM manipulation</li>
+<li><strong>Type safety:</strong> Full TypeScript + Zod validation — runtime validation guarantees</li>
+<li><strong>Testing:</strong> Vitest + Playwright — automated testing framework</li>
+<li><strong>Real-time:</strong> WebSocket for live updates — better than SSE polling</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>আমাদের প্রজেক্টের শক্তি:</h3>
+<ul>
+<li><strong>Provider system:</strong> Multi-provider orchestration — AI-Workstation-Admin-এ নেই</li>
+<li><strong>Smart routing:</strong> Budget/quality/health-based auto-selection — unique feature</li>
+<li><strong>Tool normalization:</strong> Cross-provider tool call format conversion</li>
+<li><strong>Identity anchoring:</strong> System identity injection at gateway level</li>
+<li><strong>Zero-dependency deployment:</strong> Single Node.js process — no Vercel/Supabase needed</li>
+</ul>
+</div>
+
+<hr class="sep">
+
+<h2>১৩. এডমিন API লজিক — কিভাবে কাজ করে</h2>
+
+<div class="card">
+<h3>Request Flow:</h3>
+<div class="dia">
+<span class="hl">Browser</span> ──→ <span class="g">GET /admin/dashboard/providers</span> ──→ <span class="y">authenticate middleware</span>
+    │                                                        │
+    │                                                 API key check
+    │                                                 (GROQ_API_KEY / Bearer)
+    │                                                        │
+    │                                                  <span class="r">requireAdmin</span>
+    │                                                  (ADMIN_SECRET check)
+    │                                                        │
+    │                                                  <span class="p">handleAdminProvidersList</span>
+    │                                                  (DB query → JSON)
+    │                                                        │
+    └────────────────────────────────────────────────────────┘
+                              <span class="g">JSON response with providers + models + costs</span>
+</div>
+</div>
+
+<div class="card">
+<h3>Provider Test Flow:</h3>
+<div class="dia">
+<span class="hl">Test বাটন ক্লিক</span> ──→ <span class="g">POST /api/admin/providers/:id/test</span>
+    │
+    ├── ১. DB থেকে provider খুঁজে বের করো
+    ├── ২. API key resolve করো (DB → env variable)
+    ├── ৩. সেরা chat model খুঁজে বের করো
+    │     (active chat models → any chat models → any model)
+    ├── ৪. Real API request পাঠাও
+    │     POST {base_url}/chat/completions
+    └── ৫. ফলাফল return করো (latency, status, response)
+</div>
+<p class="note"><strong>গুরুত্বপূর্ণ:</strong> Test page-তে কোনো health check নেই — সবসময় real request পাঠানো হয়। এটি ensure করে যে প্রোভাইডার সত্যিই কাজ করছে।</p>
+</div>
+
+<div class="card">
+<h3>Auto-Route Test:</h3>
+<div class="dia">
+<span class="hl">User input</span> ──→ <span class="g">POST /api/admin/auto-route</span>
+    │
+    ├── ১. Gateway-কে "auto" model দিয়ে request পাঠাও
+    ├── ২. Gateway 3-tier resolution চালায়:
+    │     Tier 1: Explicit model (যদি দেওয়া থাকে)
+    │     Tier 2: Active provider/model
+    │     Tier 3: Smart auto-select (budget + quality + health)
+    ├── ৩. সেরা provider+model নির্বাচিত হয়
+    └── ৪. ফলাফল: provider, model, score, reason
+</div>
+</div>
+
+<hr class="sep">
+
+<h2>১৪. বুটস্ট্র্যাপ স্ক্রিপ্ট — স্বয়ংক্রিয় সেটআপ</h2>
+
+<div class="card">
+<h3>কিভাবে কাজ করে:</h3>
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">১</div><div class="fc"><strong>Env variable খুঁজে বের করো</strong><br>
+OPENCODE_API_KEY, GROQ_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, ANTHROPIC_API_KEY — যেগুলো আছে সেগুলো detect করে।</div></div>
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">২</div><div class="fc"><strong>Provider রেজিস্ট্র করো</strong><br>
+প্রতিটি API key-র জন্য DB-তে provider entry তৈরি করে (upsert)। প্রায়োরিটি: opencode (100) > groq (90) > openai (80) > gemini (70) > anthropic (65) > ollama (60)।</div></div>
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">৩</div><div class="fc"><strong>মডেল সিঙ্ক করো</strong><br>
+প্রতিটি provider-র জন্য পরিচিত মডেলগুলো sync করে — category inference, pricing, capabilities।</div></div>
+<div class="fs" style="margin:8px 0"><div class="fn" style="width:28px;height:28px;font-size:.8rem">৪</div><div class="fc"><strong>টুল রেজিস্ট্র করো</strong><br>
+প্রতিটি provider-র জন্য supported tools register করে — web_search, file_read, code_execute ইত্যাদি।</div></div>
+</div>
+
+<hr class="sep">
+
+<h2>১৫. সারসংক্ষেপ — চক্রটি এক নজরে</h2>
 
 <div class="dia">
 <span class="hl">ইউজার</span> ──→ <span class="g">ইনপুট</span> ──→ <span class="y">গেটওয়ে</span> ──→ <span class="p">মডেল সিলেক্ট</span> ──→ <span class="hl">প্রোভাইডার TS</span> ──→ <span class="g">API কল</span>
@@ -354,9 +507,23 @@ ul{margin:8px 0 12px 24px}li{margin-bottom:6px}
     └── <span class="g">OpenAI-compatible ফরম্যাটে ইউজারের কাছে</span>
 </div>
 
+<div class="card" style="border-color:var(--green)">
+<h3>সিস্টেম পরিসংখ্যান (বর্তমান):</h3>
+<table>
+<tr><th>বিষয়</th><th>সংখ্যা</th></tr>
+<tr><td>মোট ফাইল</td><td>৯৪টি</td></tr>
+<tr><td>মোট কোড লাইন</td><td>~৩৩,০০০</td></tr>
+<tr><td>প্রোভাইডার</td><td>৬টি (opencode, groq, openai, gemini, anthropic, ollama)</td></tr>
+<tr><td>মডেল</td><td>৯৮টি</td></tr>
+<tr><td>টুল</td><td>৩১টি</td></tr>
+<tr><td>DB Tables</td><td>১৮টি</td></tr>
+<tr><td>নিরাপত্তা সংস্কার</td><td>৬টি Critical + High সংশোধিত</td></tr>
+</table>
+</div>
+
 <p style="text-align:center;color:var(--dim);margin-top:40px;font-size:.85rem">
 ZombieCoder Proxi Bridge — Provider Orchestration Documentation<br>
-সর্বশেষ হালনাগাদ: জুন ২০২৬
+সর্বশেষ হালনাগাদ: জুন ২০২৬ | Security patches applied | Reference analysis included
 </p>
 
 </div>

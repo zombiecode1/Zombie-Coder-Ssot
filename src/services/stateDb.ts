@@ -911,7 +911,10 @@ export function getByIdFromTable(db: StateDb, table: string, idCol: string, idVa
     'conversations','conversation_messages','rag_documents','rag_chunks',
     'providers','provider_models','provider_tools','agent_profiles'];
   if (!allowed.includes(table)) throw new Error(`Table '${table}' not in whitelist`);
-  return db.prepare(`SELECT * FROM "${table}" WHERE "${idCol}" = ? LIMIT 1`).get(idVal) || null;
+  // Validate idCol against known PK columns to prevent SQL injection
+  const validPk = TABLE_PK[table] || 'id';
+  const safeCol = idCol && idCol === validPk ? validPk : 'id';
+  return db.prepare(`SELECT * FROM "${table}" WHERE "${safeCol}" = ? LIMIT 1`).get(idVal) || null;
 }
 
 // ═══════════════════════════════════════════════════════════════

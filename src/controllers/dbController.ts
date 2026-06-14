@@ -247,7 +247,9 @@ export function handleVerifyWriteRead(req: Request, res: Response) {
       'conversations','conversation_messages','rag_documents','rag_chunks'];
     if (!allowed.includes(table_name)) return res.status(400).json({ error: 'table not whitelisted' });
 
-    const pk = id_col || db.getPkForTable(table_name);
+    // Validate id_col to prevent SQL injection — only allow known PK columns
+    const validPk = db.getPkForTable(table_name);
+    const pk = (id_col && id_col === validPk) ? validPk : validPk;
     let row: any = null;
     try {
       row = getDb().prepare(`SELECT * FROM "${table_name}" WHERE "${pk}" = ? LIMIT 1`).get(record_id);

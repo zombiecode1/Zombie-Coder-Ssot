@@ -15,6 +15,7 @@ import {
 } from './types';
 import { getProviderRegistry, ProviderRegistry } from './provider-registry';
 import { getStateDb } from '../services/stateDb';
+import { calculateCost, getAllPricing } from './pricing';
 
 // ─── Agent Templates (Fallback) ─────────────────────────
 
@@ -144,7 +145,13 @@ export class ProviderGateway {
       // Don't fail if identity injection has an issue
     }
 
-    const resolved = await this.resolveModel(params);
+    let resolved: ModelSelectionResult;
+    try {
+      resolved = await this.resolveModel(params);
+    } catch (err: any) {
+      throw new Error(`Model resolution failed: ${err?.message || err}`);
+    }
+
     const resolvedParams = { ...params, model: resolved.modelId };
 
     let lastError: any = null;
@@ -157,8 +164,8 @@ export class ProviderGateway {
 
         const response = await provider.chat(resolvedParams);
 
-        // Track cost
-        this.trackCost(response);
+        // Track cost with real pricing
+        this.trackCost(response, resolved.providerId, resolved.modelId);
 
         return response;
       } catch (err: any) {
@@ -168,29 +175,33 @@ export class ProviderGateway {
         if (this.isRetryableError(err) && attempt < (this.config.maxRetries || 3)) {
           await this.delay(this.config.retryDelayMs || 500);
           // Try fallback model on retry
-          const fallback = await this.getFallbackModel(resolved.providerId, resolved.modelId);
-          if (fallback) {
-            resolved.modelId = fallback.modelId;
-            resolvedParams.model = fallback.modelId;
+          try {
+            const fallback = await this.getFallbackModel(resolved.providerId, resolved.modelId);
+            if (fallback) {
+              resolved.modelId = fallback.modelId;
+              resolvedParams.model = fallback.modelId;
+            }
+          } catch {
+            // Ignore fallback errors
           }
           continue;
         }
 
         // If provider-specific error, try another provider
         if (err?.status && err.status >= 500) {
-          const fallback = await this.getFallbackProvider(resolved.providerId, resolved.modelId);
-          if (fallback) {
-            try {
+          try {
+            const fallback = await this.getFallbackProvider(resolved.providerId, resolved.modelId);
+            if (fallback) {
               const fallbackProvider = this.registry.getById(fallback.providerId);
               if (fallbackProvider) {
                 resolvedParams.model = fallback.modelId;
                 const response = await fallbackProvider.chat(resolvedParams);
-                this.trackCost(response);
+                this.trackCost(response, fallback.providerId, fallback.modelId);
                 return response;
               }
-            } catch {
-              // Continue to next retry
             }
+          } catch {
+            // Continue to next retry
           }
         }
 
@@ -296,30 +307,33 @@ export class ProviderGateway {
     model: ModelInfo & { providerId: string },
     params: ChatCompletionParams,
   ): number {
-    let score = 50; // Base score
+    let score = 30; // Base score (lower = less preferred)
 
-    // Free bonus
-    if (model.isFree) score += 20;
+    // ═══ FREE MODELS ALWAYS WIN ═════════════════════════
+    // Free models get a massive bonus to ensure they're always tried first
+    if (model.isFree) score += 50;
 
-    // Speed bonus (fast category)
+    // ═══ CATEGORY SCORING ═══════════════════════════════
+    // Fast models preferred for responsive chat
     if (model.category === 'fast') score += 15;
+    // Balanced is good default
+    if (model.category === 'balanced') score += 10;
+    // Powerful only when needed
+    if (model.category === 'powerful') score += 5;
 
-    // Quality bonus (powerful category)
-    if (model.category === 'powerful') score += 10;
-    if (model.category === 'balanced') score += 5;
+    // ═══ CAPABILITY MATCHING ════════════════════════════
+    const needsTools = params.tools && params.tools.length > 0;
+    if (needsTools && model.supportsTools) score += 10;
+    if (needsTools && !model.supportsTools) score -= 20; // Penalize if tools needed but not supported
 
-    // Context window fit
+    // ═══ CONTEXT WINDOW ═════════════════════════════════
     const estTokens = this.estimateTokens(params.messages);
-    if (estTokens <= model.contextWindow * 0.8) score += 10;
+    if (estTokens <= model.contextWindow * 0.5) score += 10; // Comfortable fit
+    else if (estTokens <= model.contextWindow * 0.8) score += 5; // Tight fit
+    else score -= 15; // Too large, risky
 
-    // Active provider bonus
-    if (model.providerId === this.activeProviderId) score += 15;
-
-    // Provider priority (higher priority = better)
-    const providerConfig = this.registry.loadAllConfigsFromDb().find(c => c.id === model.providerId);
-    if (providerConfig) {
-      score += Math.min(providerConfig.priority / 10, 10);
-    }
+    // ═══ ACTIVE PROVIDER BONUS ══════════════════════════
+    if (model.providerId === this.activeProviderId) score += 5;
 
     return score;
   }
@@ -385,7 +399,13 @@ export class ProviderGateway {
     const result: Array<ModelInfo & { providerId: string }> = [];
 
     for (const config of configs) {
-      const provider = this.registry.getById(config.id);
+      let provider: ILLMProvider | null = null;
+      try {
+        provider = this.registry.getById(config.id);
+      } catch (err: any) {
+        // Provider factory not registered or creation failed — skip silently
+        continue;
+      }
       if (!provider) continue;
 
       // Get models from DB
@@ -421,11 +441,43 @@ export class ProviderGateway {
 
   // ─── Cost Tracking ───────────────────────────────────
 
-  private trackCost(response: ChatCompletionResponse): void {
-    if (response.usage) {
-      // Approximate cost (would need actual pricing data)
+  /**
+   * Track cost for a completed request using real provider pricing.
+   * Attaches cost breakdown to response for transparency.
+   */
+  private trackCost(response: ChatCompletionResponse, providerId?: string, modelId?: string): void {
+    if (!response.usage) return;
+
+    const pid = providerId || response.model?.split('/')[0] || 'unknown';
+    const mid = response.model || modelId || 'unknown';
+
+    const costBreakdown = calculateCost(pid, mid, response.usage);
+
+    if (costBreakdown) {
+      // Attach cost info to response for caller visibility
+      (response as any).cost = {
+        inputCost: costBreakdown.inputCost,
+        outputCost: costBreakdown.outputCost,
+        totalCost: costBreakdown.totalCost,
+        isFree: costBreakdown.isFree,
+        providerId: pid,
+        modelId: mid,
+      };
+      this.currentSpend += costBreakdown.totalCost;
+    } else {
+      // Unknown pricing — use rough estimate
       const tokens = response.usage.total_tokens;
-      this.currentSpend += tokens * 0.00001; // Rough estimate
+      const estimate = tokens * 0.00001;
+      (response as any).cost = {
+        inputCost: estimate * 0.4,
+        outputCost: estimate * 0.6,
+        totalCost: estimate,
+        isFree: false,
+        providerId: pid,
+        modelId: mid,
+        estimated: true,
+      };
+      this.currentSpend += estimate;
     }
   }
 
@@ -437,6 +489,23 @@ export class ProviderGateway {
   /** Get current spend */
   getCurrentSpend(): number {
     return this.currentSpend;
+  }
+
+  /** Get cost summary for admin display */
+  getCostSummary(): {
+    totalSpend: number;
+    budgetLimit: number;
+    budgetRemaining: number;
+    budgetExceeded: boolean;
+    pricingModels: number;
+  } {
+    return {
+      totalSpend: this.currentSpend,
+      budgetLimit: this.config.budgetLimit || Infinity,
+      budgetRemaining: (this.config.budgetLimit || Infinity) - this.currentSpend,
+      budgetExceeded: this.isBudgetExceeded(),
+      pricingModels: getAllPricing().length,
+    };
   }
 
   // ─── Utilities ────────────────────────────────────────

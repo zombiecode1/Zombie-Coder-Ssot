@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZombieCoder Agent System — বাংলা ডকুমেন্টেশন</title>
+    <style>
+        :root { --bg: #0a0a0a; --fg: #e0e0e0; --accent: #00ff88; --dim: #666; --border: #222; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--fg); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.7; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        h1 { color: var(--accent); font-size: 2rem; margin-bottom: 0.5rem; }
+        h2 { color: var(--accent); font-size: 1.4rem; margin: 2rem 0 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        h3 { color: #88ffcc; font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+        p { margin-bottom: 1rem; }
+        code { background: #1a1a1a; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; color: #ff6b6b; }
+        pre { background: #1a1a1a; padding: 1rem; border-radius: 6px; overflow-x: auto; margin: 1rem 0; border: 1px solid var(--border); }
+        pre code { background: none; padding: 0; color: #e0e0e0; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-right: 0.5rem; }
+        .badge-green { background: #00ff8822; color: var(--accent); }
+        .badge-red { background: #ff000022; color: #ff6b6b; }
+        .badge-yellow { background: #ffff0022; color: #ffcc00; }
+        .card { background: #111; border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 1rem 0; }
+        .flow-diagram { background: #111; border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 1rem 0; font-family: monospace; font-size: 0.85rem; line-height: 2; }
+        .flow-arrow { color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
+        th { background: #1a1a1a; color: var(--accent); }
+        .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--dim); font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<h1>🧟 ZombieCoder Agent System</h1>
+<p>বাংলায় সম্পূর্ণ ডকুমেন্টেশন — কিভাবে কাজ করে, কেন লাগে, এবং কোথায় সীমাবদ্ধতা আছে।</p>
+
+<!-- ==================== SECTION 1 ==================== -->
+<h2>১. এজেন্ট কেন লাগে?</h2>
+
+<div class="card">
+<p><strong>সমস্যা:</strong> একজন ডেভেলপার IDE/এডিটরে বসে কাজ করেন। সমস্যা হলো — প্রতিবার Stack Overflow, ডকুমেন্টেশন, বা AI চ্যাটে যেতে হয়। এটি সময় নষ্ট করে এবং ফোকাস ভাঙে।</p>
+<p><strong>সমাধান:</strong> ZombieCoder Agent — একটি <strong>local-first</strong> AI সহযোগী যে আপনার প্রোজেক্টের কন্টেক্সট বুঝে, SSOT (Single Source of Truth) থেকে তথ্য নেয়, এবং সরাসরি আপনার এডিটরেই উত্তর দেয়।</p>
+</div>
+
+<h3>কেন MCP/Agent, শুধু Claude/GPT চ্যাট যথেষ্ট না কেন?</h3>
+<table>
+<tr><th>বিষয়</th><th>সাধারণ AI চ্যাট</th><th>ZombieCoder Agent</th></tr>
+<tr><td>প্রোজেক্ট কন্টেক্সট</td><td>নেই — শুধু prompt থেকে বুঝে</td><td>✅ SSOT.md + RAG থেকে প্রকৃত প্রোজেক্ট তথ্য</td></tr>
+<tr><td>টুল এক্সিকিউশন</td><td>শুধু কথা বলে</td><td>✅ ফাইল পড়ে, কোড সার্চ করে, কমান্ড চালায়</td></tr>
+<tr><td>প্রাইভেসি</td><td>ডেটা ক্লাউডে যায়</td><td>✅ সবকিছু লোকাল</td></tr>
+<tr><td>মেমরি</td><td>পুরোনো conversation মনে থাকে না</td><td>✅ Session + Conversation ID দিয়ে মনে রাখে</td></tr>
+<tr><td>কস্ট</td><td>প্রতিটি request বিল</td><td>✅ ফ্রি মডেল আছে (OpenCode)</td></tr>
+</table>
+
+<!-- ==================== SECTION 2 ==================== -->
+<h2>২. আর্কিটেকচার — কীভাবে কাজ করে</h2>
+
+<div class="flow-diagram">
+<span class="flow-arrow"> Editor (OpenCode/VSCode) </span>
+        │
+        ▼
+<span class="flow-arrow"> MCP Protocol (localhost:9999) </span>
+        │
+        ├──▶ <span class="flow-arrow"> ProviderGateway</span> (রাউটিং ব্রেইন)
+        │         │
+        │         ├──▶ Free Models (OpenCode) → $0
+        │         ├──▶ Groq (fast) → কম বিল
+        │         ├──▶ OpenAI (quality) → বেশি বিল
+        │         └──▶ Gemini/Anthropic → fallback
+        │
+        ├──▶ <span class="flow-arrow"> RAG Service</span> (SSOT.md থেকে তথ্য খোঁজে)
+        │         │
+        │         └──▶ SSOT.md (auto-generated project docs)
+        │
+        ├──▶ <span class="flow-arrow"> Agent Service</span> (persona + identity)
+        │         │
+        │         └──▶ identity.json (ZombieCoder persona)
+        │
+        └──▶ <span class="flow-arrow"> Response</span> → OpenAI format → Editor
+</div>
+
+<h3>মূল উপাদান (Components)</h3>
+<table>
+<tr><th>Component</th><th>কাজ</th><th>ফাইল</th></tr>
+<tr><td><code>ProviderGateway</code></td><td>কোন প্রোভাইডার ব্যবহার করবে সেটা সিদ্ধান্ত নেয়</td><td><code>src/providers/provider-gateway.ts</code></td></tr>
+<tr><td><code>DiskRAGService</code></td><td>SSOT.md পড়ে, সার্চ করে, auto-regenerate করে</td><td><code>src/services/ragService.ts</code></td></tr>
+<tr><td><code>AgentService</code></td><td>Persona + identity inject করে</td><td><code>src/services/agentService.ts</code></td></tr>
+<tr><td><code>MawlanaRouter</code></td><td>Chat/Code/RAG/Guard category নির্ধারণ করে</td><td><code>src/services/mawlanaRouter.ts</code></td></tr>
+<tr><td><code>WorkspaceWatcher</code></td><td>ফাইল পরিবর্তন হলে SSOT auto-update করে</td><td><code>src/services/workspaceWatcher.ts</code></td></tr>
+<tr><td><code>IdentityService</code></td><td>identity.json লোড করে</td><td><code>src/services/identityService.ts</code></td></tr>
+</table>
+
+<!-- ==================== SECTION 3 ==================== -->
+<h2>৩. এজেন্ট চালু হওয়ার প্রক্রিয়া (Startup Flow)</h2>
+
+<div class="card">
+<ol style="padding-left: 1.5rem;">
+<li><strong>Server Start:</strong> <code>node dist/index.js</code> চালু হয়</li>
+<li><strong>Workspace Detection:</strong> <code>mcp/mcp.json</code> খুঁজে বের করে কোন ডিরেক্টরি workspace root</li>
+<li><strong>State DB:</strong> <code>.zombiecoder/state.db</code> তৈরি/লোড হয় (SQLite)</li>
+<li><strong>SSOT Generation:</strong> SSOT.md না থাকলে auto-generate হয়</li>
+<li><strong>Workspace Watcher:</strong> Chokidar দিয়ে ফাইল পরিবর্তন monitor করে</li>
+<li><strong>Provider Bootstrap:</strong> Environment variables থেকে providers খুঁজে বের করে</li>
+<li><strong>Runtime Manifest:</strong> <code>.zombiecoder/runtime.json</code> লেখা হয় (প্রতি ৫ মিনিটে update)</li>
+<li><strong>Agent Ready:</strong> <code>POST /v1/agent/chat</code> রেডি</li>
+</ol>
+</div>
+
+<!-- ==================== SECTION 4 ==================== -->
+<h2>৪. ইউজার ইনপুট থেকে উত্তর — পূর্ণ Flow</h2>
+
+<div class="flow-diagram">
+<strong>ধাপ ১: ইউজার টাইপ করে</strong>
+Editor input field → "প্রোজেক্টে কতগুলো provider আছে?"
+        │
+<strong>ধাপ ২: Request আসে</strong>
+POST /v1/agent/chat → { messages: [{ role: "user", content: "..." }] }
+        │
+<strong>ধাপ ৩: Identity Inject</strong>
+system_identity prompt → প্রথম system message হিসেবে যোগ হয়
+        │
+<strong>ধাপ ৪: Model Routing</strong>
+MawlanaRouter → chat/code/rag/guard category নির্ধারণ
+        │
+<strong>ধাপ ৫: RAG Injection (যদি needsRag=true)</strong>
+SSOT.md থেকে keyword search → প্রাসঙ্গিক অংশ খুঁজে বের
+        │
+<strong>ধাপ ৬: Provider Selection</strong>
+ProviderGateway → free-first scoring → সেরা provider বাছাই
+        │
+<strong>ধাপ ৭: API Call</strong>
+Groq/OpenCode/OpenAI → LLM call → response
+        │
+<strong>ধাপ ৮: Response Normalize</strong>
+সব provider response → OpenAI format → editor
+        │
+<strong>ধাপ ৯: Conversation Save</strong>
+state.db → conversations + messages table
+        │
+<strong>ধাপ ১০: Cost Track</strong>
+pricing.ts → প্রতিটি request এর cost calculate
+</div>
+
+<!-- ==================== SECTION 5 ==================== -->
+<h2>৫. SSOT (Single Source of Truth) — কী এবং কেন</h2>
+
+<div class="card">
+<p><strong>SSOT.md</strong> হলো আপনার প্রোজেক্টের একটি auto-generated documentation। এটি:</p>
+<ul style="padding-left: 1.5rem; margin: 0.5rem 0;">
+<li>প্রোজেক্টের ফোল্ডার স্ট্রাকচার দেখায়</li>
+<li>কোন কোন ফাইল আছে সেটা list করে</li>
+<li>এজেন্টকে প্রোজেক্ট সম্পর্কে জানায়</li>
+<li>প্রতি ৫ মিনিটে auto-update হয় (file change হলে)</li>
+</ul>
+
+<h3>SSOT কিভাবে তৈরি হয়?</h3>
+<pre><code>1. Server start → setWorkingDirectory() → autoInit: true
+2. scanProject() → সব ফাইল + ফোল্ডার scan
+3. generateSSOTTemplate() → markdown format এ convert
+4. saveSSOT() → .zombiecoder/SSOT.md তে save
+5. WorkspaceWatcher → ফাইল পরিবর্তন হলে auto-regenerate</code></pre>
+
+<h3>SSOT Update Timing</h3>
+<table>
+<tr><th>Event</th><th>Update?</th><th>Time</th></tr>
+<tr><td>Server start</td><td>✅ Auto</td><td>তৎক্ষণাৎ</td></tr>
+<tr><td>ফাইল add/delete/modify</td><td>✅ Watcher trigger</td><td>~1.5s debounce</td></tr>
+<tr><td>Manual rescan</td><td>✅ API call</td><td>তৎক্ষণাৎ</td></tr>
+<tr><td>5 minute interval</td><td>✅ Runtime.json</td><td>প্রতি ৫ মিনিটে</td></tr>
+</table>
+</div>
+
+<!-- ==================== SECTION 6 ==================== -->
+<h2>৬. Conversation Memory — কিভাবে মনে রাখে</h2>
+
+<div class="card">
+<h3>তিনটি ID সিস্টেম</h3>
+<table>
+<tr><th>ID</th><th>কাজ</th><th>উদাহরণ</th></tr>
+<tr><td><code>session_id</code></td><td>এডিটর session — একই editor restart পর্যন্ত</td><td><code>"opencode-main"</code></td></tr>
+<tr><td><code>conversation_id</code></td><td>একটি নির্দিষ্ট conversation — persist থাকে</td><td><code>"ae76bb6b-d5db-..."</code></td></tr>
+<tr><td><code>workspace_id</code></td><td>প্রোজেক্ট — একই workspace সবার জন্য</td><td><code>"auto:3af7cdb0..."</code></td></tr>
+</table>
+
+<h3>Conversation Save Flow</h3>
+<pre><code>1. User message আসে
+2. ensureConversation() → conversation table তে entry (না থাকলে)
+3. addConversationMessage() → user message save
+4. LLM call → response
+5. addConversationMessage() → assistant message save
+6. Usage track → usage_stats table</code></pre>
+
+<h3>Memory Limitation</h3>
+<p><span class="badge badge-yellow">সীমাবদ্ধতা</span> Agent service শুধু বর্তমান request এর messages array ব্যবহার করে। পুরোনো conversation history automatically inject হয় <strong>না</strong>। এটি client-side responsibility — editor extension কে আগের messages pass করতে হবে।</p>
+</div>
+
+<!-- ==================== SECTION 7 ==================== -->
+<h2>৭. Tool Execution — কী কী করতে পারে</h2>
+
+<div class="card">
+<h3>বর্তমান সক্ষমতা</h3>
+<table>
+<tr><th>Tool</th><th>কাজ</th><th>Status</th></tr>
+<tr><td>SSOT Search</td><td>প্রোজেক্ট documentation খোঁজা</td><td><span class="badge badge-green">✅ কাজ করছে</span></td></tr>
+<tr><td>Provider Routing</td><td>সেরা model select করা</td><td><span class="badge badge-green">✅ কাজ করছে</span></td></tr>
+<tr><td>Identity Anchoring</td><td>ZombieCoder persona inject</td><td><span class="badge badge-green">✅ কাজ করছে</span></td></tr>
+<tr><td>Cost Tracking</td><td>প্রতিটি request এর cost calculate</td><td><span class="badge badge-green">✅ কাজ করছে</span></td></tr>
+<tr><td>File Operations</td><td>ফাইল পড়া/লেখা/ডিলিট</td><td><span class="badge badge-red">❌ MCP tools লাগবে</span></td></tr>
+<tr><td>Terminal Commands</td><td>কমান্ড execute করা</td><td><span class="badge badge-red">❌ MCP tools লাগবে</span></td></tr>
+<tr><td>Code Execution</td><td>কোড run করা</td><td><span class="badge badge-red">❌ MCP tools লাগবে</span></td></tr>
+</table>
+
+<h3>কেন MCP tools লাগে?</h3>
+<p>Agent server (proxi_new) একটি <strong>API server</strong> — এটি শুধু LLM call করে এবং response দেয়। ফাইল অপারেশন বা কমান্ড execute করার জন্য <strong>MCP server</strong> লাগে যেটি actual tools provide করে।</p>
+<pre><code>// MCP Server (tools provider)
+{
+  "command": "node",
+  "args": ["mcp-server.js"],
+  "tools": ["read_file", "write_file", "run_command", "search_code"]
+}
+
+// Agent Server (brain)
+// → MCP tools discover করে
+// → LLM decision নেয় কোন tool call করবে
+// → Tool execute হয়
+// → Result আবার LLM-কে দেওয়া হয়
+// → চূড়ান্ত উত্তর তৈরি</code></pre>
+</div>
+
+<!-- ==================== SECTION 8 ==================== -->
+<h2>৮. Provider System — কস্ট অপটিমাইজেশন</h2>
+
+<div class="card">
+<h3>Free-First Strategy</h3>
+<p>ProviderGateway সবসময় <strong>ফ্রি মডেল আগে</strong> try করে:</p>
+<pre><code>Scoring Formula:
+  baseScore = priority (0-100)
+  + freeModelBonus: +50 (ফ্রি মডেলের জন্য)
+  + contextFit: +10 (context window ফিট হলে)
+  - toolPenalty: -20 (tools লাগলে এবং provider support না করলে)</code></pre>
+
+<h3>Provider Priority</h3>
+<table>
+<tr><th>Provider</th><th>Priority</th><th>Cost</th><th>Quality</th></tr>
+<tr><td>OpenCode</td><td>100</td><td>$0 (ফ্রি)</td><td>ভালো</td></tr>
+<tr><td>Groq</td><td>90</td><td>খুব কম</td><td>খুব ভালো</td></tr>
+<tr><td>OpenAI</td><td>80</td><td>মাঝারি</td><td>সেরা</td></tr>
+<tr><td>Gemini</td><td>70</td><td>কম</td><td>ভালো</td></tr>
+<tr><td>Anthropic</td><td>65</td><td>বেশি</td><td>সেরা</td></tr>
+</table>
+
+<h3>Per-Request Cost Tracking</h3>
+<p>প্রতিটি response এ cost breakdown থাকে:</p>
+<pre><code>{
+  "inputCost": 0.00012,    // input tokens cost
+  "outputCost": 0.00005,   // output tokens cost
+  "totalCost": 0.00017,    // মোট cost
+  "isFree": false,         // ফ্রি কিনা
+  "providerId": "groq",    // কোন provider
+  "modelId": "deepseek-v4-flash"  // কোন model
+}</code></pre>
+</div>
+
+<!-- ==================== SECTION 9 ==================== -->
+<h2>৯. Session & Conversation — পার্থক্য</h2>
+
+<div class="card">
+<table>
+<tr><th>বিষয়</th><th>Session</th><th>Conversation</th></tr>
+<tr><td>কাল</td><td>এডিটর restart পর্যন্ত</td><td>চিরকাল (DB থাকলে)</td></tr>
+<tr><td>ID</td><td><code>session_id</code> (string)</td><td><code>conversation_id</code> (UUID)</td></tr>
+<tr><td>DB Storage</td><td>নেই</td><td><code>conversations</code> + <code>conversation_messages</code> table</td></tr>
+<tr><td>History</td><td>শুধু current request</td><td>সব messages save থাকে</td></tr>
+<tr><td>Resume</td><td>সম্ভব না</td><td><code>conversation_id</code> pass করলে resume হয়</td></tr>
+</table>
+
+<h3>কিভাবে Resume করবে?</h3>
+<pre><code>// প্রথম conversation
+POST /v1/agent/chat
+{ "messages": [...], "session_id": "editor-1" }
+// Response: { "conversation_id": "abc-123" }
+
+// পরে resume
+POST /v1/agent/chat
+{ "messages": [...], "session_id": "editor-1", "conversation_id": "abc-123" }
+// Agent আগের conversation মনে রাখবে</code></pre>
+</div>
+
+<!-- ==================== SECTION 10 ==================== -->
+<h2>১০. সীমাবদ্ধতা ও ভবিষ্যৎ</h2>
+
+<div class="card">
+<h3>বর্তমান সীমাবদ্ধতা</h3>
+<table>
+<tr><th>সীমাবদ্ধতা</th><th>কারণ</th><th>সমাধান</th></tr>
+<tr><td>Agent context window limited</td><td>LLM token limit</td><td>Bigger models / chunking</td></tr>
+<tr><td>Conversation history auto-inject হয় না</td><td>Legacy mode design</td><td>Client-side history pass</td></tr>
+<tr><td>File operations হয় না</td><td>Agent server শুধু API</td><td>MCP server integration</td></tr>
+<tr><td>Bengali RAG keywords কাজ করে না</td><td>English-only keyword list</td><td>Bengali keywords add</td></tr>
+<tr><td>SSOT ৫ মিনিট পর update</td><td>Watcher debounce</td><td>Increase frequency</td></tr>
+</table>
+
+<h3>ভবিষ্যৎ পরিকল্পনা</h3>
+<ul style="padding-left: 1.5rem;">
+<li>MCP tools integration (file ops, terminal, browser)</li>
+<li>Bengali RAG keywords support</li>
+<li>Streaming response support</li>
+<li>Multi-modal input (image, voice)</li>
+<li>Plugin system for custom tools</li>
+</ul>
+</div>
+
+<div class="footer">
+<p>ZombieCoder Agent System v2.0 — Developer Zone, Dhaka, Bangladesh</p>
+<p>Last updated: June 2026</p>
+</div>
+
+</div>
+</body>
+</html>

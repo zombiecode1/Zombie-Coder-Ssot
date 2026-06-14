@@ -40,6 +40,21 @@ export const initializeAgentSystem = async (workingDir?: string) => {
     } catch (e: any) {
       console.warn('rag setWorkingDirectory autoInit failed:', e?.message || e);
     }
+    // Start watcher for the default workspace to keep SSOT up-to-date
+    try {
+      const key = `default:${workingDir}`;
+      if (!workspaceWatchers.has(key)) {
+        workspaceWatchers.set(key, startWorkspaceWatcher({
+          directory: workingDir,
+          rag: ragService,
+          index: vectorIndexService,
+          workspaceId: 'default',
+        }));
+        console.log(`👁️ Workspace watcher started for default workspace: ${workingDir}`);
+      }
+    } catch (e: any) {
+      console.warn('Failed to start default workspace watcher:', e?.message || e);
+    }
   }
 
   // Initialize local SQLite state DB under the working directory.
