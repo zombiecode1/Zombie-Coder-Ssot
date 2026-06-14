@@ -3,17 +3,18 @@ import { AgentService } from '../services/agentService';
 import { DiskRAGService } from '../services/ragService';
 import { MawlanaRouter } from '../services/mawlanaRouter';
 import { getService } from './openaiController';
+import { runLangChainAgent, clearSessionMemory, getMemoryStats } from '../services/langchainAgent';
 import { ChatCompletionCreateParams } from 'groq-sdk/resources/chat/completions';
 import { getIdentity } from '../services/identityService';
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
-import { initStateDb, setStateDb, upsertModels, upsertModelRateLimits, upsertPersona, isWorkspaceTrusted, ensureConversation, addConversationMessage, upsertWorkspaceTrust } from '../services/stateDb';
+import { initStateDb, setStateDb, upsertModels, upsertModelRateLimits, upsertPersona, isWorkspaceTrusted, ensureConversation, addConversationMessage, listConversationMessages, upsertWorkspaceTrust } from '../services/stateDb';
 import { initAdminTables } from '../admin/db';
 import { addEditorConnection } from '../admin/db';
 import { startWorkspaceWatcher, WorkspaceWatcher } from '../services/workspaceWatcher';
 import { VectorIndexService } from '../services/vectorIndexService';
-import { executeTool, getToolDefinitions, AGENT_TOOLS } from '../tools/agentTools';
+import { callMcpTool, getMcpTools, isMcpConnected } from '../mcp/client';
 
 function stripThinkBlocks(text: string): string {
   if (!text) return text;
@@ -283,13 +284,19 @@ function resolveConversationId(conversation_id?: string): string {
 }
 
 /**
- * Detect and execute tools based on user question.
+ * Detect and execute tools based on user question via MCP.
  * Returns tool results that should be injected into context.
  * This prevents the agent from lying when tools can answer.
  */
 async function executeToolsForQuestion(userMessage: string): Promise<string[]> {
   const lower = userMessage.toLowerCase();
   const toolResults: string[] = [];
+
+  // If MCP is not connected, skip tool execution
+  if (!isMcpConnected()) {
+    console.warn('⚠️ MCP not connected, skipping tool execution');
+    return toolResults;
+  }
 
   // Pattern matching for common questions
   const toolMappings: Array<{ patterns: RegExp[]; tool: string; getInput: (m: string) => Record<string, any> }> = [
@@ -313,12 +320,19 @@ async function executeToolsForQuestion(userMessage: string): Promise<string[]> {
       tool: 'list_files',
       getInput: () => ({ directory: process.cwd() }),
     },
+    {
+      patterns: [/কোন.*কোড|কী.*কোড|search.*code|find.*function|grep/i],
+      tool: 'search_code',
+      getInput: (m) => ({ pattern: m.replace(/.*(?:search|find|grep|খুঁজুন|find)\s*/i, ''), directory: process.cwd() }),
+    },
   ];
 
   for (const mapping of toolMappings) {
     if (mapping.patterns.some(p => p.test(lower))) {
+      console.log(`🔧 Tool match: "${mapping.tool}" for message: "${userMessage.substring(0, 50)}..."`);
       try {
-        const result = await executeTool(mapping.tool, mapping.getInput(lower));
+        const result = await callMcpTool(mapping.tool, mapping.getInput(lower));
+        console.log(`🔧 Tool result: success=${result.success}, hasData=${!!result.data}`);
         if (result.success) {
           toolResults.push(`[Tool: ${mapping.tool}] ${JSON.stringify(result, null, 2)}`);
         }
@@ -434,6 +448,31 @@ export const handleAgentChat = async (req: Request, res: Response) => {
       user: body.user,
     } as any;
 
+    // ── LOAD CONVERSATION HISTORY from DB ──
+    const resolvedConvoId = conversation_id && String(conversation_id).trim() ? String(conversation_id).trim() : null;
+    if (stateDb && resolvedConvoId) {
+      try {
+        const history = listConversationMessages(stateDb, resolvedConvoId, 20);
+        console.log(`💾 Loading history for convo ${resolvedConvoId}: ${history.length} messages found`);
+        if (history.length > 0) {
+          // Build history messages (exclude the last user message which is already in params)
+          const historyMsgs = history
+            .filter((h: any) => h.role === 'user' || h.role === 'assistant')
+            .slice(0, -1) // exclude the current user message
+            .map((h: any) => ({ role: h.role, content: h.content }));
+          
+          if (historyMsgs.length > 0) {
+            // Insert history after system message but before user message
+            const sysIdx = params.messages.findIndex((m: any) => m.role === 'system');
+            params.messages.splice(sysIdx + 1, 0, ...historyMsgs);
+            console.log(`💾 Conversation history injected: ${historyMsgs.length} messages`);
+          }
+        }
+      } catch (e: any) {
+        console.warn('Failed to load conversation history:', e?.message || e);
+      }
+    }
+
     // ── Inject tool results into context ──
     if (toolResults.length > 0) {
       const toolContext = toolResults.join('\n\n');
@@ -447,6 +486,11 @@ export const handleAgentChat = async (req: Request, res: Response) => {
       }
       
       console.log(`🔧 Tool execution: ${toolResults.length} tool(s) provided real data`);
+    }
+
+    // Ensure sufficient max_tokens for reasoning models (deepseek)
+    if (!params.max_tokens || params.max_tokens < 2048) {
+      params.max_tokens = 4096;
     }
 
     // Model routing
@@ -885,4 +929,73 @@ export const handleReadSSOT = async (req: Request, res: Response) => {
 export const handleAgentRoutes = async (req: Request, res: Response) => {
   const routes = mawlanaRouter?.getAllRoutes() || {};
   res.json({ routes, persona: agentService?.getPersonaName() || 'ZombieCoder' });
+};
+
+// ── LangChain Agent Endpoint ──────────────────────────────────
+export const handleLangChainAgent = async (req: Request, res: Response) => {
+  try {
+    const { messages, session_id, model, system_prompt } = req.body || {};
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ error: { message: 'messages array is required', type: 'invalid_request_error' } });
+    }
+
+    const sessionId = session_id || crypto.randomUUID();
+
+    // Get identity system prompt
+    let systemPrompt = system_prompt;
+    if (!systemPrompt) {
+      try {
+        const identity = getIdentity();
+        systemPrompt = identity?.system_identity?.system_prompt || 'You are ZombieCoder, a local-first AI assistant.';
+      } catch {
+        systemPrompt = 'You are ZombieCoder, a local-first AI assistant.';
+      }
+    }
+
+    console.log(`🤖 LangChain agent: session=${sessionId}, messages=${messages.length}, model=${model || 'auto'}`);
+
+    const result = await runLangChainAgent({
+      messages,
+      sessionId,
+      systemPrompt,
+      modelName: model,
+    });
+
+    console.log(`✅ LangChain agent: tools=[${result.toolCalls.join(', ')}], model=${result.model}`);
+
+    // Return OpenAI-compatible response
+    res.json({
+      id: crypto.randomUUID(),
+      object: 'chat.completion',
+      created: Math.floor(Date.now() / 1000),
+      model: result.model,
+      choices: [{
+        index: 0,
+        message: { role: 'assistant', content: result.response },
+        finish_reason: 'stop',
+      }],
+      usage: { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 },
+      conversation_id: result.conversationId,
+      tool_calls: result.toolCalls,
+    });
+  } catch (err: any) {
+    console.error('LangChain agent error:', err);
+    res.status(500).json({ error: { message: err.message || 'Agent failed', type: 'server_error' } });
+  }
+};
+
+// ── Memory Management ─────────────────────────────────────────
+export const handleClearMemory = async (req: Request, res: Response) => {
+  const { session_id } = req.body || {};
+  if (session_id) {
+    clearSessionMemory(session_id);
+    res.json({ success: true, message: `Memory cleared for session ${session_id}` });
+  } else {
+    res.status(400).json({ error: { message: 'session_id required', type: 'invalid_request_error' } });
+  }
+};
+
+export const handleMemoryStats = async (req: Request, res: Response) => {
+  res.json(getMemoryStats());
 };

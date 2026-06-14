@@ -15,6 +15,7 @@ import { savePersonaToDb } from './services/identityService';
 import { DiskRAGService } from './services/ragService';
 import { startWorkspaceWatcher } from './services/workspaceWatcher';
 import { bootstrapProviders } from './services/providerBootstrap';
+import { connectMcpServer, disconnectMcpServer } from './mcp/client';
 
 dotenv.config();
 
@@ -194,6 +195,14 @@ async function start() {
 
   await initializeAgentSystem(DEFAULT_WORKSPACE);
   savePersonaToDb(); // Save persona config to DB (survives restart)
+
+  // Start MCP Server and connect client
+  try {
+    await connectMcpServer();
+  } catch (err: any) {
+    console.warn('⚠️ MCP server connection failed:', err?.message || err);
+  }
+
   await service.initialize();
 
   // Bootstrap providers from environment variables
@@ -258,6 +267,18 @@ async function start() {
     console.log(lines.join('\n'));
   });
 }
+
+// Cleanup on shutdown
+process.on('SIGINT', async () => {
+  console.log('\n🛑 Shutting down...');
+  await disconnectMcpServer();
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  await disconnectMcpServer();
+  process.exit(0);
+});
 
 start().catch(err => {
   console.error('Failed to start server:', err);

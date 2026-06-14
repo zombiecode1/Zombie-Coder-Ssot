@@ -25,6 +25,9 @@ import {
   handleListConversations,
   handleIndexWorkspace,
   handleSearchWorkspace,
+  handleLangChainAgent,
+  handleClearMemory,
+  handleMemoryStats,
 } from '../controllers/agentController';
 import { handleMcpJsonRpc, handleMcpInfo, handleMcpSseStream, handleMcpDeleteSession } from '../controllers/mcpController';
 import { clearRuntimeEvents, readRuntimeEvents } from '../services/runtimeEventLog';
@@ -188,6 +191,11 @@ router.get('/v1/agent/conversations', handleListConversations);
 router.get('/v1/agent/conversations/:conversation_id', handleGetConversationHistory);
 router.post('/v1/agent/index', handleIndexWorkspace);
 router.post('/v1/agent/search', handleSearchWorkspace);
+
+// ─── LangChain Agent (tools + memory + reasoning) ────────
+router.post('/v1/agent/langchain', handleLangChainAgent);
+router.post('/v1/agent/memory/clear', handleClearMemory);
+router.get('/v1/agent/memory/stats', handleMemoryStats);
 
 // ─── DB REST API (Phase 2 — Multi-Source SQLite) ────────
 //   GET  /db/stats             — table row counts
