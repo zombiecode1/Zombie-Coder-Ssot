@@ -526,12 +526,31 @@ export function isWorkspaceTrusted(db: StateDb, workspace_id: string, user_id: s
 }
 
 export function ensureConversation(db: StateDb, convo: { conversation_id: string; workspace_id?: string; user_id?: string; title?: string }) {
+  // Auto-generate title from first user message if no title provided
+  let title = convo.title || null;
+  if (!title) {
+    try {
+      const firstMsg = db.prepare(
+        'SELECT content FROM conversation_messages WHERE conversation_id = ? AND role = ? ORDER BY id ASC LIMIT 1'
+      ).get(convo.conversation_id, 'user') as any;
+        if (firstMsg?.content) {
+        const raw = String(firstMsg.content)
+          .replace(/['"``]/g, '')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .substring(0, 50);
+        title = raw.length >= 47 ? raw + '...' : raw;
+      }
+    } catch { /* ignore */ }
+  }
+
   db.prepare(`
     INSERT INTO conversations(conversation_id, workspace_id, user_id, title, updated_at)
     VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
     ON CONFLICT(conversation_id) DO UPDATE SET
+      title = COALESCE(excluded.title, title),
       updated_at=CURRENT_TIMESTAMP
-  `).run(convo.conversation_id, convo.workspace_id || null, convo.user_id || null, convo.title || null);
+  `).run(convo.conversation_id, convo.workspace_id || null, convo.user_id || null, title);
 }
 
 export function addConversationMessage(db: StateDb, msg: { conversation_id: string; role: string; content: string }) {

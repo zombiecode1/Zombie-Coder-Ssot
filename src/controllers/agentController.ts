@@ -13,6 +13,7 @@ import { initAdminTables } from '../admin/db';
 import { addEditorConnection } from '../admin/db';
 import { startWorkspaceWatcher, WorkspaceWatcher } from '../services/workspaceWatcher';
 import { VectorIndexService } from '../services/vectorIndexService';
+import { executeTool, getToolDefinitions, AGENT_TOOLS } from '../tools/agentTools';
 
 function stripThinkBlocks(text: string): string {
   if (!text) return text;
@@ -281,6 +282,73 @@ function resolveConversationId(conversation_id?: string): string {
   return conversation_id && String(conversation_id).trim() ? String(conversation_id).trim() : crypto.randomUUID();
 }
 
+/**
+ * Detect and execute tools based on user question.
+ * Returns tool results that should be injected into context.
+ * This prevents the agent from lying when tools can answer.
+ */
+async function executeToolsForQuestion(userMessage: string): Promise<string[]> {
+  const lower = userMessage.toLowerCase();
+  const toolResults: string[] = [];
+
+  // Pattern matching for common questions
+  const toolMappings: Array<{ patterns: RegExp[]; tool: string; getInput: (m: string) => Record<string, any> }> = [
+    {
+      patterns: [/কত.*model|কত.*মডেল|how many.*model|number.*model/i],
+      tool: 'count_models',
+      getInput: () => ({}),
+    },
+    {
+      patterns: [/কত.*provider|কত.*প্রোভাইডার|how many.*provider|number.*provider/i],
+      tool: 'count_providers',
+      getInput: () => ({}),
+    },
+    {
+      patterns: [/package\.json|প্রোজেক্ট.*কী|প্রোজেক্ট.*নাম|project.*name|what.*project/i],
+      tool: 'get_project_info',
+      getInput: () => ({ directory: process.cwd() }),
+    },
+    {
+      patterns: [/কোন.*ফাইল|কী.*ফাইল|list.*file|what.*file|folder.*structure|directory.*structure/i],
+      tool: 'list_files',
+      getInput: () => ({ directory: process.cwd() }),
+    },
+  ];
+
+  for (const mapping of toolMappings) {
+    if (mapping.patterns.some(p => p.test(lower))) {
+      try {
+        const result = await executeTool(mapping.tool, mapping.getInput(lower));
+        if (result.success) {
+          toolResults.push(`[Tool: ${mapping.tool}] ${JSON.stringify(result, null, 2)}`);
+        }
+      } catch (e: any) {
+        console.warn(`Tool ${mapping.tool} failed:`, e.message);
+      }
+    }
+  }
+
+  return toolResults;
+}
+
+/**
+ * Generate a session title from the first user message.
+ */
+function generateSessionTitle(message: string): string {
+  // Clean and truncate
+  let title = message
+    .replace(/['"``]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  
+  // Take first 50 chars
+  if (title.length > 50) {
+    title = title.substring(0, 47) + '...';
+  }
+  
+  return title || 'New Conversation';
+}
+
 export const handleAgentChat = async (req: Request, res: Response) => {
   try {
     const { messages, model, directory, category, legacy, user_id, workspace_id, conversation_id } = req.body || {};
@@ -327,6 +395,10 @@ export const handleAgentChat = async (req: Request, res: Response) => {
       }
     }
 
+    // ── TOOL EXECUTION: Prevent lying by using actual tools ──
+    const lastUserMsg = String(messages[messages.length - 1]?.content || '');
+    const toolResults = await executeToolsForQuestion(lastUserMsg);
+
     // Legacy agent JSON wrapper mode (kept for backward compatibility).
     if (legacy === true) {
       let selectedModel = model || undefined;
@@ -361,6 +433,21 @@ export const handleAgentChat = async (req: Request, res: Response) => {
       parallel_tool_calls: body.parallel_tool_calls,
       user: body.user,
     } as any;
+
+    // ── Inject tool results into context ──
+    if (toolResults.length > 0) {
+      const toolContext = toolResults.join('\n\n');
+      const sysIdx = params.messages.findIndex((m: any) => m.role === 'system');
+      const toolBlock = `IMPORTANT: The following data was retrieved from actual tools. Use this data to answer the user's question. Do NOT say you cannot see or access the project — you have the data right here:\n\n${toolContext}`;
+      
+      if (sysIdx === -1) {
+        params.messages.unshift({ role: 'system', content: toolBlock } as any);
+      } else {
+        params.messages[sysIdx].content = String(params.messages[sysIdx].content || '') + `\n\n${toolBlock}`;
+      }
+      
+      console.log(`🔧 Tool execution: ${toolResults.length} tool(s) provided real data`);
+    }
 
     // Model routing
     if (!params.model || params.model === 'auto') {
@@ -425,10 +512,17 @@ export const handleAgentChat = async (req: Request, res: Response) => {
     // Persist conversation memory (best-effort).
     const convoId = stateDb ? resolveConversationId(conversation_id) : (conversation_id ? String(conversation_id) : null);
     if (stateDb && convoId) {
+      // Auto-generate title from first user message
+      const firstUserMsg = messages.find((m: any) => m.role === 'user');
+      const autoTitle = firstUserMsg?.content
+        ? String(firstUserMsg.content).replace(/['"``]/g, '').replace(/\s+/g, ' ').trim().substring(0, 50)
+        : undefined;
+
       ensureConversation(stateDb, {
         conversation_id: convoId,
         workspace_id: workspace_id ? String(workspace_id) : undefined,
         user_id: user_id ? String(user_id) : undefined,
+        title: autoTitle && autoTitle.length < 50 ? autoTitle : autoTitle ? autoTitle + '...' : undefined,
       });
       const lastUser = messages[messages.length - 1];
       if (lastUser?.role && typeof lastUser?.content === 'string') {
