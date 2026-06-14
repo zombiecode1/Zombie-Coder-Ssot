@@ -11,6 +11,7 @@ import { cleanupOldLogs } from './services/fileLogger';
 import identityMiddleware from './middleware/identityMiddleware';
 import { loadIdentity } from './services/identityService';
 import { initializeAgentSystem, getAgentService, getRagService } from './controllers/agentController';
+import { savePersonaToDb } from './services/identityService';
 import { DiskRAGService } from './services/ragService';
 import { startWorkspaceWatcher } from './services/workspaceWatcher';
 import { bootstrapProviders } from './services/providerBootstrap';
@@ -78,7 +79,31 @@ if (!GROQ_API_KEY) {
   console.warn('WARNING: GROQ_API_KEY not set — server will run in degraded mode');
 }
 
-app.use(cors({ origin: CORS_ORIGINS, credentials: true }));
+// CORS: reflect origin for credentials mode (wildcard + credentials = broken)
+const ALLOWED_HOSTS = new Set([
+  'localhost', '127.0.0.1', '0.0.0.0',
+  'zombiecoder.my.id', 's.zombiecoder.my.id',
+]);
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (curl, server-to-server)
+    if (!origin) return callback(null, true);
+    try {
+      const url = new URL(origin);
+      const hostname = url.hostname;
+      // Always allow localhost ports
+      if (hostname === 'localhost' || hostname === '127.0.0.1') return callback(null, true);
+      // Check allowed hosts
+      if (ALLOWED_HOSTS.has(hostname)) return callback(null, true);
+      // Check env CORS_ORIGINS
+      if (CORS_ORIGINS.includes('*') || CORS_ORIGINS.includes(origin)) return callback(null, true);
+      callback(null, false);
+    } catch {
+      callback(null, true);
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(loggingMiddleware);
@@ -168,6 +193,7 @@ async function start() {
   }
 
   await initializeAgentSystem(DEFAULT_WORKSPACE);
+  savePersonaToDb(); // Save persona config to DB (survives restart)
   await service.initialize();
 
   // Bootstrap providers from environment variables

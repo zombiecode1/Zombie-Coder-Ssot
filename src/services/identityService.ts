@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import { ZOMBIECODER_PERSONA, buildSystemPrompt } from '../config/persona';
+import { getStateDb, setRuntimeConfig, getRuntimeConfig, getAllRuntimeConfig } from './stateDb';
 
 const ID_PATH = path.resolve(__dirname, '../../identity.json');
 
@@ -10,14 +12,13 @@ let _lastModified: number = 0;
 
 /**
  * Load identity.json with file change detection.
- * Uses file mtime to detect changes and reload automatically.
+ * Also merges persona data from DB (runtime_config table).
  */
 export function loadIdentity(forceReload = false): any {
     try {
         const stat = fs.statSync(ID_PATH);
         const currentMtime = stat.mtimeMs;
 
-        // Return cached if file hasn't changed (unless force reload)
         if (_identity && !forceReload && currentMtime === _lastModified) {
             return _identity;
         }
@@ -27,29 +28,28 @@ export function loadIdentity(forceReload = false): any {
         _hash = crypto.createHash('sha256').update(raw, 'utf8').digest('hex');
         _lastModified = currentMtime;
 
-        // Note: chmod removed — it was making the file permanently read-only
-        // which prevented updates. Use file permissions at OS level if needed.
+        // Merge persona from DB if available
+        mergePersonaFromDb();
 
         return _identity;
     } catch (err: any) {
         console.error('identityService: failed to load identity.json:', err?.message || err);
-        _identity = null;
+        // Fallback: create identity from persona config
+        _identity = createIdentityFromPersona();
         _hash = null;
         _lastModified = 0;
-        return null;
+        return _identity;
     }
 }
 
 /**
  * Get identity with automatic cache refresh.
- * Checks file mtime on each call to detect changes.
  */
 export function getIdentity(): any {
     try {
         const stat = fs.statSync(ID_PATH);
         const currentMtime = stat.mtimeMs;
 
-        // Reload if file changed since last load
         if (!_identity || currentMtime !== _lastModified) {
             return loadIdentity(true);
         }
@@ -64,12 +64,117 @@ export function getIdentityHash(): string | null {
     return _hash;
 }
 
-/**
- * Force reload identity from disk.
- * Call this after updating identity.json.
- */
 export function reloadIdentity(): any {
     return loadIdentity(true);
+}
+
+/**
+ * Save persona configuration to DB.
+ * Called on startup to ensure DB has latest persona data.
+ */
+export function savePersonaToDb(): void {
+    const db = getStateDb();
+    if (!db) return;
+
+    try {
+        const p = ZOMBIECODER_PERSONA;
+
+        // Save identity basics
+        setRuntimeConfig(db, 'persona:id', p.id, 'identity');
+        setRuntimeConfig(db, 'persona:name', p.name, 'identity');
+        setRuntimeConfig(db, 'persona:tagline', p.tagline, 'identity');
+        setRuntimeConfig(db, 'persona:owner:name', p.owner.name, 'identity');
+        setRuntimeConfig(db, 'persona:owner:location', p.owner.location, 'identity');
+        setRuntimeConfig(db, 'persona:owner:contact', p.owner.contact, 'identity');
+        setRuntimeConfig(db, 'persona:owner:website', p.owner.website, 'identity');
+        setRuntimeConfig(db, 'persona:language:primary', p.language.primary, 'identity');
+        setRuntimeConfig(db, 'persona:language:technical', p.language.technical, 'identity');
+        setRuntimeConfig(db, 'persona:language:greeting', p.language.greeting, 'identity');
+
+        // Save principles as JSON
+        setRuntimeConfig(db, 'persona:principles', JSON.stringify(p.principles), 'persona');
+        setRuntimeConfig(db, 'persona:workflow', JSON.stringify(p.workflow), 'persona');
+        setRuntimeConfig(db, 'persona:rules', JSON.stringify(p.rules), 'persona');
+        setRuntimeConfig(db, 'persona:competencies', JSON.stringify(p.competencies), 'persona');
+        setRuntimeConfig(db, 'persona:responseStyle', JSON.stringify(p.responseStyle), 'persona');
+
+        // Save system prompt
+        setRuntimeConfig(db, 'persona:system_prompt', buildSystemPrompt(p), 'persona');
+
+        console.log('✅ Persona saved to DB');
+    } catch (err: any) {
+        console.warn('⚠️ Failed to save persona to DB:', err?.message || err);
+    }
+}
+
+/**
+ * Load persona from DB and merge into identity object.
+ */
+function mergePersonaFromDb(): void {
+    const db = getStateDb();
+    if (!db || !_identity) return;
+
+    try {
+        const rows = getAllRuntimeConfig(db);
+        if (rows.length === 0) return;
+
+        // Convert array to Record<string, string>
+        const config: Record<string, string> = {};
+        for (const row of rows) config[row.key] = row.value;
+
+        // Ensure system_identity exists
+        if (!_identity.system_identity) {
+            _identity.system_identity = {};
+        }
+
+        // Merge persona fields from DB
+        const sys = _identity.system_identity;
+        sys.name = config['persona:name'] || sys.name || ZOMBIECODER_PERSONA.name;
+        sys.tagline = config['persona:tagline'] || sys.tagline || ZOMBIECODER_PERSONA.tagline;
+        sys.system_prompt = config['persona:system_prompt'] || sys.system_prompt || buildSystemPrompt(ZOMBIECODER_PERSONA);
+
+        // Merge owner info
+        if (!_identity.owner) _identity.owner = {};
+        _identity.owner.name = config['persona:owner:name'] || _identity.owner.name || ZOMBIECODER_PERSONA.owner.name;
+        _identity.owner.location = config['persona:owner:location'] || _identity.owner.location || ZOMBIECODER_PERSONA.owner.location;
+        _identity.owner.contact = config['persona:owner:contact'] || _identity.owner.contact || ZOMBIECODER_PERSONA.owner.contact;
+        _identity.owner.website = config['persona:owner:website'] || _identity.owner.website || ZOMBIECODER_PERSONA.owner.website;
+
+        // Attach full persona data
+        const cfg = config;
+        _identity.persona = {
+            principles: cfg['persona:principles'] ? JSON.parse(cfg['persona:principles']) : ZOMBIECODER_PERSONA.principles,
+            workflow: cfg['persona:workflow'] ? JSON.parse(cfg['persona:workflow']) : ZOMBIECODER_PERSONA.workflow,
+            rules: cfg['persona:rules'] ? JSON.parse(cfg['persona:rules']) : ZOMBIECODER_PERSONA.rules,
+            competencies: cfg['persona:competencies'] ? JSON.parse(cfg['persona:competencies']) : ZOMBIECODER_PERSONA.competencies,
+            responseStyle: cfg['persona:responseStyle'] ? JSON.parse(cfg['persona:responseStyle']) : ZOMBIECODER_PERSONA.responseStyle,
+        };
+    } catch (err: any) {
+        console.warn('mergePersonaFromDb failed:', err?.message || err);
+    }
+}
+
+/**
+ * Create identity from persona config (fallback when identity.json missing).
+ */
+function createIdentityFromPersona(): any {
+    const p = ZOMBIECODER_PERSONA;
+    return {
+        system_identity: {
+            name: p.name,
+            tagline: p.tagline,
+            system_prompt: buildSystemPrompt(p),
+            version: '2.0.0',
+        },
+        owner: { ...p.owner },
+        persona: {
+            principles: p.principles,
+            workflow: p.workflow,
+            rules: p.rules,
+            competencies: p.competencies,
+            responseStyle: p.responseStyle,
+        },
+    };
 }
 
 export default {
@@ -77,4 +182,5 @@ export default {
     getIdentity,
     getIdentityHash,
     reloadIdentity,
+    savePersonaToDb,
 };

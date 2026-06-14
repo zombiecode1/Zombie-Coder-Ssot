@@ -265,6 +265,16 @@ export function initStateDb(dbPath: string): StateDb {
     );
   `).run();
 
+  // Runtime config: stores persona, workflow, rules, competencies (survives restart)
+  db.prepare(`
+    CREATE TABLE IF NOT EXISTS runtime_config (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      category TEXT DEFAULT 'general',
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `).run();
+
   db.prepare(`
     CREATE TABLE IF NOT EXISTS agent_notes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -347,6 +357,38 @@ export function upsertPersona(db: StateDb, persona: { persona_id: string; name: 
       system_prompt=excluded.system_prompt,
       updated_at=CURRENT_TIMESTAMP
   `).run(persona.persona_id, persona.name, persona.system_prompt);
+}
+
+// ── Runtime Config CRUD ──────────────────────────────────────────
+export function setRuntimeConfig(db: StateDb, key: string, value: string, category: string = 'general') {
+  db.prepare(`
+    INSERT INTO runtime_config(key, value, category, updated_at)
+    VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+    ON CONFLICT(key) DO UPDATE SET
+      value=excluded.value,
+      category=excluded.category,
+      updated_at=CURRENT_TIMESTAMP
+  `).run(key, value, category);
+}
+
+export function getRuntimeConfig(db: StateDb, key: string): string | null {
+  const row = db.prepare('SELECT value FROM runtime_config WHERE key = ?').get(key) as any;
+  return row?.value ?? null;
+}
+
+export function getRuntimeConfigByCategory(db: StateDb, category: string): Record<string, string> {
+  const rows = db.prepare('SELECT key, value FROM runtime_config WHERE category = ?').all(category) as any[];
+  const result: Record<string, string> = {};
+  for (const row of rows) result[row.key] = row.value;
+  return result;
+}
+
+export function getAllRuntimeConfig(db: StateDb): Array<{ key: string; value: string; category: string; updated_at: string }> {
+  return db.prepare('SELECT key, value, category, updated_at FROM runtime_config ORDER BY category, key').all() as any[];
+}
+
+export function deleteRuntimeConfig(db: StateDb, key: string) {
+  db.prepare('DELETE FROM runtime_config WHERE key = ?').run(key);
 }
 
 export function upsertModels(db: StateDb, models: Array<{
